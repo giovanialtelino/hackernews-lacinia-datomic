@@ -1,0 +1,127 @@
+{
+ :enums {
+         :link-order-by-input {
+                               :values [:description_ASC
+                                        :description_DESC
+                                        :url_ASC
+                                        :url_DESC
+                                        :createdAt_ASC
+                                        :createdAt_DESC]}
+         }
+
+ :objects
+        {:Link
+         {:description "Link of an article"
+          :fields
+                       {:id          {:type (non-null ID)}
+                        :description {:type        String
+                                      :description "Description of an article"}
+                        :url         {:type        (non-null String)
+                                      :description "URL of an article"}
+                        :postedBy    {:type        :User
+                                      :description "User who posted the artciel"}
+                        :votes       {:type        (list :Vote)
+                                      :description "Votes the article got"}
+                        :createdAt   {:type        (non-null Date)
+                                      :description "Instant of the creation"}}}}
+ {:AuthPayload
+  {:description "Auth payload for a user"
+   :fields
+                {:token {:type String}
+                 :user  {:type :User}}}}
+        {:User
+         {:description "User of the system"
+          :fields
+                       {:id    {:type (non-null ID)}
+                        :name  {:type (non-null String)}
+                        :email {:type (non-null String)}
+                        :links {:type (list :Link)}}}}
+ {:Vote
+  {:description "Vote in the system"
+   :fields
+                {:id   {:type (non-null ID)}
+                 :link {:type (non-null :Link)}
+                 :user {:type (non-null :User)}}}}
+        {:Feed
+         {:description "Feed to be shown"
+          :fields
+                       {:links {:type Link}
+                        :count {:type Int}}}}
+
+ :queries
+        {:info
+         {:type        :String
+          :description "Just a simple placeholder"
+          :resolve     :query/simple-string}
+         :feed
+         {:type        :Feed
+          :description "Feed query"
+          :args
+                       {:filter   {:type String}
+                        :skip     {:type Int}
+                        :first    {:type Int}
+                        :order-by {:type :link-order-by-input}
+                        }
+          :resolve     :query/feed}
+         :link
+         {:type        :Link
+          :description "Get the Link by Id"
+          :args
+                       {:id {:type ID}}
+          :resolve     :query/link}}
+
+ :mutations
+        {:post
+         {:type        (non-null :Link)
+          :description "Post a new link"
+          :args
+                       {:url         {:type (non-null String)}
+                        :description {:type (non-null String)}}
+          :resolve     :mutation/post}
+         :update-link
+         {:type        :Link
+          :description "Update a link if it exists and is allowed to"
+          :args
+                       {:id          {:type (non-null ID)}
+                        :url         {:type String}
+                        :description {:type String}}
+          :resolve     :mutation/update-link}
+         :delete-link
+         {:type        :Link
+          :description "Delete a link if it exists and is allowed to"
+          :args
+                       {:id {:type (non-null UUID)}}
+          :resolve     :mutation/delete}
+         :signup
+         {:type        :AuthPayload
+          :description "Returns the authorization payload for the user"
+          :args
+                       {:email    {:type (non-null String)}
+                        :password {:type (non-null String)}
+                        :name     {:type (non-null String)}}
+          :resolve     :mutation/signup}
+         :login
+         {:type        :AuthPayload
+          :description "Return the authorization for the user, if if valid"
+          :args
+                       {:email    {:type (non-null String)}
+                        :password {:type (non-null String)}}
+          :resolve     :mutation/login}
+         :vote
+         {:type        :Vote
+          :description "Return valid vote"
+          :args
+                       {:linkid {:type ID}}
+          :resolve     :mutation/vote}
+         }
+
+ :subscriptions
+        {:new-link {:type        :Link
+                    :description "Subscribe to get new links"
+                    :resolve     :subscription/new-link}
+         :new-vote {:type        :Vote
+                    :description "Subscribe to get new votes"
+                    :resolve     :subscription/new-vote}}
+
+ }
+
