@@ -2,55 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__clj_antlr_0_2_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_anomalies_0_1_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_hmac_authn_0_1_194.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_http_client_0_1_87.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_transit_clj_0_8_313.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_transit_java_0_8_337.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_0_8_69.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_api_0_8_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_impl_shared_0_8_49.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_pro_0_8_28.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_core_jackson_core_2_8_7.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_googlecode_json_simple_json_simple_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_ibm_icu_icu4j_61_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_stuartsierra_component_0_4_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_stuartsierra_dependency_0_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_walmartlabs_lacinia_0_35_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__commons_codec_1_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__javax_xml_bind_jaxb_api_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_abego_treelayout_org_abego_treelayout_core_1_0_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_antlr_ST4_4_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_antlr_antlr4_4_7_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_antlr_antlr4_runtime_4_7_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_antlr_antlr_runtime_3_5_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_async_0_3_442.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_cache_0_6_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_memoize_0_5_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_data_json_0_2_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_data_priority_map_0_0_7.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_analyzer_0_6_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_analyzer_jvm_0_7_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_logging_0_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_reader_1_0_0_beta4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_eclipse_jetty_jetty_client_9_3_7_v20160115.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_eclipse_jetty_jetty_http_9_3_7_v20160115.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_eclipse_jetty_jetty_io_9_3_7_v20160115.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_eclipse_jetty_jetty_util_9_3_7_v20160115.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_glassfish_javax_json_1_0_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_javassist_javassist_3_18_1_GA.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_msgpack_msgpack_0_6_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_ow2_asm_asm_all_4_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/datomic-start.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" beforeDir="false" afterPath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.clj" beforeDir="false" afterPath="$PROJECT_DIR$/project.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/datomic_schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/resources/datomic_schema.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/schemaGraphQL.edn" beforeDir="false" afterPath="$PROJECT_DIR$/resources/schema_graphql.edn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

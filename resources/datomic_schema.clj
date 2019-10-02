@@ -21,6 +21,10 @@
    {:db/ident :link/createdat
     :db/valueType :db.type/instant
     :db/cardinality :db.cardinality/one}
+   {:db/ident :link/order
+    :db/valueType :db.type/long
+    :db/cardinality :db.cardinality/one
+    :db/unique :db.unique/value}
 
   {:db/ident :auth/token
     :db/valueType :db.type/string
