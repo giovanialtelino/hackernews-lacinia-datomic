@@ -6,5 +6,5 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [com.walmartlabs/lacinia "0.35.0"]
                  [com.stuartsierra/component "0.4.0"]
-                 [com.datomic/client-cloud "0.8.78"]]
-  :repl-options {:init-ns hackernews-lacinia-datomic.core})
+                 [com.datomic/client-pro "0.8.28"]]
+  :repl-options {:init-ns hackernews-lacinia-datomic.datomic})
