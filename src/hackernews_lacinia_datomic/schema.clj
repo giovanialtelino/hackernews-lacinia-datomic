@@ -76,7 +76,7 @@
   [component]
   (let [db (:db component)]
     {:query/simple-string ("I'm alive")
-     :query/feed (get-feed )
+     :query/feed (get-feed)
      :query/link (get-link )
      :mutation/delete (delete-link )
      :mutation/login (login )

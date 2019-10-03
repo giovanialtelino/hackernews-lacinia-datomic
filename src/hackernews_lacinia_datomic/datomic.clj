@@ -4,15 +4,12 @@
   (:import java.util.Date))
 
 ;you may start your REPL here while you are doing your operations on the database
-
 (def cfg {:server-type :peer-server
           :access-key "myaccesskey"
           :secret "mysecret"
           :endpoint "localhost:8998"})
 
 (def client (d/client cfg))
-
-; database name was defined on the "datomic-start" file
 (def conn (d/connect client {:db-name "hackernews"}))
 
 (defn random-users
@@ -21,7 +18,7 @@
            xyz []]
       (if (zero? qtd)
         xyz
-            (recur (dec qtd) (conj xyz {:user/name (str qtd) :user/email (str qtd "@com.com")})))))
+            (recur (dec qtd) (conj xyz {:user/name (str "name" qtd) :user/email (str qtd "@com.com")})))))
 
 (defn transact-random-users
   [qtd]
@@ -56,9 +53,9 @@
 
 ;feed contains -> id description, url, postedby, votes, createdat
 (def get-links
-        '[:find ?e ?url ?description ?createdat ?postedby ?order
+        '[:find ?e ?url ?description ?createdat ?order ?postedby
           :in $ ?filter ?skip ?skip-plus-first
-          :where [?e :link/url ?url]
+          :where [?e :link/url  ?url]
                   [?e :link/description ?description]
                   [?e :link/createdat ?createdat]
                   [?e :link/postedby ?e2]
@@ -73,39 +70,72 @@
     :in $ ?id
     :where [?votes :vote/link ?id]])
 
-(defn get-links-vector
+(defn get-votes
+  [link-id]
+  (let [votes-count (d/q get-each-link-vote-count db link-id)]
+    (if (nil? votes-count)
+      0
+      votes-count)))
+
+(defn get-feed
   [args]
   (let [{filter :filter
         skip :skip
         first :first
         order-by :order-by} args
-        link-query get-links
-        links (d/q link-query db filter skip (+ first skip))]
+        links (d/q get-links db filter skip (+ first skip))]
 
-    ; ?e ?url ?description ?createdat ?postedby ?order
-    (case order-by
-      ":description_ASC" (sort-by  < links)
-      ":description_DESC" (sort-by 2 > links)
-      ":url_ASC" (sort-by 1 < links )
-      ":url_DESC" (sort-by 1 > links)
-      ":createdAt_ASC" (sort-by 3 < links)
-      ":createdAt_DESC" (sort-by 3 > links)
+      (case order-by
+      ;":description_ASC" (sort-by  < links)
+      ;":description_DESC" (sort-by 2 > links)
+      ;":url_ASC" (sort-by 1 < links )
+      ;":url_DESC" (sort-by 1 > links)
+      ;":createdAt_ASC" (sort-by 3 < links)
+      ;":createdAt_DESC" (sort-by 3 > links)
       links)))
 
-;get the votes diff defn
-
 (defn get-link
-  [id])
+  [args]
+  (let [{id :id} args
+        link (d/pull db '[*] id )
+        vote-count (d/q get-each-link-vote-count db id)]
+    (if (empty? vote-count)
+      (conj link {:link/votes 0})
+      (conj link {:link/votes (first vote-count)}))))
 
+;retract/delete a selected link and returns it
 (defn delete-link
-  [id])
+  [args]
+  (let [{id :id} args
+        {result :db-before} (d/transact conn {:tx-data [[:db/retractEntity id]]})]
+  result))
 
+;retract/update a selected link and returns it
 (defn update-link
-  [])
+  [args]
+  (let [{id :id
+         url :url
+         description :description} args
+        {result :db-after} (d/transact conn {:tx-data [[:db/add  id :link/url url ]
+                                                      [:db/add  id :link/description description]]})]
+    result))
+
+;should be a more efective way...
+(defn max-order
+  []
+  (get-in (d/q '[:find (max ?order)
+         :where [_ :link/order ?order]] db) [0 0]))
 
 (defn post
-  [url description]
-  "not supported yet")
+  [args user-id]
+  (let [{url :url
+         description :description} args]
+    (d/transact conn {:tx-data {:link/description description
+                                :link/url url
+                                :link/order (+ max-order 1)
+                                :link/postedby user-id
+                                :link/createdat (java.util.Date.)
+                                }})))
 
 ;I'm registering every login and signup on datomic too
 (defn signup
