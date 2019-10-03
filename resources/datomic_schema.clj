@@ -37,13 +37,16 @@
     :db/valueType :db.type/uuid
     :db/cardinality :db.cardinality/one
     :db/unique :db.unique/identity}
+   {:db/ident :user/pwd
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one}
    {:db/ident :user/name
     :db/valueType :db.type/string
     :db/cardinality :db.cardinality/one}
    {:db/ident :user/email
     :db/valueType :db.type/string
     :db/cardinality :db.cardinality/one
-    :db/unique :db.unique/identity}
+    :db/unique :db.unique/value}
    {:db/ident :user/links
     :db/valueType :db.type/ref
     :db/cardinality :db.cardinality/many}

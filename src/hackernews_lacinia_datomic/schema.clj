@@ -11,66 +11,50 @@
 (defn get-feed
   []
   (fn [_ args _]
-    (let [{filter :filter
-           skip :skip
-           first :first
-           order-by :order-by} args]
-      (db/get-feed filter skip first order-by))))
+      (db/get-feed args)))
 
 (defn get-link
   []
   (fn [_ args _]
-    (db/get-link  (:id args))))
+    (db/get-link  args)))
 
 (defn delete-link
   []
   (fn [_ args _]
-    (db/delete-link  (:id args))))
+    (db/delete-link args)))
 
 (defn login
   []
   (fn [_ args _]
-    (let [{email :email
-           password :password} args]
-      (db/login  email password))))
+      (db/login  args)))
 
 (defn post
   []
   (fn [_ args _]
-    (let [{url :url
-           description :description} args]
-      (db/post  url description))))
+      (db/post args 1)))
 
 (defn signup
   []
   (fn [_ args _]
-    (let [{email :email
-           password :password
-           name :name} args]
-      (db/signup  email password name))))
+      (db/signup args)))
 
 (defn update-link
   []
   (fn [_ args _]
-    (let [{id :id
-           url :url
-           description :description } args]
-      (db/update-link  id url description))))
+      (db/update-link  args)))
 
 (defn vote
   []
   (fn [_ args _]
-    (db/vote-link  (:linkid args))))
+    (db/vote-link  args)))
 
 (defn new-link-subscribe db
   []
-  (fn [_ args _]
-    (db/suscribe-new-link )))
+  )
 
 (defn new-vote-subscribe
   []
-  (fn [_ arg _]
-    (db/subscribe-new-vote )))
+  )
 
 (defn resolver-map
   [component]

@@ -6,5 +6,7 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [com.walmartlabs/lacinia "0.35.0"]
                  [com.stuartsierra/component "0.4.0"]
-                 [com.datomic/client-pro "0.8.28"]]
+                 [com.datomic/client-pro "0.8.28"]
+                 [buddy/buddy-hashers "1.4.0"]
+                 ]
   :repl-options {:init-ns hackernews-lacinia-datomic.datomic})

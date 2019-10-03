@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/datomic_conn_setts.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/db_start.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/links.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/user.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.clj" beforeDir="false" afterPath="$PROJECT_DIR$/project.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/datomic_schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/resources/datomic_schema.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
