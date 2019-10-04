@@ -2,15 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/datomic_conn_setts.clj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/db_start.clj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/links.clj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/user.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/altrunox.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__buddy_buddy_core_1_6_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__buddy_buddy_hashers_1_4_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__cheshire_5_8_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__clojurewerkz_scrypt_1_2_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_dataformat_jackson_dataformat_cbor_2_9_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_dataformat_jackson_dataformat_smile_2_9_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_lambdaworks_scrypt_1_4_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__net_i2p_crypto_eddsa_0_3_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_bouncycastle_bcpkix_jdk15on_1_62.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_bouncycastle_bcprov_jdk15on_1_62.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__tigris_0_1_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_core_jackson_core_2_8_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_core_jackson_core_2_9_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__commons_codec_1_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__commons_codec_1_12.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" beforeDir="false" afterPath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project.clj" beforeDir="false" afterPath="$PROJECT_DIR$/project.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/datomic_schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/resources/datomic_schema.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/datomic_conn_setts.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/datomic_conn_setts.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/links.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/links.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/user.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic/user.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/server.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/server.clj" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +51,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="ReplState" timestamp="1569961534342">{:repl-history {:ide [], :local [{:command &quot;(defn foo\n  \&quot;I don't do a whole lot.\&quot;\n  [x]\n  (println x \&quot;Hello, World!\&quot;))&quot;, :offset 74, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(HashMap)&quot;, :offset 9, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(:require :reload-all)&quot;, :offset 22, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;odd?&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;client&quot;, :offset 6, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;user&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(client)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(foo)&quot;, :offset 5, :ns &quot;hackernews-lacinia-datomic.core&quot;}], :remote []}}</component>
+  <component name="ReplState" timestamp="1570082058092">{:repl-history {:ide [], :local [{:command &quot;(defn foo\n  \&quot;I don't do a whole lot.\&quot;\n  [x]\n  (println x \&quot;Hello, World!\&quot;))&quot;, :offset 74, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(HashMap)&quot;, :offset 9, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(:require :reload-all)&quot;, :offset 22, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;odd?&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;client&quot;, :offset 6, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;user&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(client)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(foo)&quot;, :offset 5, :ns &quot;hackernews-lacinia-datomic.core&quot;}], :remote []}}</component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>

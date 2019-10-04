@@ -1,7 +1,8 @@
 (ns hackernews-lacinia-datomic.server
   (:require [com.stuartsierra.component :as component]
             [com.walmartlabs.lacinia.pedestal :as lp]
-            [io.pedestal.http :as http]))
+            [io.pedestal.http :as http]
+            [hackernews-lacinia-datomic.datomic.db-start :as start]))
 
 (defrecord Server [schema-provider server port]
   component/Lifecycle
@@ -18,6 +19,7 @@
 
 (defn new-server
   []
+  (start/start-database 100)
   {:server (component/using (map->Server {:port 8888})
                             [:schema-provider])})
 

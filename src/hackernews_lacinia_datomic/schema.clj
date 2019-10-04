@@ -6,47 +6,48 @@
             [clojure.edn :as edn]
             [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
             [com.stuartsierra.component :as component]
-            [hackernews-lacinia-datomic.datomic :as db]))
+            [hackernews-lacinia-datomic.datomic.links :as db-links]
+            [hackernews-lacinia-datomic.datomic.user :as db-users]))
 
 (defn get-feed
   []
   (fn [_ args _]
-      (db/get-feed args)))
+      (db-links/get-feed args)))
 
 (defn get-link
   []
   (fn [_ args _]
-    (db/get-link  args)))
+    (db-links/get-link  args)))
 
 (defn delete-link
   []
   (fn [_ args _]
-    (db/delete-link args)))
-
-(defn login
-  []
-  (fn [_ args _]
-      (db/login  args)))
+    (db-links/delete-link args)))
 
 (defn post
   []
   (fn [_ args _]
-      (db/post args 1)))
-
-(defn signup
-  []
-  (fn [_ args _]
-      (db/signup args)))
-
-(defn update-link
-  []
-  (fn [_ args _]
-      (db/update-link  args)))
+      (db-links/post args 1)))
 
 (defn vote
   []
   (fn [_ args _]
-    (db/vote-link  args)))
+    (db-links/vote-link  args)))
+
+(defn update-link
+  []
+  (fn [_ args _]
+      (db-links/update-link  args)))
+
+(defn signup
+  []
+  (fn [_ args _]
+    (db-users/signup args)))
+
+(defn login
+  []
+  (fn [_ args _]
+    (db-users/login  args)))
 
 (defn new-link-subscribe db
   []

@@ -1,10 +1,8 @@
 (ns hackernews-lacinia-datomic.datomic.user
   (:require [datomic.client.api :as d]
-            [datomic-schema :as db-schema]
-            [buddy.hashers :as hashers])
+            [buddy.hashers :as hashers]
+            [hackernews-lacinia-datomic.datomic.datomic-conn-setts :as conn-set])
   (:import java.util.Date))
-
-
 
 (defn user-id-by-email
   [db email]
@@ -22,13 +20,13 @@
          email :email
          password :password} args
         hashed (hashers/derive password)
-        {result :db-after} (d/transact conn {:tx-data [{:user/name name
+        {result :db-after} (d/transact conn-set/conn {:tx-data [{:user/name name
                                                         :user/email email
                                                         :user/pwd hashed}]})
         user-id (user-id-by-email result email)]
-    (d/transact conn {:tx-data [{:auth/token ""
+    (d/transact conn-set/conn {:tx-data [{:auth/token ""
                                  :auth/user user-id}]})))
 
 (defn login-register
   [user-id token]
-  (d/transact conn {:tx-data [[:db/add user-id :auth/token token]]})
+  (d/transact conn-set/conn {:tx-data [[:db/add user-id :auth/token token]]}))
