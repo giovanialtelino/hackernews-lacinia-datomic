@@ -7,70 +7,61 @@
             [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
             [com.stuartsierra.component :as component]
             [hackernews-lacinia-datomic.datomic.links :as db-links]
-            [hackernews-lacinia-datomic.datomic.user :as db-users]))
+            [hackernews-lacinia-datomic.datomic.user :as db-users]
+            [datomic.client.api :as d]))
+
+(defn create-actual-db [conn db-name]
+  (d/connect conn {:db-name db-name}))
 
 (defn get-feed
-  []
+  [db]
   (fn [_ args _]
-      (db-links/get-feed args)))
+      (db-links/get-feed db args)))
 
 (defn get-link
-  []
+  [db]
   (fn [_ args _]
-    (db-links/get-link  args)))
+    (db-links/get-link db args)))
 
 (defn delete-link
-  []
+  [db]
   (fn [_ args _]
-    (db-links/delete-link args)))
+    (db-links/delete-link db args)))
 
 (defn post
-  []
+  [db con]
   (fn [_ args _]
-      (db-links/post args 1)))
+      (db-links/post db  args 1 con)))
 
-(defn vote
-  []
-  (fn [_ args _]
-    (db-links/vote-link  args)))
+
 
 (defn update-link
-  []
+  [db]
   (fn [_ args _]
-      (db-links/update-link  args)))
+      (db-links/update-link  db args)))
 
 (defn signup
-  []
+  [db]
   (fn [_ args _]
-    (db-users/signup args)))
+    (db-users/signup db args)))
 
-(defn login
-  []
-  (fn [_ args _]
-    (db-users/login  args)))
-
-(defn new-link-subscribe db
-  []
-  )
-
-(defn new-vote-subscribe
-  []
-  )
 
 (defn resolver-map
   [component]
-  (let [db (:db component)]
+  (let [db-con (:db component)
+        db-name (:db-name component)
+        db (create-actual-db db-con db-name)
+        ]
     {:query/simple-string ("I'm alive")
-     :query/feed (get-feed)
-     :query/link (get-link )
-     :mutation/delete (delete-link )
-     :mutation/login (login )
-     :mutation/post (post )
-     :mutation/signup (signup )
-     :mutation/update-link (update-link )
-     :mutation/vote (vote )
-     :subscription/new-link (new-link-subscribe )
-     :subscriptions/new-vote (new-vote-subscribe )
+     :query/feed (get-feed db)
+     :query/link (get-link db)
+     :mutation/delete (delete-link db)
+
+     :mutation/post (post db db-con)
+     :mutation/signup (signup db)
+     :mutation/update-link (update-link db)
+
+
      }))
 
 (defn load-schema

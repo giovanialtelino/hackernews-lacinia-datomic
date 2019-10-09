@@ -1,7 +1,7 @@
 (ns hackernews-lacinia-datomic.datomic.links
   (:require [datomic.client.api :as d]
             [buddy.hashers :as hashers]
-            [hackernews-lacinia-datomic.datomic.datomic-conn-setts :as conn-set])
+            [com.stuartsierra.component :as component])
   (:import java.util.Date))
 
 (def get-links
@@ -49,17 +49,17 @@
       (conj link {:link/votes (first vote-count)}))))
 
 (defn delete-link
-  [db args]
+  [con args]
   (let [{id :id} args
-        {result :db-before} (d/transact conn-set/conn {:tx-data [[:db/retractEntity id]]})]
+        {result :db-before} (d/transact con {:tx-data [[:db/retractEntity id]]})]
     result))
 
 (defn update-link
-  [db args]
+  [con args]
   (let [{id :id
          url :url
          description :description} args
-        {result :db-after} (d/transact conn-set/conn {:tx-data [[:db/add  id :link/url url ]
+        {result :db-after} (d/transact con {:tx-data [[:db/add  id :link/url url ]
                                                        [:db/add  id :link/description description]]})]
     result))
 
@@ -69,12 +69,12 @@
                  :where [_ :link/order ?order]] db) [0 0]))
 
 (defn post
-  [args user-id db]
+  [args user-id con db]
   (let [{url :url
          description :description} args
         order (+ (max-order db) 1)
         now (java.util.Date.)]
-    (d/transact conn-set/conn {:tx-data [{:link/description description
+    (d/transact con {:tx-data [{:link/description description
                                  :link/url url
                                  :link/order order
                                  :link/postedby user-id

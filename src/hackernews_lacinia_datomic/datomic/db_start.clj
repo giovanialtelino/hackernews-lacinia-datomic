@@ -1,8 +1,7 @@
 (ns hackernews-lacinia-datomic.datomic.db-start
   (:require [datomic.client.api :as d]
             [datomic-schema :as db-schema]
-            [buddy.hashers :as hashers]
-            [hackernews-lacinia-datomic.datomic.datomic-conn-setts :as conn-set])
+            [buddy.hashers :as hashers])
   (:import java.util.Date))
 
 (defn random-users
@@ -16,8 +15,8 @@
                                   :user/email (str qtd "@com.com")})))))
 
 (defn transact-random-users
-  [qtd]
-  (d/transact conn-set/conn {:tx-data (random-users qtd)}))
+  [conn qtd]
+  (d/transact conn {:tx-data (random-users qtd)}))
 
 ;since the email is unique, I can just pass it as a ID for the postedby ref
 (defn random-links
@@ -33,12 +32,13 @@
                                   :link/url (str qtd "linkcom")})))))
 
 (defn transact-random-links
-  [qtd]
-  (d/transact conn-set/conn {:tx-data (random-links qtd)}))
+  [conn qtd]
+  (d/transact conn {:tx-data (random-links qtd)}))
 
 ;to be run only once every in memory database restart
 (defn start-database
-  [x]
-  (d/transact conn-set/conn {:tx-data db-schema/hacker-schema})
-  (transact-random-users x)
-  (transact-random-links x))
+  [database x]
+  (let [con (:connection database)]
+    (d/transact con {:tx-data db-schema/hacker-schema})
+    (transact-random-users con x)
+    (transact-random-links con x)))
