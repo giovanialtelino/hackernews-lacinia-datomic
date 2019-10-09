@@ -10,9 +10,6 @@
             [hackernews-lacinia-datomic.datomic.user :as db-users]
             [datomic.client.api :as d]))
 
-(defn create-actual-db [conn db-name]
-  (d/connect conn {:db-name db-name}))
-
 (defn get-feed
   [db]
   (fn [_ args _]
@@ -32,8 +29,6 @@
   [db con]
   (fn [_ args _]
       (db-links/post db  args 1 con)))
-
-
 
 (defn update-link
   [db]
@@ -71,4 +66,17 @@
       edn/read-string
       (util/attach-resolvers (resolver-map component))
       schema/compile))
+
+(defrecord SchemaProvider [schema]
+  component/Lifecycle
+  (start [this]
+    (assoc this :schema (load-schema this)))
+  (stop [this]
+    (assoc this :schema nil)))
+
+(defn new-schema-provider
+  []
+  {:schema-provider (-> {}
+                        map->SchemaProvider
+                        (compoent/using [:db]))})
 
