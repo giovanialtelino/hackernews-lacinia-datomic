@@ -1,9 +1,8 @@
 (ns hackernews-lacinia-datomic.datomic
   (:require [datomic.client.api :as d]
             [buddy.hashers :as hashers]
-            [com.stuartsierra.component :as component])
+            [hackernews-lacinia-datomic.db-start :as db-start])
   (:import java.util.Date))
-
 
 (def get-links
   '[:find ?e ?url ?description ?createdat ?order ?postedby
@@ -109,14 +108,3 @@
   [user-id token con]
   (d/transact con {:tx-data [[:db/add user-id :auth/token token]]}))
 
-(defrecord Datomic [config name]
-  component/Lifecycle
-  (start [this]
-    (let [client (d/client config)
-          conn (d/connect client {:db-name name})]
-      (assoc this :connection conn :transaction conn)))
-  (stop [this]
-    (assoc this :connection nil)))
-
-(defn new-datomic [config name]
-  {:db (map->Datomic {:config config :name name})})
