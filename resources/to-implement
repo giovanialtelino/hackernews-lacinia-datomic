@@ -1,18 +1,3 @@
-:login
- {:type        :AuthPayload
-  :description "Return the authorization for the user, if if valid"
-  :args
-               {:email    {:type (non-null String)}
-                :password {:type (non-null String)}}
-  :resolve     :mutation/login}
- :vote
- {:type        :Vote
-  :description "Return valid vote"
-  :args
-               {:linkid {:type ID}}
-  :resolve     :mutation/vote}
- }
-
 :subscriptions
 {:new-link {:type        :Link
             :description "Subscribe to get new links"
@@ -20,4 +5,3 @@
  :new-vote {:type        :Vote
             :description "Subscribe to get new votes"
             :resolve     :subscription/new-vote}}
- }

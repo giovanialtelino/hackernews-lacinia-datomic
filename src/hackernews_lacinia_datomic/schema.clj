@@ -33,19 +33,61 @@
   (fn [context args value]
     (datomic/signup db args)))
 
+(defn get-user-from-link
+  [db]
+  (fn [context args value]
+    (datomic/get-user-from-link db value)))
+
+(defn get-vote-from-link
+  [db]
+  (fn [context args value]
+    (datomic/get-vote-from-link db value)))
+
+(defn get-user-from-vote
+  [db]
+  (fn [context args value]
+    (datomic/get-user-from-vote db value)))
+
+(defn get-auth-from-user
+  [db]
+  (fn [context args value]
+    (datomic/get-auth-from-user db value)))
+
+(defn get-link-from-vote
+  [db]
+  (fn [context args value]
+    (datomic/get-link-from-vote db value)))
+
+(defn get-link-from-user
+  [db]
+  (fn [context args value]
+    (datomic/get-link-from-user db value)))
+
+(defn return-string
+  [x]
+  (fn [context args value]
+    (str "hello pedestal graphiql - " x)))
+
 (defn resolver-map
   [db]
      {
-      :query/simple-string "Hello sweety pedestal graphiql"
-      :query/feed (get-feed db)
+     :query/simple-string (return-string "simple-string")
+     :query/feed (get-feed db)
      :query/link (get-link db)
      :mutation/delete (delete-link db)
      :mutation/post (post db "")
      :mutation/signup (signup db)
      :mutation/update-link (update-link db)
+     :mutation/vote (return-string "no vote")
+     :mutation/login (return-string "not login")
+     :subscription/new-link (return-string "new link sub")
+     :subscription/new-vote (return-string"new vote sub")
+     :Link/users  (get-user-from-link db)
+     :Link/votes (get-vote-from-link db)
+     :User/links (get-link-from-user db)
+     :AuthPayload/User (get-auth-from-user db)
+      :Vote/link (get-link-from-vote db)
+      :Vote/user (get-user-from-vote db)
       })
 
-;:mutation/vote "no vote"
-;:mutation/login "not yet"
-;:subscription/new-link "nope too"
-;:subscription/new-vote "sorry"
+
