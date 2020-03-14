@@ -1,12 +1,15 @@
 (ns hackernews-lacinia-datomic.server
-  (:require
-            [hackernews-lacinia-datomic.datomic :as datomic]
-            [hackernews-lacinia-datomic.schema :as schema]
-            [hackernews-lacinia-datomic.pedestal :as pedestal]
-))
+  (:gen-glass)
+  (:require [hackernews-lacinia-datomic.component :as cp]))
 
-(defn -main []
-  (pedestal/service)
-  )
+(defn run-dev
+  "Local dev entry point"
+  [& args]
+  (println "\n Creating Dev")
+  (cp/create-and-start-dev-system!))
 
-
+(defn -main
+  "Production app entry point"
+  [& args]
+  (println "\n Creating Prod")
+  (cp/create-and-start-prod-system!))

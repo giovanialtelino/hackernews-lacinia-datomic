@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Leiningen: io.pedestal/pedestal.interceptor:0.5.7">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.m2/repository/io/pedestal/pedestal.interceptor/0.5.7/pedestal.interceptor-0.5.7.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

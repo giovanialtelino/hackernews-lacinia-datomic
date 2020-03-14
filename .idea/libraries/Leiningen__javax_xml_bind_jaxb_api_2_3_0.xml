@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Leiningen: javax.xml.bind/jaxb-api:2.3.0">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

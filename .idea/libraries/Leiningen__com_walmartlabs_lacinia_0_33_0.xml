@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.walmartlabs/lacinia:0.33.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/walmartlabs/lacinia/0.33.0/lacinia-0.33.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

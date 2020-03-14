@@ -1,12 +1,12 @@
 (ns hackernews-lacinia-datomic.schema
   "Resolvers for the schema"
-  (:require  [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
-             [hackernews-lacinia-datomic.datomic :as datomic]))
+  (:require [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
+            [hackernews-lacinia-datomic.datomic :as datomic]))
 
 (defn get-feed
   [db]
   (fn [context args value]
-      (datomic/get-feed db args)))
+    (datomic/get-feed db args)))
 
 (defn get-link
   [db]
@@ -21,12 +21,12 @@
 (defn post
   [db con]
   (fn [context args value]
-      (datomic/post db  args 1 con)))
+    (datomic/post db args 1 con)))
 
 (defn update-link
   [db]
   (fn [context args value]
-      (datomic/update-link  db args)))
+    (datomic/update-link db args)))
 
 (defn signup
   [db]
@@ -70,24 +70,24 @@
 
 (defn resolver-map
   [db]
-     {
-     :query/simple-string (return-string "simple-string")
-     :query/feed (get-feed db)
-     :query/link (get-link db)
-     :mutation/delete (delete-link db)
-     :mutation/post (post db "")
-     :mutation/signup (signup db)
-     :mutation/update-link (update-link db)
-     :mutation/vote (return-string "no vote")
-     :mutation/login (return-string "not login")
-     :subscription/new-link (return-string "new link sub")
-     :subscription/new-vote (return-string"new vote sub")
-     :Link/users  (get-user-from-link db)
-     :Link/votes (get-vote-from-link db)
-     :User/links (get-link-from-user db)
-     :AuthPayload/User (get-auth-from-user db)
-      :Vote/link (get-link-from-vote db)
-      :Vote/user (get-user-from-vote db)
-      })
+  {
+   :query/simple-string   (return-string "simple-string")
+   :query/feed            (get-feed db)
+   :query/link            (get-link db)
+   :mutation/delete       (delete-link db)
+   :mutation/post         (post db "")
+   :mutation/signup       (signup db)
+   :mutation/update-link  (update-link db)
+   :mutation/vote         (return-string "no vote")
+   :mutation/login        (return-string "not login")
+   :subscription/new-link (return-string "new link sub")
+   :subscription/new-vote (return-string "new vote sub")
+   :Link/users            (get-user-from-link db)
+   :Link/votes            (get-vote-from-link db)
+   :User/links            (get-link-from-user db)
+   :AuthPayload/User      (get-auth-from-user db)
+   :Vote/link             (get-link-from-vote db)
+   :Vote/user             (get-user-from-vote db)
+   })
 
 

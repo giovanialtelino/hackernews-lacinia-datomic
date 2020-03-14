@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: org.apache.geronimo.specs/geronimo-json_1.0_spec:1.0-alpha-1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/geronimo/specs/geronimo-json_1.0_spec/1.0-alpha-1/geronimo-json_1.0_spec-1.0-alpha-1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
