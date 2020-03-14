@@ -1,7 +1,6 @@
 (ns datomic-schema)
 
 (def hacker-schema
-
   [{:db/ident :link/id
     :db/valueType :db.type/uuid
     :db/cardinality :db.cardinality/one

@@ -1,103 +1,103 @@
-{ :objects
+{:objects
 
-{:User
- {:description "User of the system"
-  :fields
-               {:id    {:type (non-null ID)}
-                :name  {:type (non-null String)}
-                :email {:type (non-null String)}
-                :links {:type (list :Link)
-                        :resolve :User/links}}}
+ {:User
+  {:description "User of the system"
+   :fields
+                {:id    {:type (non-null ID)}
+                 :name  {:type (non-null String)}
+                 :email {:type (non-null String)}
+                 :links {:type    (list :Link)
+                         :resolve :User/links}}}
 
-:Link
- {:description "Link of an article"
-  :fields
-               {:id          {:type (non-null ID)}
-                :description {:type        String
-                              :description "Description of an article"}
-                :url         {:type        (non-null String)
-                              :description "URL of an article"}
-                :postedBy    {:type        :User
-                              :description "User who posted the artciel"
-                              :resolve :Link/users}
-                :votes       {:type        (list :Vote)
-                              :description "Votes the article got"
-                              :resolve :Link/votes}
-                :createdAt   {:type        (non-null String)
-                              :description "Instant of the creation"}}}
-:AuthPayload
- {:description "Auth payload for a user"
-  :fields
-               {:token {:type String}
-                :user  {:type :User
-                        :resolve :AuthPayload/User}}}
+  :Link
+  {:description "Link of an article"
+   :fields
+                {:id          {:type (non-null ID)}
+                 :description {:type        String
+                               :description "Description of an article"}
+                 :url         {:type        (non-null String)
+                               :description "URL of an article"}
+                 :postedBy    {:type        :User
+                               :description "User who posted the artciel"
+                               :resolve     :Link/users}
+                 :votes       {:type        (list :Vote)
+                               :description "Votes the article got"
+                               :resolve     :Link/votes}
+                 :createdAt   {:type        (non-null String)
+                               :description "Instant of the creation"}}}
+  :AuthPayload
+  {:description "Auth payload for a user"
+   :fields
+                {:token {:type String}
+                 :user  {:type    :User
+                         :resolve :AuthPayload/User}}}
 
-:Vote
- {:description "Vote in the system"
-  :fields
-               {:id   {:type (non-null ID)}
-                :link {:type (non-null :Link)
-                       :resolve :Vote/link}
-                :user {:type (non-null :User)
-                       :resolve :Vote/user}}}
-:Feed
- {:description "Feed to be shown"
-  :fields
-               {:links {:type Link}
-                :count {:type Int}}} }
+  :Vote
+  {:description "Vote in the system"
+   :fields
+                {:id   {:type (non-null ID)}
+                 :link {:type    (non-null :Link)
+                        :resolve :Vote/link}
+                 :user {:type    (non-null :User)
+                        :resolve :Vote/user}}}
+  :Feed
+  {:description "Feed to be shown"
+   :fields
+                {:links {:type Link}
+                 :count {:type Int}}}}
 
-:queries
-{:info
- {:type        String
-  :description "Just a simple placeholder"
-  :resolve     :query/simple-string}
- :feed
- {:type        (list :Feed)
-  :description "Feed query"
-  :args
-               {:filter   {:type String}
-                :skip     {:type Int}
-                :first    {:type Int}
-                :orderby {:type String}
-                }
-  :resolve     :query/feed}
- :link
- {:type        :Link
-  :description "Get the Link by Id"
-  :args
-               {:id {:type ID}}
-  :resolve     :query/link}}
+ :queries
+ {:info
+  {:type        String
+   :description "Just a simple placeholder"
+   :resolve     :query/simple-string}
+  :feed
+  {:type        (list :Feed)
+   :description "Feed query"
+   :args
+                {:filter  {:type String}
+                 :skip    {:type Int}
+                 :first   {:type Int}
+                 :orderby {:type String}
+                 }
+   :resolve     :query/feed}
+  :link
+  {:type        :Link
+   :description "Get the Link by Id"
+   :args
+                {:id {:type ID}}
+   :resolve     :query/link}}
 
-:mutations
-{:post
- {:type         :Link
-  :description "Post a new link"
-  :args
-               {:url         {:type (non-null String)}
-                :description {:type (non-null String)}}
-  :resolve     :mutation/post}
+ :mutations
+ {:post
+  {:type        :Link
+   :description "Post a new link"
+   :args
+                {:url         {:type (non-null String)}
+                 :description {:type (non-null String)}}
+   :resolve     :mutation/post}
 
- :signup
- {:type        :AuthPayload
-  :description "Returns the authorization payload for the user"
-  :args
-               {:email    {:type (non-null String)}
-                :password {:type (non-null String)}
-                :name     {:type (non-null String)}}
-  :resolve     :mutation/signup}
+  :signup
+  {:type        :AuthPayload
+   :description "Returns the authorization payload for the user"
+   :args
+                {:email    {:type (non-null String)}
+                 :password {:type (non-null String)}
+                 :name     {:type (non-null String)}}
+   :resolve     :mutation/signup}
 
- :login
- {:type        :AuthPayload
-  :description "Return the authorization for the user, if if valid"
-  :args
-               {:email    {:type (non-null String)}
-                :password {:type (non-null String)}}
-  :resolve     :mutation/login}
- :vote
- {:type        :Vote
-  :description "Return valid vote"
-  :args
-               {:linkid {:type ID}}
-  :resolve     :mutation/vote}
- }
+  :login
+  {:type        :AuthPayload
+   :description "Return the authorization for the user, if if valid"
+   :args
+                {:email    {:type (non-null String)}
+                 :password {:type (non-null String)}}
+   :resolve     :mutation/login}
+  :vote
+  {:type        :Vote
+   :description "Return valid vote"
+   :args
+                {:linkid {:type ID}}
+   :resolve     :mutation/vote}
+  }
  }

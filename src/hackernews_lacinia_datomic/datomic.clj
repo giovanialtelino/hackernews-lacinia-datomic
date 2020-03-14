@@ -1,21 +1,19 @@
 (ns hackernews-lacinia-datomic.datomic
-  (:require [datomic.client.api :as d]
-            [buddy.hashers :as hashers]
-            [hackernews-lacinia-datomic.db-start :as db-start])
+  (:require [datomic.client.api :as d])
   (:import java.util.Date))
 
 (def get-links
   '[:find ?e ?url ?description ?createdat ?order ?postedby
     :keys id url description createdat order postedby
     :in $ ?filter ?skip ?skip-plus-first
-    :where [?e :link/url  ?url]
+    :where [?e :link/url ?url]
     [?e :link/description ?description]
     [?e :link/createdat ?createdat]
     [?e :link/postedby ?e2]
     [?e :link/order ?order]
     [?e2 :user/name ?postedby]
     [(.contains ?url ?filter)]
-    [(> ?order ?skip) ]
+    [(> ?order ?skip)]
     [(<= ?order ?skip-plus-first)]])
 
 (def get-each-link-vote-count
@@ -28,7 +26,7 @@
     :keys :id
     :in $ ?link-id
     :where [?link-id :link/postedby ?posted-by]
-            [?posted-by :user/id ?user-id]])
+    [?posted-by :user/id ?user-id]])
 
 (def get-vote-from-link-id
   '[:find (count ?vote)
@@ -47,9 +45,9 @@
 
 (defn get-feed
   [db args]
-  (let [{filter :filter
-         skip :skip
-         first :first
+  (let [{filter   :filter
+         skip     :skip
+         first    :first
          order-by :orderby} args
         links (d/q get-links db filter skip (+ first skip))]
     links))
@@ -57,7 +55,7 @@
 (defn get-link
   [db args]
   (let [{id :id} args
-        link (d/pull db '[*] id )
+        link (d/pull db '[*] id)
         vote-count (d/q get-each-link-vote-count db id)]
     (if (empty? vote-count)
       (conj link {:link/votes 0})
@@ -71,11 +69,11 @@
 
 (defn update-link
   [con args]
-  (let [{id :id
-         url :url
+  (let [{id          :id
+         url         :url
          description :description} args
-        {result :db-after}(d/transact con {:tx-data [[:db/add  id :link/url url ]
-                                                      [:db/add  id :link/description description]]}) ]
+        {result :db-after} (d/transact con {:tx-data [[:db/add id :link/url url]
+                                                      [:db/add id :link/description description]]})]
     (get-link result id)))
 
 (defn max-order
@@ -88,21 +86,20 @@
   (d/q '[:find ?post-id
          :where [?post-id :link/postedby user-id
                  ?post-id :link/createdat time
-                 ?post-id :link/url link] db])
-  )
+                 ?post-id :link/url link] db]))
 
 (defn post
   [args user-id con db]
-  (let [{url :url
+  (let [{url         :url
          description :description} args
         order (+ (max-order db) 1)
         now (java.util.Date.)
         {after :db-after} (d/transact con {:tx-data [{:link/description description
-                                :link/url url
-                                :link/order order
-                                :link/postedby user-id
-                                :link/createdat now
-                                }]})
+                                                      :link/url         url
+                                                      :link/order       order
+                                                      :link/postedby    user-id
+                                                      :link/createdat   now
+                                                      }]})
         post-id (get-post-user-time after user-id now url)]
     (get-link after post-id)))
 
@@ -115,19 +112,19 @@
       -1
       (get-in result [0 0]))))
 
-
+'hashers/derive
 (defn signup
   [args con]
-  (let [{name :name
-         email :email
+  (let [{name     :name
+         email    :email
          password :password} args
-        hashed (hashers/derive password)
-        {result :db-after} (d/transact con {:tx-data [{:user/name name
+        hashed (password)
+        {result :db-after} (d/transact con {:tx-data [{:user/name  name
                                                        :user/email email
-                                                       :user/pwd hashed}]})
+                                                       :user/pwd   hashed}]})
         user-id (user-id-by-email result email)]
     (d/transact con {:tx-data [{:auth/token ""
-                                :auth/user user-id}]})))
+                                :auth/user  user-id}]})))
 
 (defn login-register
   [user-id token con]
@@ -155,7 +152,7 @@
 (defn get-user-from-vote-id [db vote-id]
   (d/q '[:find ?user-id
          :where [?e :vote/id vote-id]
-                [?user-id :vote/user ?e]] db))
+         [?user-id :vote/user ?e]] db))
 
 (defn get-user-from-vote [db value]
   (let [{id :id} value]

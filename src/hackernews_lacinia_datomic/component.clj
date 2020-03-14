@@ -1,28 +1,31 @@
 (ns hackernews-lacinia-datomic.component
   (:require [com.stuartsierra.component :as component]
             [hackernews-lacinia-datomic.components.datomic :as datomic]
+            [hackernews-lacinia-datomic.components.schema :as schema]
+            [hackernews-lacinia-datomic.components.service :as service]
+            [hackernews-lacinia-datomic.schema :as resolved-schema]
             [hackernews-lacinia-datomic.components.config :as config]))
 
-(def prod-config-map {:env  :prod
-                      :port 8080})
+(def prod-config-map {:env      :prod
+                      :port     8080
+                      :graphiql false})
 
-(def dev-config-map {:env  :dev
-                     :port 8080})
+(def dev-config-map {:env      :dev
+                     :port     8080
+                     :graphiql true})
 
 (def prod-deps
-  [:config :storage :routes])
+  [:config :datomic :schema])
 
 (defn prod-components [config-map]
   (component/system-map
     :config (config/new-config config-map)
-    :storage (datomic/new-datomic)
-    :schema (schema/new-schema)
-    :service (component/using (service/new-service) prod-deps)
-    :servlet (component/using (servlet/new-servlet) [:service])))
+    :datomic (datomic/new-datomic)
+    :schema (schema/new-schema resolved-schema/resolver-map)
+    :service (component/using (service/new-service) prod-deps)))
 
 (defn dev-components [config-map]
-  (merge {}
-         (prod-components config-map)))
+  (prod-components config-map))
 
 (defn create-and-start-system! [config-map]
   (if (= (:env config-map) :prod)

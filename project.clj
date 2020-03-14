@@ -15,8 +15,9 @@
                  [clojure.java-time "0.3.2"]
                  [com.stuartsierra/component "0.4.0"]]
   :min-lein-version "2.0.0"
+  :resource-paths ["config", "resources"]
   :profiles {:dev     {:aliases      {"run-dev" ["trampoline" "run" "-m" "hackernews-lacinia-datomic.server/run-dev"]}
                        :dependencies [[io.pedestal/pedestal.service-tools "0.5.7"]]}
-             :uberjar {:aot [inflacao-pedestal-service.server]}}
-  :repl-options {:init-ns hackernews-lacinia-datomic.pedestal}
-  :main hackernews-lacinia-datomic.pedestal)
+             :uberjar {:aot [hackernews-lacinia-datomic.server]}}
+  :repl-options {:init-ns hackernews-lacinia-datomic.server}
+  :main hackernews-lacinia-datomic.server)

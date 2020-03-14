@@ -59,35 +59,32 @@
     (datomic/get-link-from-vote db value)))
 
 (defn get-link-from-user
-  [db]
-  (fn [context args value]
-    (datomic/get-link-from-user db value)))
+  [{{:keys [datomic]} :components
+    {:keys [value]}   :interceptor}]
+  (datomic/get-link-from-user datomic value))
 
 (defn return-string
   [x]
   (fn [context args value]
     (str "hello pedestal graphiql - " x)))
 
-(defn resolver-map
-  [db]
-  {
-   :query/simple-string   (return-string "simple-string")
-   :query/feed            (get-feed db)
-   :query/link            (get-link db)
-   :mutation/delete       (delete-link db)
-   :mutation/post         (post db "")
-   :mutation/signup       (signup db)
-   :mutation/update-link  (update-link db)
+(def resolver-map
+  {:query/simple-string   (return-string "simple-string")
+   :query/feed            (return-string "simple-string")
+   :query/link            (return-string "simple-string")
+   :mutation/delete       (return-string "simple-string")
+   :mutation/post         (return-string "simple-string")
+   :mutation/signup       (return-string "simple-string")
+   :mutation/update-link  (return-string "simple-string")
    :mutation/vote         (return-string "no vote")
    :mutation/login        (return-string "not login")
    :subscription/new-link (return-string "new link sub")
    :subscription/new-vote (return-string "new vote sub")
-   :Link/users            (get-user-from-link db)
-   :Link/votes            (get-vote-from-link db)
-   :User/links            (get-link-from-user db)
-   :AuthPayload/User      (get-auth-from-user db)
-   :Vote/link             (get-link-from-vote db)
-   :Vote/user             (get-user-from-vote db)
-   })
+   :Link/users            (return-string "simple-string")
+   :Link/votes            (return-string "simple-string")
+   :User/links            (return-string "simple-string")
+   :AuthPayload/User      (return-string "simple-string")
+   :Vote/link             (return-string "simple-string")
+   :Vote/user             (return-string "simple-string")})
 
 
