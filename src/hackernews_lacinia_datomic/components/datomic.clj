@@ -18,7 +18,7 @@
   (start [this]
     (let [datomic-client (d/client cfg)
           datomic-con (d/connect datomic-client {:db-name "hackernews"})]
-      ;(db-start/start-database datomic-con 10)
+      (db-start/start-database datomic-con 10)
       (assoc this :datomic datomic-con)))
   (stop [this]
     (assoc this :datomic nil))

@@ -7,7 +7,7 @@
 
 (defn load-schema [resolver-map]
   (prn resolver-map)
-  (-> "schema_graphql_temp.edn"
+  (-> "schema_graphql.edn"
       io/resource
       slurp
       edn/read-string
