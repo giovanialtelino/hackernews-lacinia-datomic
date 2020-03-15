@@ -5,24 +5,24 @@
             [clojure.java.io :as io]
             [com.walmartlabs.lacinia.schema :as schema]))
 
-(def hello-schema (schema/compile
-                    {:queries {:hello
-                               ;; String is quoted here; in EDN the quotation is not required
-                               {:type    'String
-                                :resolve (constantly "world")}}}))
+(defn load-schema [resolver-map]
+  (prn resolver-map)
+  (-> "schema_graphql_temp.edn"
+      io/resource
+      slurp
+      edn/read-string
+      (util/attach-resolvers resolver-map)
+      schema/compile))
 
-(defn load-schema []
-  (schema/compile hello-schema))
-
-(defrecord Schema [schema]
+(defrecord Schema [resolver]
   component/Lifecycle
   (start [this]
-    (let [new-schema (load-schema)]
+    (let [new-schema (load-schema resolver)]
       (assoc this :schema new-schema)))
   (stop [this]
     (assoc this :schema nil))
   Object
   (toString [_] "<Schema>"))
 
-(defn new-schema [schema]
-  (map->Schema {}))
+(defn new-schema [resolver-map]
+  (map->Schema {:resolver resolver-map}))

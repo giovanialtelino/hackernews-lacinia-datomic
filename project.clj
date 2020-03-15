@@ -7,7 +7,11 @@
                  [com.walmartlabs/lacinia-pedestal "0.12.0"]
                  [http-kit "2.2.0"]
                  [cheshire "5.9.0"]
-                 [com.datomic/datomic-free "0.9.5703.21"]
+
+                 [com.datomic/client-pro "0.9.43"
+                  :exclusions [org.eclipse.jetty/jetty-client
+                               org.eclipse.jetty/jetty-http
+                               org.eclipse.jetty/jetty-util]]
                  [ch.qos.logback/logback-classic "1.1.8" :exclusions [org.slf4j/slf4j-api]]
                  [org.slf4j/jul-to-slf4j "1.7.22"]
                  [org.slf4j/jcl-over-slf4j "1.7.22"]

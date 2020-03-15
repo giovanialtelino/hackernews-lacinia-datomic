@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.datomic/client-impl-shared:0.8.71">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/datomic/client-impl-shared/0.8.71/client-impl-shared-0.8.71.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -3,20 +3,24 @@
             [hackernews-lacinia-datomic.db-start :as db-start]
             [datomic.client.api :as d]))
 
-;;On prod could use Environ to get the config, password and so on.
-(def uri "datomic:mem://lacinia")
+;;starting datomic
+;bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:mem://hackernews
 
-(def hacker-news "hackernews")
+;;On prod could use Environ to get the config, password and so on.
+(def cfg {:server-type        :peer-server
+          :access-key         "myaccesskey"
+          :secret             "mysecret"
+          :endpoint           "localhost:8998"
+          :validate-hostnames false})
 
 (defrecord DatomicComponent []
   component/Lifecycle
   (start [this]
-    (d/create-database uri {:db-name hacker-news})
-    (let [datomic-con (d/connect uri {:db-name hacker-news})]
-      (db-start/start-database datomic-con 10)
+    (let [datomic-client (d/client cfg)
+          datomic-con (d/connect datomic-client {:db-name "hackernews"})]
+      ;(db-start/start-database datomic-con 10)
       (assoc this :datomic datomic-con)))
   (stop [this]
-    (d/delete-database uri {:db-name hacker-news})
     (assoc this :datomic nil))
   Object
   (toString [_] "<Datomic>"))

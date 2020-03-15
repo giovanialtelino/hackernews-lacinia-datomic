@@ -8,20 +8,20 @@
 
 (def prod-config-map {:env      :prod
                       :port     8080
-                      :graphiql false})
+                      :graphiql "false"})
 
 (def dev-config-map {:env      :dev
                      :port     8080
-                     :graphiql true})
+                     :graphiql "true"})
 
 (def prod-deps
-  [:config :datomic :schema])
+  [:config :schema])
 
 (defn prod-components [config-map]
   (component/system-map
     :config (config/new-config config-map)
     :datomic (datomic/new-datomic)
-    :schema (schema/new-schema resolved-schema/resolver-map)
+    :schema (schema/new-schema resolved-schema/resolver-map )
     :service (component/using (service/new-service) prod-deps)))
 
 (defn dev-components [config-map]
@@ -35,7 +35,9 @@
       (prn "Wrong :env variables, check the system map"))))
 
 (defn create-and-start-dev-system! []
-  (create-and-start-system! dev-config-map))
+  (component/start
+    (create-and-start-system! dev-config-map)))
 
 (defn create-and-start-prod-system! []
-  (create-and-start-system! prod-config-map))
+  (component/start
+    (create-and-start-system! prod-config-map)))

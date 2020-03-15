@@ -86,5 +86,3 @@
    :AuthPayload/User      (return-string "simple-string")
    :Vote/link             (return-string "simple-string")
    :Vote/user             (return-string "simple-string")})
-
-

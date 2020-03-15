@@ -2,26 +2,74 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/schema.clj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_anomalies_0_1_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_hmac_authn_0_1_195.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_cognitect_http_client_0_1_104.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_0_8_89.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_api_0_8_38.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_impl_shared_0_8_71.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_pro_0_9_43.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/schema_graphql_temp.edn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__ch_qos_logback_logback_classic_1_1_8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__ch_qos_logback_logback_classic_1_1_8.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__ch_qos_logback_logback_core_1_1_8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__ch_qos_logback_logback_core_1_1_8.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__cheshire_5_9_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__cheshire_5_9_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__clojure_complete_0_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__clojure_complete_0_2_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_client_api_0_8_35.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_datomic_free_0_9_5703_21.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_datomic_lucene_core_3_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_query_support_0_8_16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_datomic_query_support_0_8_16.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_core_jackson_core_2_9_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_core_jackson_core_2_9_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_dataformat_jackson_dataformat_cbor_2_9_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_dataformat_jackson_dataformat_cbor_2_9_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_dataformat_jackson_dataformat_smile_2_9_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_fasterxml_jackson_dataformat_jackson_dataformat_smile_2_9_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_google_guava_guava_18_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_googlecode_json_simple_json_simple_1_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_googlecode_json_simple_json_simple_1_1_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_h2database_h2_1_3_171.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_walmartlabs_lacinia_pedestal_0_12_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_walmartlabs_lacinia_pedestal_0_12_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__commons_beanutils_1_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__commons_collections_3_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__crypto_equality_1_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__crypto_equality_1_0_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__crypto_random_1_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__crypto_random_1_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__http_kit_2_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__http_kit_2_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__io_netty_netty_all_4_1_32_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__javax_servlet_javax_servlet_api_3_1_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__javax_servlet_javax_servlet_api_3_1_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__nrepl_0_6_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__nrepl_0_6_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_apache_activemq_artemis_commons_1_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_apache_activemq_artemis_core_client_1_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_apache_geronimo_specs_geronimo_json_1_0_spec_1_0_alpha_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_apache_johnzon_johnzon_core_0_9_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_apache_tomcat_tomcat_jdbc_7_0_27.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_apache_tomcat_tomcat_juli_7_0_27.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_cache_0_6_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_cache_0_6_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_incubator_0_1_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_incubator_0_1_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_memoize_0_5_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_memoize_0_5_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_specs_alpha_0_2_44.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_core_specs_alpha_0_2_44.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_data_json_0_2_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_data_json_0_2_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_data_priority_map_0_0_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_data_priority_map_0_0_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_spec_alpha_0_2_176.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_spec_alpha_0_2_176.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_analyzer_0_6_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_analyzer_0_6_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_clojure_tools_cli_0_3_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_codehaus_janino_commons_compiler_3_0_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_codehaus_janino_commons_compiler_jdk_3_0_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_eclipse_jetty_alpn_alpn_api_1_1_3_v20160715.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_eclipse_jetty_alpn_alpn_api_1_1_3_v20160715.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_fressian_fressian_0_6_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_javassist_javassist_3_18_1_GA.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_javassist_javassist_3_18_1_GA.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_jboss_logging_jboss_logging_3_3_0_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_msgpack_msgpack_0_6_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_msgpack_msgpack_0_6_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_ow2_asm_asm_all_4_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_ow2_asm_asm_all_4_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_jcl_over_slf4j_1_7_22.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_jcl_over_slf4j_1_7_22.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_jul_to_slf4j_1_7_22.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_jul_to_slf4j_1_7_22.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_log4j_over_slf4j_1_7_22.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_log4j_over_slf4j_1_7_22.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_slf4j_api_1_7_22.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_slf4j_api_1_7_22.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_slf4j_slf4j_nop_1_7_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Leiningen__tigris_0_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__tigris_0_1_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" beforeDir="false" afterPath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project.clj" beforeDir="false" afterPath="$PROJECT_DIR$/project.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/datomic_schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/resources/datomic_schema.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/hello.edn" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/schema_graphql.edn" beforeDir="false" afterPath="$PROJECT_DIR$/resources/schema_graphql.edn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/to-implement" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/auth.clj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/component.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/component.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/auth.clj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/datomic.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/pedestal.clj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/pedestal.clj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/schema.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/server.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/server.clj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,12 +110,15 @@
     <property name="cursive.last.file.extension./home/altrunox/Documents/clojure/hackernews-lacinia-datomic/resources" value="clj" />
     <property name="cursive.last.file.extension./home/altrunox/Documents/clojure/hackernews-lacinia-datomic/src" value="clj" />
     <property name="cursive.last.file.extension./home/altrunox/Documents/hackernews-lacinia-datomic/src" value="clj" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/hackernews_lacinia_datomic" />
       <recent name="$PROJECT_DIR$/resources" />
@@ -154,5 +205,9 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="1155" y="311" width="424" height="491" key="FileChooserDialogImpl/70.27.1850.1053@70.27.1850.1053" timestamp="1584214666615" />
+    <state x="586" y="259" width="816" height="678" key="search.everywhere.popup" timestamp="1584239341703">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="586" y="259" width="816" height="678" key="search.everywhere.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1584239341703" />
   </component>
 </project>
