@@ -6,7 +6,6 @@
             [com.walmartlabs.lacinia.schema :as schema]))
 
 (defn load-schema [resolver-map]
-  (prn resolver-map)
   (-> "schema_graphql.edn"
       io/resource
       slurp
@@ -14,10 +13,11 @@
       (util/attach-resolvers resolver-map)
       schema/compile))
 
-(defrecord Schema [resolver]
+(defrecord Schema [resolver datomic]
   component/Lifecycle
   (start [this]
-    (let [new-schema (load-schema resolver)]
+    (let [new-resolver (resolver (:datomic datomic))
+          new-schema (load-schema new-resolver)]
       (assoc this :schema new-schema)))
   (stop [this]
     (assoc this :schema nil))

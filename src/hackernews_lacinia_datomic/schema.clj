@@ -19,9 +19,9 @@
     (datomic/delete-link db args)))
 
 (defn post
-  [db con]
+  [db]
   (fn [context args value]
-    (datomic/post db args 1 con)))
+    (datomic/post db args 1)))
 
 (defn update-link
   [db]
@@ -59,30 +59,30 @@
     (datomic/get-link-from-vote db value)))
 
 (defn get-link-from-user
-  [{{:keys [datomic]} :components
-    {:keys [value]}   :interceptor}]
-  (datomic/get-link-from-user datomic value))
+  [db]
+  (fn [context args value]
+    (datomic/get-link-from-user db value)))
 
 (defn return-string
-  [x]
+  [db]
   (fn [context args value]
-    (str "hello pedestal graphiql - " x)))
+    (str "hello pedestal graphiql - " db)))
 
-(def resolver-map
-  {:query/simple-string   (return-string "simple-string")
-   :query/feed            (return-string "simple-string")
-   :query/link            (return-string "simple-string")
-   :mutation/delete       (return-string "simple-string")
-   :mutation/post         (return-string "simple-string")
-   :mutation/signup       (return-string "simple-string")
-   :mutation/update-link  (return-string "simple-string")
+(defn resolver-map [db]
+  {:query/simple-string   (return-string db)
+   :query/feed            (get-feed db)
+   :query/link            (get-link db)
+   :mutation/delete       (delete-link db)
+   :mutation/post         (post db)
+   :mutation/signup       (signup db)
+   :mutation/update-link  (update-link db)
    :mutation/vote         (return-string "no vote")
    :mutation/login        (return-string "not login")
    :subscription/new-link (return-string "new link sub")
    :subscription/new-vote (return-string "new vote sub")
-   :Link/users            (return-string "simple-string")
-   :Link/votes            (return-string "simple-string")
-   :User/links            (return-string "simple-string")
-   :AuthPayload/User      (return-string "simple-string")
-   :Vote/link             (return-string "simple-string")
-   :Vote/user             (return-string "simple-string")})
+   :Link/users            (get-link-from-user db)
+   :Link/votes            (get-vote-from-link db)
+   :User/links            (get-user-from-link db)
+   :AuthPayload/User      (get-auth-from-user db)
+   :Vote/link             (get-link-from-vote db)
+   :Vote/user             (get-vote-from-link db)})

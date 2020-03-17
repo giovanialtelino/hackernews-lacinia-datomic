@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: io.pedestal/pedestal.service:0.5.7">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/pedestal/pedestal.service/0.5.7/pedestal.service-0.5.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

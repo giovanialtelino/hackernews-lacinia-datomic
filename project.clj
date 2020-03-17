@@ -3,15 +3,14 @@
   :url "http://example.com/FIXME"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url  "https://www.eclipse.org/legal/epl-2.0/"}
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
+                 [com.walmartlabs/lacinia "0.35.0"]
                  [com.walmartlabs/lacinia-pedestal "0.12.0"]
                  [http-kit "2.2.0"]
                  [cheshire "5.9.0"]
-
-                 [com.datomic/client-pro "0.9.43"
-                  :exclusions [org.eclipse.jetty/jetty-client
-                               org.eclipse.jetty/jetty-http
-                               org.eclipse.jetty/jetty-util]]
+                 [io.pedestal/pedestal.service "0.5.7"]
+                 [io.pedestal/pedestal.jetty "0.5.7"]
+                 [com.datomic/client-pro "0.9.37"]
                  [ch.qos.logback/logback-classic "1.1.8" :exclusions [org.slf4j/slf4j-api]]
                  [org.slf4j/jul-to-slf4j "1.7.22"]
                  [org.slf4j/jcl-over-slf4j "1.7.22"]

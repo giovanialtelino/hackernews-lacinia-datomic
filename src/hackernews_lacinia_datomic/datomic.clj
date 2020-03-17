@@ -1,6 +1,6 @@
 (ns hackernews-lacinia-datomic.datomic
-  (:require [datomic.client.api :as d])
-  (:import java.util.Date))
+  (:require [datomic.client.api :as d]
+            [java-time :as jt]))
 
 (def get-links
   '[:find ?e ?url ?description ?createdat ?order ?postedby
@@ -21,9 +21,15 @@
     :in $ ?id
     :where [?votes :vote/link ?id]])
 
+(def get-link-by-id
+  '[:find ?e ?createdAt ?description ?postedBy ?url
+    :keys id createdAt description postedBy url
+    :in $ ?id
+    :where [?e :link/id ?id]])
+
 (def get-user-from-link-id
   '[:find ?user-id
-    :keys :id
+    :keys id
     :in $ ?link-id
     :where [?link-id :link/postedby ?posted-by]
     [?posted-by :user/id ?user-id]])
@@ -53,10 +59,12 @@
     links))
 
 (defn get-link
-  [db args]
+  [con args]
   (let [{id :id} args
-        link (d/pull db '[*] id)
-        vote-count (d/q get-each-link-vote-count db id)]
+        db (d/db con)
+        link (d/q get-link-by-id db id)
+        vote-count (d/q get-each-link-vote-count db id)
+        ]
     (if (empty? vote-count)
       (conj link {:link/votes 0})
       (conj link {:link/votes (first vote-count)}))))
@@ -89,17 +97,17 @@
                  ?post-id :link/url link] db]))
 
 (defn post
-  [args user-id con db]
+  [args user-id db]
   (let [{url         :url
          description :description} args
         order (+ (max-order db) 1)
-        now (java.util.Date.)
-        {after :db-after} (d/transact con {:tx-data [{:link/description description
-                                                      :link/url         url
-                                                      :link/order       order
-                                                      :link/postedby    user-id
-                                                      :link/createdat   now
-                                                      }]})
+        now (jt/java-date)
+        {after :db-after} (d/transact db {:tx-data [{:link/description description
+                                                     :link/url         url
+                                                     :link/order       order
+                                                     :link/postedby    user-id
+                                                     :link/createdat   now
+                                                     }]})
         post-id (get-post-user-time after user-id now url)]
     (get-link after post-id)))
 
@@ -112,7 +120,7 @@
       -1
       (get-in result [0 0]))))
 
-'hashers/derive
+;'hashers/derive
 (defn signup
   [args con]
   (let [{name     :name

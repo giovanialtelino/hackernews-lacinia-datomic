@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: org.antlr/ST4:4.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/antlr/ST4/4.1/ST4-4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

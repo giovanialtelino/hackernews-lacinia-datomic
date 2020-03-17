@@ -21,7 +21,7 @@
   (component/system-map
     :config (config/new-config config-map)
     :datomic (datomic/new-datomic)
-    :schema (schema/new-schema resolved-schema/resolver-map )
+    :schema (component/using (schema/new-schema resolved-schema/resolver-map) [:datomic])
     :service (component/using (service/new-service) prod-deps)))
 
 (defn dev-components [config-map]

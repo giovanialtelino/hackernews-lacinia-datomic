@@ -1,7 +1,7 @@
 (ns hackernews-lacinia-datomic.components.datomic
   (:require [com.stuartsierra.component :as component]
             [hackernews-lacinia-datomic.db-start :as db-start]
-            [datomic.client.api :as d]))
+            [datomic.client.api :as dc]))
 
 ;;starting datomic
 ;bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:mem://hackernews
@@ -16,9 +16,9 @@
 (defrecord DatomicComponent []
   component/Lifecycle
   (start [this]
-    (let [datomic-client (d/client cfg)
-          datomic-con (d/connect datomic-client {:db-name "hackernews"})]
-      (db-start/start-database datomic-con 10)
+    (let [datomic-client (dc/client cfg)
+          datomic-con (dc/connect datomic-client {:db-name "hackernews"})]
+      ;(db-start/start-database datomic-con 10)
       (assoc this :datomic datomic-con)))
   (stop [this]
     (assoc this :datomic nil))
