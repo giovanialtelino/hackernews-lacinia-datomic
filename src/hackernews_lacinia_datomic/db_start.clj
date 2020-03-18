@@ -1,6 +1,9 @@
 (ns hackernews-lacinia-datomic.db-start
   (:require [datomic.client.api :as d]
+
             [java-time :as jt]))
+
+;[datomic.api :as da]
 
 (def hacker-schema
   [{:db/ident       :link/id
@@ -26,12 +29,14 @@
     :db/valueType   :db.type/long
     :db/cardinality :db.cardinality/one
     :db/unique      :db.unique/value}
+
    {:db/ident       :auth/token
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one}
    {:db/ident       :auth/user
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/one}
+
    {:db/ident       :user/id
     :db/valueType   :db.type/uuid
     :db/cardinality :db.cardinality/one
@@ -49,6 +54,7 @@
    {:db/ident       :user/links
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/many}
+
    {:db/ident       :vote/id
     :db/valueType   :db.type/uuid
     :db/cardinality :db.cardinality/one
@@ -66,7 +72,8 @@
          xyz []]
     (if (zero? qtd)
       xyz
-      (recur (dec qtd) (conj xyz {:user/name  (str "name" qtd)
+      (recur (dec qtd) (conj xyz {:user/id    "(da/squuid) "
+                                  :user/name  (str "name" qtd)
                                   :user/pwd   "testdb"
                                   :user/email (str qtd "@com.com")})))))
 
@@ -81,7 +88,8 @@
            xyz []]
       (if (zero? qtd)
         xyz
-        (recur (dec qtd) (conj xyz {:link/postedby    [:user/email (str qtd "@com.com")]
+        (recur (dec qtd) (conj xyz {:link/id          " (da/squuid) "
+                                    :link/postedby    [:user/email (str qtd "@com.com")]
                                     :link/createdat   today
                                     :link/description (str qtd "desc desc")
                                     :link/order       qtd
@@ -91,9 +99,16 @@
   [conn qtd]
   (d/transact conn {:tx-data (random-links qtd)}))
 
+(defn get-all-print [conn]
+  (d/q '[:find (pull ?e [:link/url :link/id :link/postedby])
+         :where [?e :link/id]]
+       (d/db conn)))
+
 (defn start-database [database x]
-  (prn "Starting the database")
   (d/transact database {:tx-data hacker-schema})
   (transact-random-users database x)
   (transact-random-links database x)
+  (prn "QUERY BELLOW")
+  (prn (get-all-print database))
+  (prn "QUERY ABOVE")
   true)

@@ -20,7 +20,7 @@
                  :postedBy    {:type        :User
                                :description "User who posted the artciel"
                                :resolve     :Link/users}
-                 :votes       {:type        (list :Vote)
+                 :votes       {:type        Int
                                :description "Votes the article got"
                                :resolve     :Link/votes}
                  :createdAt   {:type        (non-null String)

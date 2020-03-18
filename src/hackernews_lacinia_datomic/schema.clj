@@ -11,7 +11,10 @@
 (defn get-link
   [db]
   (fn [context args value]
-    (datomic/get-link db args)))
+    (let [query-result (datomic/get-link db args)]
+      (prn query-result)
+      (prn "RESULT BB")
+      query-result)))
 
 (defn delete-link
   [db]

@@ -2,17 +2,20 @@
   (:require [datomic.client.api :as d]
             [java-time :as jt]))
 
+(defn- create-db-con [con]
+  (d/db con))
+; contains? url filter
 (def get-links
   '[:find ?e ?url ?description ?createdat ?order ?postedby
     :keys id url description createdat order postedby
     :in $ ?filter ?skip ?skip-plus-first
-    :where [?e :link/url ?url]
+    :where
+    [?e :link/url ?url]
     [?e :link/description ?description]
     [?e :link/createdat ?createdat]
     [?e :link/postedby ?e2]
     [?e :link/order ?order]
     [?e2 :user/name ?postedby]
-    [(.contains ?url ?filter)]
     [(> ?order ?skip)]
     [(<= ?order ?skip-plus-first)]])
 
@@ -22,10 +25,15 @@
     :where [?votes :vote/link ?id]])
 
 (def get-link-by-id
-  '[:find ?e ?createdAt ?description ?postedBy ?url
-    :keys id createdAt description postedBy url
-    :in $ ?id
-    :where [?e :link/id ?id]])
+  '[:find ?e ?createdAt ?description ?postedBy ?url ?order
+    :keys id createdAt description postedBy url order
+    :in $ ?order
+    :where
+    [?e :link/order ?order]
+    [?e :link/createdat ?createdAt]
+    [?e :link/description ?description]
+    [?e :link/postedby ?postedBy]
+    [?e :link/url ?url]])
 
 (def get-user-from-link-id
   '[:find ?user-id
@@ -50,21 +58,22 @@
     :where [?user-id :link/postedby ?links]])
 
 (defn get-feed
-  [db args]
-  (let [{filter   :filter
+  [con args]
+  (let [db (create-db-con con)
+        {filter   :filter
          skip     :skip
          first    :first
          order-by :orderby} args
-        links (d/q get-links db filter skip (+ first skip))]
-    links))
+        ]
+    (d/q get-links db filter skip (+ first skip))))
 
 (defn get-link
   [con args]
-  (let [{id :id} args
-        db (d/db con)
-        link (d/q get-link-by-id db id)
-        vote-count (d/q get-each-link-vote-count db id)
-        ]
+  (let [db (create-db-con con)
+        {id :id} args
+        parsed-id (Integer. id)
+        link (first (d/q get-link-by-id db parsed-id))
+        vote-count [d/q get-each-link-vote-count db (:id link)]]
     (if (empty? vote-count)
       (conj link {:link/votes 0})
       (conj link {:link/votes (first vote-count)}))))
@@ -85,20 +94,23 @@
     (get-link result id)))
 
 (defn max-order
-  [db]
-  (get-in (d/q '[:find (max ?order)
-                 :where [_ :link/order ?order]] db) [0 0]))
+  [con]
+  (let [db (create-db-con con)]
+    (get-in (d/q '[:find (max ?order)
+                   :where [_ :link/order ?order]] db) [0 0])))
 
 (defn get-post-user-time
-  [db user-id time link]
-  (d/q '[:find ?post-id
-         :where [?post-id :link/postedby user-id
-                 ?post-id :link/createdat time
-                 ?post-id :link/url link] db]))
+  [con user-id time link]
+  (let [db (create-db-con con)]
+    (d/q '[:find ?post-id
+           :where [?post-id :link/postedby user-id
+                   ?post-id :link/createdat time
+                   ?post-id :link/url link] db])))
 
 (defn post
-  [args user-id db]
-  (let [{url         :url
+  [args user-id con]
+  (let [db (create-db-con con)
+        {url         :url
          description :description} args
         order (+ (max-order db) 1)
         now (jt/java-date)
@@ -112,8 +124,9 @@
     (get-link after post-id)))
 
 (defn user-id-by-email
-  [db email]
-  (let [result (d/q '[:find ?e
+  [con email]
+  (let [db (create-db-con con)
+        result (d/q '[:find ?e
                       :in $ ?mail
                       :where [?e :user/email ?mail]] db email)]
     (if (empty? result)
@@ -138,40 +151,48 @@
   [user-id token con]
   (d/transact con {:tx-data [[:db/add user-id :auth/token token]]}))
 
-(defn get-user-from-link [db value]
-  (let [{id :id} value]
+(defn get-user-from-link [con value]
+  (let [db (create-db-con con)
+        {id :id} value]
     (d/q get-user-from-link-id db id)))
 
-(defn get-vote-from-link [db value]
-  (let [{id :id} value
+(defn get-vote-from-link [con value]
+  (let [db (create-db-con con)
+        {id :id} value
         votes (d/q get-vote-from-link-id db id)]
     (if-not (empty? votes)
       votes
       0)))
 
-(defn get-auth-from-user [db value]
-  (let [{id :id} value]
+(defn get-auth-from-user [con value]
+  (let [db (create-db-con con)
+        {id :id} value]
     (d/q get-auth-from-user-id db id)))
 
-(defn get-link-from-user [db value]
-  (let [{id :id} value]
+(defn get-link-from-user [con value]
+  (let [db (create-db-con con)
+        {id :id} value]
     (d/q get-links-from-user-id db id)))
 
-(defn get-user-from-vote-id [db vote-id]
-  (d/q '[:find ?user-id
-         :where [?e :vote/id vote-id]
-         [?user-id :vote/user ?e]] db))
+(defn get-user-from-vote-id [con vote-id]
+  (let [db (create-db-con con)]
+    (d/q '[:find ?user-id
+           :where [?e :vote/id vote-id]
+           [?user-id :vote/user ?e]] db)))
 
-(defn get-user-from-vote [db value]
-  (let [{id :id} value]
+(defn get-user-from-vote [con value]
+  (let [db (create-db-con con)
+        {id :id} value]
     (d/q get-user-from-vote-id db id)))
 
-(defn get-link-from-vote-id [db vote-id]
-  (d/q '[:find ?user-id
-         :where [?e :vote/id vote-id]
-         [?user-id :vote/link ?e]] db))
+(defn get-link-from-vote-id [con vote-id]
+  (let [db (create-db-con con)]
+    (d/q '[:find ?user-id
+           :where [?e :vote/id vote-id]
+           [?user-id :vote/link ?e]] db)))
 
-(defn get-link-from-vote [db value]
-  (let [{id :id} value]
+(defn get-link-from-vote [con value]
+  (let [db (create-db-con con)
+        {id :id} value]
     (d/q get-link-from-vote-id db id)))
 
