@@ -1,9 +1,7 @@
 (ns hackernews-lacinia-datomic.db-start
   (:require [datomic.client.api :as d]
-
-            [java-time :as jt]))
-
-;[datomic.api :as da]
+            [java-time :as jt])
+  (:import (java.util UUID)))
 
 (def hacker-schema
   [{:db/ident       :link/id
@@ -28,7 +26,7 @@
    {:db/ident       :link/order
     :db/valueType   :db.type/long
     :db/cardinality :db.cardinality/one
-    :db/unique      :db.unique/value}
+    :db/unique      :db.unique/identity}
 
    {:db/ident       :auth/token
     :db/valueType   :db.type/string
@@ -50,7 +48,7 @@
    {:db/ident       :user/email
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one
-    :db/unique      :db.unique/value}
+    :db/unique      :db.unique/identity}
    {:db/ident       :user/links
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/many}
@@ -72,7 +70,7 @@
          xyz []]
     (if (zero? qtd)
       xyz
-      (recur (dec qtd) (conj xyz {:user/id    "(da/squuid) "
+      (recur (dec qtd) (conj xyz {:user/id    (UUID/randomUUID)
                                   :user/name  (str "name" qtd)
                                   :user/pwd   "testdb"
                                   :user/email (str qtd "@com.com")})))))
@@ -88,7 +86,7 @@
            xyz []]
       (if (zero? qtd)
         xyz
-        (recur (dec qtd) (conj xyz {:link/id          " (da/squuid) "
+        (recur (dec qtd) (conj xyz {:link/id          (UUID/randomUUID)
                                     :link/postedby    [:user/email (str qtd "@com.com")]
                                     :link/createdat   today
                                     :link/description (str qtd "desc desc")

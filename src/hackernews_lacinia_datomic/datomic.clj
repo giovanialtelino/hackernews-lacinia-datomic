@@ -6,16 +6,16 @@
   (d/db con))
 ; contains? url filter
 (def get-links
-  '[:find ?e ?url ?description ?createdat ?order ?postedby
-    :keys id url description createdat order postedby
+  '[:find ?e ?url ?description ?createdAt ?order ?postedby
+    :keys id url description createdAt order postedby
     :in $ ?filter ?skip ?skip-plus-first
     :where
     [?e :link/url ?url]
     [?e :link/description ?description]
-    [?e :link/createdat ?createdat]
+    [?e :link/createdat ?createdAt]
     [?e :link/postedby ?e2]
     [?e :link/order ?order]
-    [?e2 :user/name ?postedby]
+    [?e2 :user/email ?postedby]
     [(> ?order ?skip)]
     [(<= ?order ?skip-plus-first)]])
 
@@ -25,22 +25,17 @@
     :where [?votes :vote/link ?id]])
 
 (def get-link-by-id
-  '[:find ?e ?createdAt ?description ?postedBy ?url ?order
-    :keys id createdAt description postedBy url order
+  '[:find ?e ?createdAt ?description ?postedBy ?url ?order ?postedby
+    :keys id createdAt description postedBy url order postedby
     :in $ ?order
     :where
     [?e :link/order ?order]
     [?e :link/createdat ?createdAt]
     [?e :link/description ?description]
     [?e :link/postedby ?postedBy]
-    [?e :link/url ?url]])
-
-(def get-user-from-link-id
-  '[:find ?user-id
-    :keys id
-    :in $ ?link-id
-    :where [?link-id :link/postedby ?posted-by]
-    [?posted-by :user/id ?user-id]])
+    [?e :link/url ?url]
+    [?e :link/postedby ?e2]
+    [?e2 :user/email ?postedby]])
 
 (def get-vote-from-link-id
   '[:find (count ?vote)
@@ -57,6 +52,13 @@
     :in $ ?user-id
     :where [?user-id :link/postedby ?links]])
 
+(defn- link-vector [v]
+  (loop [i 0
+         linked []]
+    (if (< i (count v))
+      (recur (inc i) (conj linked {:count (inc i) :links (nth v i)}))
+      linked)))
+
 (defn get-feed
   [con args]
   (let [db (create-db-con con)
@@ -64,8 +66,12 @@
          skip     :skip
          first    :first
          order-by :orderby} args
-        ]
-    (d/q get-links db filter skip (+ first skip))))
+        filter-c (if (nil? filter) "*" filter)
+        skip-c (if (nil? skip) 0 skip)
+        first-c (if (nil? first) 10 first)
+        result (d/q get-links db filter-c skip-c (+ first-c skip-c))
+        result-counted (link-vector result)]
+    result-counted))
 
 (defn get-link
   [con args]
@@ -153,8 +159,10 @@
 
 (defn get-user-from-link [con value]
   (let [db (create-db-con con)
-        {id :id} value]
-    (d/q get-user-from-link-id db id)))
+        {id :postedby} value
+        f-r (d/pull db '[:user/name :user/id :user/email] [:user/email id])]
+    (prn f-r "???ok")
+    f-r))
 
 (defn get-vote-from-link [con value]
   (let [db (create-db-con con)

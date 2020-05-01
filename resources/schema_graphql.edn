@@ -1,18 +1,17 @@
 {:objects
-
  {:User
   {:description "User of the system"
    :fields
-                {:id    {:type (non-null ID)}
-                 :name  {:type (non-null String)}
-                 :email {:type (non-null String)}
+                {:id    {:type String}
+                 :name  {:type String}
+                 :email {:type String}
                  :links {:type    (list :Link)
                          :resolve :User/links}}}
 
   :Link
   {:description "Link of an article"
    :fields
-                {:id          {:type (non-null ID)}
+                {:id          {:type (non-null String)}
                  :description {:type        String
                                :description "Description of an article"}
                  :url         {:type        (non-null String)
@@ -23,6 +22,9 @@
                  :votes       {:type        Int
                                :description "Votes the article got"
                                :resolve     :Link/votes}
+                 :order       {:type        Int
+                               :description "Order added"
+                               }
                  :createdAt   {:type        (non-null String)
                                :description "Instant of the creation"}}}
   :AuthPayload
@@ -35,7 +37,7 @@
   :Vote
   {:description "Vote in the system"
    :fields
-                {:id   {:type (non-null ID)}
+                {:id   {:type (non-null String)}
                  :link {:type    (non-null :Link)
                         :resolve :Vote/link}
                  :user {:type    (non-null :User)
@@ -65,7 +67,7 @@
   {:type        :Link
    :description "Get the Link by Id"
    :args
-                {:id {:type ID}}
+                {:id {:type String}}
    :resolve     :query/link}}
 
  :mutations
@@ -97,7 +99,7 @@
   {:type        :Vote
    :description "Return valid vote"
    :args
-                {:linkid {:type ID}}
+                {:linkid {:type String}}
    :resolve     :mutation/vote}
   }
  }

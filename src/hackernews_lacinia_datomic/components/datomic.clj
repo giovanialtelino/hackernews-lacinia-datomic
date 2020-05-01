@@ -1,9 +1,7 @@
 (ns hackernews-lacinia-datomic.components.datomic
   (:require [com.stuartsierra.component :as component]
             [hackernews-lacinia-datomic.db-start :as db-start]
-            [datomic.client.api :as dc]
-    ;[datomic.api :as da]
-           ))
+            [datomic.client.api :as dc]))
 
 ;;starting datomic
 ;bin/transactor dev-transactor-template.properties
@@ -25,10 +23,8 @@
   component/Lifecycle
   (start [this]
     (let [datomic-client (dc/client cfg)]
-      ;(da/delete-database "datomic:dev://localhost:4334/hackernews")
-      ;(da/create-database "datomic:dev://localhost:4334/hackernews")
       (let [datomic-con (dc/connect datomic-client {:db-name db-name})]
-        ;(db-start/start-database datomic-con 10)
+        (db-start/start-database datomic-con 10)
         (assoc this :datomic datomic-con))))
   (stop [this]
     (assoc this :datomic nil))

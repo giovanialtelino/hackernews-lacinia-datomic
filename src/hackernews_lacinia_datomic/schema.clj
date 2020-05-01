@@ -6,15 +6,16 @@
 (defn get-feed
   [db]
   (fn [context args value]
-    (datomic/get-feed db args)))
+    (let [result (datomic/get-feed db args)]
+      (prn "------------")
+      (prn result)
+      (prn "------------")
+      result)))
 
 (defn get-link
   [db]
   (fn [context args value]
-    (let [query-result (datomic/get-link db args)]
-      (prn query-result)
-      (prn "RESULT BB")
-      query-result)))
+    (datomic/get-link db args)))
 
 (defn delete-link
   [db]
@@ -83,9 +84,9 @@
    :mutation/login        (return-string "not login")
    :subscription/new-link (return-string "new link sub")
    :subscription/new-vote (return-string "new vote sub")
-   :Link/users            (get-link-from-user db)
+   :Link/users            (get-user-from-link db)
    :Link/votes            (get-vote-from-link db)
-   :User/links            (get-user-from-link db)
+   :User/links            (get-link-from-user db)
    :AuthPayload/User      (get-auth-from-user db)
    :Vote/link             (get-link-from-vote db)
    :Vote/user             (get-vote-from-link db)})
