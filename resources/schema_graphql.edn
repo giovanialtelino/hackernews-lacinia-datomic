@@ -31,8 +31,7 @@
   {:description "Auth payload for a user"
    :fields
                 {:token {:type String}
-                 :user  {:type    :User
-                         :resolve :AuthPayload/User}}}
+                 :user  {:type :User}}}
 
   :Vote
   {:description "Vote in the system"

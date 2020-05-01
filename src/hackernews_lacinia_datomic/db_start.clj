@@ -1,5 +1,6 @@
 (ns hackernews-lacinia-datomic.db-start
   (:require [datomic.client.api :as d]
+            [hackernews-lacinia-datomic.authentication :as at]
             [java-time :as jt])
   (:import (java.util UUID)))
 
@@ -71,9 +72,9 @@
     (if (zero? qtd)
       xyz
       (recur (dec qtd) (conj xyz {:user/id    (UUID/randomUUID)
-                                  :user/name  (str "name" qtd)
-                                  :user/pwd   "testdb"
-                                  :user/email (str qtd "@com.com")})))))
+                                          :user/name  (str "name" qtd)
+                                          :user/pwd   (at/generate-password-hash (str "pwd" qtd))
+                                          :user/email (str qtd "@com.com")})))))
 
 (defn transact-random-users
   [conn qtd]

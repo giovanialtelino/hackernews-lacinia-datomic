@@ -1,15 +1,13 @@
 (ns hackernews-lacinia-datomic.schema
   "Resolvers for the schema"
   (:require [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
-            [hackernews-lacinia-datomic.datomic :as datomic]))
+            [hackernews-lacinia-datomic.datomic :as datomic]
+            [hackernews-lacinia-datomic.authentication :as auth]))
 
 (defn get-feed
   [db]
   (fn [context args value]
     (let [result (datomic/get-feed db args)]
-      (prn "------------")
-      (prn result)
-      (prn "------------")
       result)))
 
 (defn get-link
@@ -72,6 +70,16 @@
   (fn [context args value]
     (str "hello pedestal graphiql - " db)))
 
+(defn login-user
+  [db]
+  (fn [ctx args value]
+    (let [{pwd   :password
+           email :email} args
+          enc-pwd (datomic/get-user-pwd db email)
+          auth (auth/login-process email pwd enc-pwd)
+          user (datomic/get-user-info-auth db (:user (auth/get-user-from-token (:token auth))))]
+      (conj {} auth user))))
+
 (defn resolver-map [db]
   {:query/simple-string   (return-string db)
    :query/feed            (get-feed db)
@@ -81,7 +89,7 @@
    :mutation/signup       (signup db)
    :mutation/update-link  (update-link db)
    :mutation/vote         (return-string "no vote")
-   :mutation/login        (return-string "not login")
+   :mutation/login        (login-user db)
    :subscription/new-link (return-string "new link sub")
    :subscription/new-vote (return-string "new vote sub")
    :Link/users            (get-user-from-link db)

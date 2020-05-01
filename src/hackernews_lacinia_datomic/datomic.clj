@@ -24,6 +24,13 @@
     :in $ ?id
     :where [?votes :vote/link ?id]])
 
+(def get-pwd-by-email
+  '[:find ?pwd
+    :in $ ?email
+    :where
+    [?e :user/email ?email]
+    [?e :user/pwd ?pwd]])
+
 (def get-link-by-id
   '[:find ?e ?createdAt ?description ?postedBy ?url ?order ?postedby
     :keys id createdAt description postedBy url order postedby
@@ -36,6 +43,14 @@
     [?e :link/url ?url]
     [?e :link/postedby ?e2]
     [?e2 :user/email ?postedby]])
+
+(def get-user-info-by-user-email
+  '[:find ?e ?name ?email
+    :keys id name email
+    :in $ ?email
+    :where
+    [?e :user/email ?email]
+    [?e :user/name ?name]])
 
 (def get-vote-from-link-id
   '[:find (count ?vote)
@@ -51,6 +66,8 @@
   '[:find ?links
     :in $ ?user-id
     :where [?user-id :link/postedby ?links]])
+
+
 
 (defn- link-vector [v]
   (loop [i 0
@@ -160,9 +177,8 @@
 (defn get-user-from-link [con value]
   (let [db (create-db-con con)
         {id :postedby} value
-        f-r (d/pull db '[:user/name :user/id :user/email] [:user/email id])]
-    (prn f-r "???ok")
-    f-r))
+        f-r (d/q get-user-info-by-user-email db id)]
+    (first f-r)))
 
 (defn get-vote-from-link [con value]
   (let [db (create-db-con con)
@@ -203,4 +219,13 @@
   (let [db (create-db-con con)
         {id :id} value]
     (d/q get-link-from-vote-id db id)))
+
+(defn get-user-pwd [con value]
+  (let [db (create-db-con con)]
+    (ffirst (d/q get-pwd-by-email db value))))
+
+(defn get-user-info-auth [con value]
+  (let [db (create-db-con con)
+        pull (d/q get-user-info-by-user-email db value)]
+    {:user (first pull)}))
 
