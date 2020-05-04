@@ -2,14 +2,31 @@
   (:require [com.stuartsierra.component :as component]
             [com.walmartlabs.lacinia.pedestal :as lacinia]
             [com.walmartlabs.lacinia.schema :as schema]
-            [io.pedestal.http :as bootstrap]))
+            [io.pedestal.http :as bootstrap]
+            [io.pedestal.interceptor :as inter]))
+
+(defn p-h [p-k]
+  [(keyword (first p-k)) (last p-k)])
+
+(def attach-headers
+  {:name  ::attach-headers
+   :enter (fn [context]
+            (assoc-in context [:request :headers] (into {} (map p-h (:headers (:request context))))))})
+
+(defn- inject-user-info-interceptor [interceptors]
+  (lacinia/inject interceptors attach-headers :before ::lacinia/inject-app-context))
+
+(defn- interceptors [schema]
+  (let [options {}
+        default-interceptors (lacinia/default-interceptors schema options)]
+    (inject-user-info-interceptor default-interceptors)))
 
 (defn start-service! [schema config]
-  (prn config)
-  (prn schema)
-  (-> (lacinia/service-map schema config)
-      bootstrap/create-server
-      bootstrap/start))
+  (let [options (conj config {:interceptors (interceptors schema)})]
+    (-> schema
+        (lacinia/service-map options)
+        bootstrap/create-server
+        bootstrap/start)))
 
 (defn stop-service! [service]
   (bootstrap/stop service))

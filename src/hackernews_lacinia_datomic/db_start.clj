@@ -72,9 +72,9 @@
     (if (zero? qtd)
       xyz
       (recur (dec qtd) (conj xyz {:user/id    (UUID/randomUUID)
-                                          :user/name  (str "name" qtd)
-                                          :user/pwd   (at/generate-password-hash (str "pwd" qtd))
-                                          :user/email (str qtd "@com.com")})))))
+                                  :user/name  (str "name" qtd)
+                                  :user/pwd   (at/generate-password-hash (str "pwd" qtd))
+                                  :user/email (str qtd "@com.com")})))))
 
 (defn transact-random-users
   [conn qtd]

@@ -1,6 +1,8 @@
 (ns hackernews-lacinia-datomic.datomic
   (:require [datomic.client.api :as d]
-            [java-time :as jt]))
+            [clojure.set :as clj-set]
+            [java-time :as jt])
+  (:import (java.util UUID)))
 
 (defn- create-db-con [con]
   (d/db con))
@@ -67,8 +69,6 @@
     :in $ ?user-id
     :where [?user-id :link/postedby ?links]])
 
-
-
 (defn- link-vector [v]
   (loop [i 0
          linked []]
@@ -119,8 +119,8 @@
 (defn max-order
   [con]
   (let [db (create-db-con con)]
-    (get-in (d/q '[:find (max ?order)
-                   :where [_ :link/order ?order]] db) [0 0])))
+    (d/q '[:find (max ?order)
+           :where [_ :link/order ?order]] db)))
 
 (defn get-post-user-time
   [con user-id time link]
@@ -130,21 +130,25 @@
                    ?post-id :link/createdat time
                    ?post-id :link/url link] db])))
 
-(defn post
-  [args user-id con]
-  (let [db (create-db-con con)
-        {url         :url
-         description :description} args
-        order (+ (max-order db) 1)
+(defn post-link
+  [con user-email url description]
+  (prn "xzz" user-email)
+  (let [order (+ (ffirst (max-order con)) 1)
         now (jt/java-date)
-        {after :db-after} (d/transact db {:tx-data [{:link/description description
-                                                     :link/url         url
-                                                     :link/order       order
-                                                     :link/postedby    user-id
-                                                     :link/createdat   now
-                                                     }]})
-        post-id (get-post-user-time after user-id now url)]
-    (get-link after post-id)))
+        uuid (UUID/randomUUID)
+        request (d/transact con {:tx-data [{:link/id          uuid
+                                            :link/description description
+                                            :link/url         url
+                                            :link/order       order
+                                            :link/postedby    [:user/email user-email]
+                                            :link/createdat   now
+                                            }]})
+        result (d/pull (:db-after request) '[:link/id :link/description :link/url :link/order :link/postedby :link/createdat :link/votes] [:link/id uuid])
+        format (clj-set/rename-keys result {:link/id :id :link/description :description :link/url :url :link/order :order :link/postedby :postedBy :link/createdat :createdat})
+        votes {:votes 0}
+        posted-by {:postedBy (first (d/q get-user-info-by-user-email (:db-after request) user-email))}]
+    (prn "formated" posted-by)
+    (conj format votes posted-by)))
 
 (defn user-id-by-email
   [con email]
@@ -156,19 +160,12 @@
       -1
       (get-in result [0 0]))))
 
-;'hashers/derive
 (defn signup
-  [args con]
-  (let [{name     :name
-         email    :email
-         password :password} args
-        hashed (password)
-        {result :db-after} (d/transact con {:tx-data [{:user/name  name
-                                                       :user/email email
-                                                       :user/pwd   hashed}]})
-        user-id (user-id-by-email result email)]
-    (d/transact con {:tx-data [{:auth/token ""
-                                :auth/user  user-id}]})))
+  [con email enc-pwd name]
+  (d/transact con {:tx-data [{:user/id    (UUID/randomUUID)
+                              :user/name  name
+                              :user/email email
+                              :user/pwd   enc-pwd}]}))
 
 (defn login-register
   [user-id token con]
@@ -229,3 +226,10 @@
         pull (d/q get-user-info-by-user-email db value)]
     {:user (first pull)}))
 
+(defn non-registered-mail [con value]
+  (let [db (create-db-con con)
+        pull (ffirst (d/q get-pwd-by-email db value))]
+    (prn "findz" (d/q get-pwd-by-email db value))
+    (if (nil? pull)
+      true
+      false)))

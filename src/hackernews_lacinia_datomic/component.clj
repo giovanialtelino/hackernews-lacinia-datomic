@@ -41,3 +41,6 @@
 (defn create-and-start-prod-system! []
   (component/start
     (create-and-start-system! prod-config-map)))
+
+(defn kill-every-component [system]
+  (component/stop-system system))

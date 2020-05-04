@@ -11,21 +11,19 @@
   :Link
   {:description "Link of an article"
    :fields
-                {:id          {:type (non-null String)}
+                {:id          {:type String}
                  :description {:type        String
                                :description "Description of an article"}
-                 :url         {:type        (non-null String)
+                 :url         {:type        String
                                :description "URL of an article"}
                  :postedBy    {:type        :User
-                               :description "User who posted the artciel"
-                               :resolve     :Link/users}
+                               :description "User who posted the artciel"}
                  :votes       {:type        Int
-                               :description "Votes the article got"
-                               :resolve     :Link/votes}
+                               :description "Votes the article got"}
                  :order       {:type        Int
                                :description "Order added"
                                }
-                 :createdAt   {:type        (non-null String)
+                 :createdAt   {:type        String
                                :description "Instant of the creation"}}}
   :AuthPayload
   {:description "Auth payload for a user"

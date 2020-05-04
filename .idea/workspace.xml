@@ -2,23 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__buddy_buddy_core_1_6_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__buddy_buddy_hashers_1_4_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__buddy_buddy_sign_3_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__clojurewerkz_scrypt_1_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__com_lambdaworks_scrypt_1_4_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__net_i2p_crypto_eddsa_0_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_bouncycastle_bcpkix_jdk15on_1_62.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Leiningen__org_bouncycastle_bcprov_jdk15on_1_62.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/authentication.clj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/authorization.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/interceptors.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/utils.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" beforeDir="false" afterPath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.clj" beforeDir="false" afterPath="$PROJECT_DIR$/project.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/schema_graphql.edn" beforeDir="false" afterPath="$PROJECT_DIR$/resources/schema_graphql.edn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/component.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/component.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/server.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/server.clj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +68,7 @@
       <recent name="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic" />
     </key>
   </component>
-  <component name="ReplState" timestamp="1570082058092">{:repl-history {:ide [], :local [{:command &quot;(defn foo\n  \&quot;I don't do a whole lot.\&quot;\n  [x]\n  (println x \&quot;Hello, World!\&quot;))&quot;, :offset 74, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(HashMap)&quot;, :offset 9, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(:require :reload-all)&quot;, :offset 22, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;odd?&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;client&quot;, :offset 6, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;user&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(client)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(foo)&quot;, :offset 5, :ns &quot;hackernews-lacinia-datomic.core&quot;}], :remote []}}</component>
+  <component name="ReplState" timestamp="1588478053896">{:repl-history {:ide [], :local [{:command &quot;(defn foo\n  \&quot;I don't do a whole lot.\&quot;\n  [x]\n  (println x \&quot;Hello, World!\&quot;))&quot;, :offset 74, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(HashMap)&quot;, :offset 9, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(:require :reload-all)&quot;, :offset 22, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;odd?&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;client&quot;, :offset 6, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;user&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(client)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(foo)&quot;, :offset 5, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(prn @dev-atom)&quot;, :offset 15, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(run-dev\n  )&quot;, :offset 11, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(prn @dev-atom\n     )&quot;, :offset 20, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(use 'hackernews-lacinia-datomic.server :reload-all)&quot;, :offset 51, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(kill-components)&quot;, :offset 16, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(require 'hackernews-lacinia-datomic.server :reload-all)&quot;, :offset 55, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(require 'hackernews-lacinia-datomic.server :reload-all\n         )&quot;, :offset 65, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(run-dev)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.server&quot;}], :remote []}}</component>
   <component name="RunManager">
     <configuration name="REPL for hackernews-lacinia-datomic" type="ClojureREPL" factoryName="Local" activateToolWindowBeforeRun="false" temporary="true">
       <module name="hackernews-lacinia-datomic" />
@@ -140,6 +133,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="418" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588464052130">
+      <screen x="0" y="27" width="1920" height="987" />
+    </state>
+    <state x="418" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.987@0.27.1920.987" timestamp="1588464052130" />
     <state x="1114" y="358" width="676" height="397" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1584155010753">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
