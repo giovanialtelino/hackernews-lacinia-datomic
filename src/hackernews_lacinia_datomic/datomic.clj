@@ -69,6 +69,14 @@
     :in $ ?user-id
     :where [?user-id :link/postedby ?links]])
 
+(def post-user-info-by-post-id
+  '[:find ?email
+    :in $ ?link-id
+    :where
+    [?e :link/id ?link-id]
+    [?e :link/postedby ?e2]
+    [?e2 :user/email ?email]])
+
 (defn- link-vector [v]
   (loop [i 0
          linked []]
@@ -102,10 +110,8 @@
       (conj link {:link/votes (first vote-count)}))))
 
 (defn delete-link
-  [con args]
-  (let [{id :id} args
-        {result :db-before} (d/transact con {:tx-data [[:db/retractEntity id]]})]
-    (get-link result id)))
+  [con post-id]
+  (d/transact con {:tx-data [[:db/retractEntity post-id]]}))
 
 (defn update-link
   [con args]
@@ -229,7 +235,14 @@
 (defn non-registered-mail [con value]
   (let [db (create-db-con con)
         pull (ffirst (d/q get-pwd-by-email db value))]
-    (prn "findz" (d/q get-pwd-by-email db value))
     (if (nil? pull)
       true
       false)))
+
+(defn get-post-user-info-by-id [con post-id]
+  (prn "post-id" post-id)
+  (let [db (create-db-con con)
+        pull (d/q post-user-info-by-post-id db post-id)]
+    (prn "pullz" pull)
+
+    pull))

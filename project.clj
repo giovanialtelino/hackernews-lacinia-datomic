@@ -10,7 +10,6 @@
                  [cheshire "5.9.0"]
                  [io.pedestal/pedestal.service "0.5.7"]
                  [io.pedestal/pedestal.jetty "0.5.7"]
-                 [com.datomic/client-pro "0.9.37"]
                  [ch.qos.logback/logback-classic "1.1.8" :exclusions [org.slf4j/slf4j-api]]
                  [org.slf4j/jul-to-slf4j "1.7.22"]
                  [org.slf4j/jcl-over-slf4j "1.7.22"]
@@ -19,13 +18,16 @@
                  [com.stuartsierra/component "0.4.0"]
                  [buddy/buddy-hashers "1.4.0"]
                  [buddy/buddy-sign "3.1.0"]
-                 [buddy/buddy-core "1.6.0"]]
+                 [buddy/buddy-core "1.6.0"]
+                 [com.datomic/datomic-pro "0.9.6045"]]
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
   :profiles {:dev     {:aliases      {"run-dev" ["trampoline" "run" "-m" "hackernews-lacinia-datomic.server/run-dev"]}
                        :dependencies [[io.pedestal/pedestal.service-tools "0.5.7"]]}
              :uberjar {:aot [hackernews-lacinia-datomic.server]}}
   :repl-options {:init-ns hackernews-lacinia-datomic.server}
+  :repositories [["my.datomic.com" {:url      "https://my.datomic.com/repo"
+                                    :username :env/datomic_username
+                                    :password :env/datomic_password}]]
   :main hackernews-lacinia-datomic.server)
 
-;[com.datomic/datomic-pro "0.9.5561"]

@@ -76,6 +76,13 @@
                  :description {:type (non-null String)}}
    :resolve     :mutation/post}
 
+  :delete
+  {:type        String
+   :description "Delete a existing link"
+   :args
+                {:id {:type (non-null String)}}
+   :resolve     :mutation/delete}
+
   :signup
   {:type        :AuthPayload
    :description "Returns the authorization payload for the user"

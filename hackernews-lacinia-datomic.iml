@@ -35,6 +35,7 @@
     <orderEntry type="library" name="Leiningen: com.datomic/client-impl-shared:0.8.67" level="project" />
     <orderEntry type="library" name="Leiningen: com.datomic/client-pro:0.9.37" level="project" />
     <orderEntry type="library" name="Leiningen: com.datomic/client:0.8.81" level="project" />
+    <orderEntry type="library" name="Leiningen: com.datomic/datomic-pro:0.9.6045" level="project" />
     <orderEntry type="library" name="Leiningen: com.datomic/query-support:0.8.16" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.core/jackson-core:2.9.9" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.dataformat/jackson-dataformat-cbor:2.9.9" level="project" />

@@ -2,8 +2,12 @@
   "Resolvers for the schema"
   (:require [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
             [hackernews-lacinia-datomic.datomic :as datomic]
-            [hackernews-lacinia-datomic.authentication :as auth]
+            [hackernews-lacinia-datomic.authentication :as authentication]
+            [hackernews-lacinia-datomic.authorization :as authorization]
             [hackernews-lacinia-datomic.utils :as utils]))
+
+(defn- token-extractor [ctx]
+  (:authorization (:headers (:request ctx))))
 
 (defn get-feed
   [db]
@@ -19,22 +23,34 @@
 (defn delete-link
   [db]
   (fn [context args value]
-    (datomic/delete-link db args)))
+    (let [post-id (:id args)
+          bearer-token (token-extractor context)
+          post-data (datomic/get-post-user-info-by-id db post-id)
+          user-email (:user (authentication/get-user-from-token bearer-token))]
+      (prn "ez" post-data)
+      (prn "ez" user-email)
+      (if (authorization/authorized-delete-post? post-data user-email)
+        (do
+          (datomic/delete-link db post-id)
+          "Post deleted")
+        "Unable to delete post. Not authorized or not logged in."))))
 
 (defn post-link
   [db]
   (fn [context args value]
-    (let [bearer-token (:authorization (:headers (:request context)))
+    (let [bearer-token (token-extractor context)
           {description :description
            url         :url} args]
-      (if (nil? bearer-token)
+      (if (and (nil? bearer-token))
         {:description "You must logging to post"}
         (do
-          (let [user-email (:user (auth/get-user-from-token bearer-token))
+          (let [user-email (:user (authentication/get-user-from-token bearer-token))
                 validate-url (utils/validate-url url)
                 validate-description (utils/validate-description description)]
             (if (and validate-url validate-description)
-              (datomic/post-link db user-email url description)
+              (if (authorization/authorized-user-post? db user-email)
+                (datomic/post-link db user-email url description)
+                {:description "You are not authorized to post"})
               {:description "You must include only https:// links and at least 20 words in the description"})))))))
 
 (defn update-link
@@ -84,8 +100,8 @@
            email :email} args
           clean-email (utils/low-text (utils/trim-text email))
           enc-pwd (datomic/get-user-pwd db clean-email)
-          auth (auth/login-process clean-email pwd enc-pwd)
-          user (datomic/get-user-info-auth db (:user (auth/get-user-from-token (:token auth))))]
+          auth (authentication/login-process clean-email pwd enc-pwd)
+          user (datomic/get-user-info-auth db (:user (authentication/get-user-from-token (:token auth))))]
       (conj {} auth user))))
 
 (defn signup
@@ -94,7 +110,7 @@
     (let [{email :email
            pwd   :password
            name  :name} args
-          enc-pwd (auth/generate-password-hash pwd)
+          enc-pwd (authentication/generate-password-hash pwd)
           clean-name (utils/trim-text name)
           clean-email (utils/low-text (utils/trim-text email))]
       (if (utils/valid-email clean-email db)

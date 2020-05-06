@@ -10,7 +10,6 @@
   (hs/derive pwd))
 
 (defn- auth-user [pwd hashed-pwd]
-  (prn "hashing" pwd "----" hashed-pwd)
   (if (hs/check pwd hashed-pwd)
     true
     false))
