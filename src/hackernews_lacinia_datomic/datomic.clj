@@ -56,11 +56,25 @@
     [?e :user/email ?email]
     [?e :user/pwd ?pwd]])
 
-(def get-link-by-id
+(def get-link-by-order
   '[:find ?e ?createdAt ?description ?postedBy ?url ?order ?postedby
     :keys id createdAt description postedBy url order postedby
     :in $ ?order
     :where
+    [?e :link/order ?order]
+    [?e :link/createdat ?createdAt]
+    [?e :link/description ?description]
+    [?e :link/postedby ?postedBy]
+    [?e :link/url ?url]
+    [?e :link/postedby ?e2]
+    [?e2 :user/email ?postedby]])
+
+(def get-link-by-id
+  '[:find ?e ?createdAt ?description ?postedBy ?url ?order ?postedby
+    :keys id createdAt description postedBy url order postedby
+    :in $ ?id
+    :where
+    [?e :link/id ?id]
     [?e :link/order ?order]
     [?e :link/createdat ?createdAt]
     [?e :link/description ?description]
@@ -141,7 +155,7 @@
   (let [db (create-db-con con)
         {id :id} args
         parsed-id (Integer. id)
-        link (first (d/q get-link-by-id db parsed-id))
+        link (first (d/q get-link-by-order db parsed-id))
         vote-count [d/q get-each-link-vote-count db (:id link)]]
     (if (empty? vote-count)
       (conj link {:link/votes 0})
@@ -152,28 +166,19 @@
   (let [uuid (UUID/fromString post-id)]
     (d/transact con {:tx-data [[:db.fn/retractEntity [:link/id uuid]]]})))
 
+;(datomic/update-link db id description url)
 (defn update-link
-  [con args]
-  (let [{id          :id
-         url         :url
-         description :description} args
-        {result :db-after} (d/transact con {:tx-data [[:db/add id :link/url url]
-                                                      [:db/add id :link/description description]]})]
-    (get-link result id)))
+  [con id description url]
+  (let [uuid (UUID/fromString id)
+        {result :db-after} (d/transact con {:tx-data [[:db/add [:link/id uuid] :link/url url]
+                                                      [:db/add [:link/id uuid] :link/description description]]})]
+    (first (d/q get-link-by-id result uuid))))
 
 (defn max-order
   [con]
   (let [db (create-db-con con)]
     (d/q '[:find (max ?order)
            :where [_ :link/order ?order]] db)))
-
-(defn get-post-user-time
-  [con user-id time link]
-  (let [db (create-db-con con)]
-    (d/q '[:find ?post-id
-           :where [?post-id :link/postedby user-id
-                   ?post-id :link/createdat time
-                   ?post-id :link/url link] db])))
 
 (defn post-link
   [con user-email url description]
@@ -193,72 +198,12 @@
         posted-by {:postedBy (first (d/q get-user-info-by-user-email (:db-after request) user-email))}]
     (conj format votes posted-by)))
 
-(defn user-id-by-email
-  [con email]
-  (let [db (create-db-con con)
-        result (d/q '[:find ?e
-                      :in $ ?mail
-                      :where [?e :user/email ?mail]] db email)]
-    (if (empty? result)
-      -1
-      (get-in result [0 0]))))
-
 (defn signup
   [con email enc-pwd name]
   (d/transact con {:tx-data [{:user/id    (UUID/randomUUID)
                               :user/name  name
                               :user/email email
                               :user/pwd   enc-pwd}]}))
-
-(defn login-register
-  [user-id token con]
-  (d/transact con {:tx-data [[:db/add user-id :auth/token token]]}))
-
-(defn get-user-from-link [con value]
-  (let [db (create-db-con con)
-        {id :postedby} value
-        f-r (d/q get-user-info-by-user-email db id)]
-    (first f-r)))
-
-(defn get-vote-from-link [con value]
-  (let [db (create-db-con con)
-        {id :id} value
-        votes (d/q get-vote-from-link-id db id)]
-    (if-not (empty? votes)
-      votes
-      0)))
-
-(defn get-auth-from-user [con value]
-  (let [db (create-db-con con)
-        {id :id} value]
-    (d/q get-auth-from-user-id db id)))
-
-(defn get-link-from-user [con value]
-  (let [db (create-db-con con)
-        {id :id} value]
-    (d/q get-links-from-user-id db id)))
-
-(defn get-user-from-vote-id [con vote-id]
-  (let [db (create-db-con con)]
-    (d/q '[:find ?user-id
-           :where [?e :vote/id vote-id]
-           [?user-id :vote/user ?e]] db)))
-
-(defn get-user-from-vote [con value]
-  (let [db (create-db-con con)
-        {id :id} value]
-    (d/q get-user-from-vote-id db id)))
-
-(defn get-link-from-vote-id [con vote-id]
-  (let [db (create-db-con con)]
-    (d/q '[:find ?user-id
-           :where [?e :vote/id vote-id]
-           [?user-id :vote/link ?e]] db)))
-
-(defn get-link-from-vote [con value]
-  (let [db (create-db-con con)
-        {id :id} value]
-    (d/q get-link-from-vote-id db id)))
 
 (defn get-user-pwd [con value]
   (let [db (create-db-con con)]
@@ -295,7 +240,6 @@
         uuid (UUID/fromString post-id)
         vote-id (ffirst (d/q get-vote-id-entity-retract db uuid user-email))
         {result :db-after} (d/transact con {:tx-data [[:db.fn/retractEntity [:vote/id vote-id]]]})]
-    (prn "votez" vote-id)
     (count-votes-post-after result uuid)))
 
 (defn post-id-add-vote [con post-id user-email]

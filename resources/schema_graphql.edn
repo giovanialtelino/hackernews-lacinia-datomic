@@ -42,11 +42,7 @@
                  :count {:type Int}}}}
 
  :queries
- {:info
-  {:type        String
-   :description "Just a simple placeholder"
-   :resolve     :query/simple-string}
-  :feed
+ {:feed
   {:type        (list :Feed)
    :description "Feed query"
    :args
@@ -71,6 +67,14 @@
                 {:url         {:type (non-null String)}
                  :description {:type (non-null String)}}
    :resolve     :mutation/post}
+
+  :edit
+  {:type        :Link
+   :description "Edit existing link"
+   :args        {:id          {:type (non-null String)}
+                 :url         {:type (non-null String)}
+                 :description {:type (non-null String)}}
+   :resolve     :mutation/update}
 
   :delete
   {:type        String

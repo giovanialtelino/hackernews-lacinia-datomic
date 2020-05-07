@@ -54,37 +54,22 @@
 (defn update-link
   [db]
   (fn [context args value]
-    (datomic/update-link db args)))
-
-(defn get-user-from-link
-  [db]
-  (fn [context args value]
-    (datomic/get-user-from-link db value)))
-
-(defn get-vote-from-link
-  [db]
-  (fn [context args value]
-    (datomic/get-vote-from-link db value)))
-
-(defn get-user-from-vote
-  [db]
-  (fn [context args value]
-    (datomic/get-user-from-vote db value)))
-
-(defn get-auth-from-user
-  [db]
-  (fn [context args value]
-    (datomic/get-auth-from-user db value)))
-
-(defn get-link-from-vote
-  [db]
-  (fn [context args value]
-    (datomic/get-link-from-vote db value)))
-
-(defn get-link-from-user
-  [db]
-  (fn [context args value]
-    (datomic/get-link-from-user db value)))
+    (let [bearer-token (token-extractor context)
+          {description :description
+           url         :url
+           id          :id} args]
+      (if (and (nil? bearer-token))
+        {:description "You must logging to edit"}
+        (do
+          (let [post-data (datomic/get-post-user-info-by-id db id)
+                user-email (:user (authentication/get-user-from-token bearer-token))
+                validate-url (utils/validate-url url)
+                validate-description (utils/validate-description description)]
+            (if (and validate-url validate-description)
+              (if (authorization/authorized-delete-post? post-data user-email)
+                (datomic/update-link db id description url)
+                {:description "You are not authorized to edit this post"})
+              {:description "You must include only https:// links and at least 20 words in the description"})))))))
 
 (defn return-string
   [db]
@@ -133,20 +118,13 @@
 ;(datomic/count-post-votes db post-id) uses db-after to return the new count
 
 (defn resolver-map [db]
-  {:query/simple-string   (return-string db)
-   :query/feed            (get-feed db)
+  {:query/feed            (get-feed db)
    :query/link            (get-link db)
    :mutation/delete       (delete-link db)
    :mutation/post         (post-link db)
    :mutation/signup       (signup db)
-   :mutation/update-link  (update-link db)
+   :mutation/update       (update-link db)
    :mutation/vote         (vote-link db)
    :mutation/login        (login-user db)
    :subscription/new-link (return-string "new link sub")
    :subscription/new-vote (return-string "new vote sub")})
-
-;:Vote/link             (get-link-from-vote db)
-;:Vote/user             (get-vote-from-link db)
-;:User/links            (get-link-from-user db)
-;:Link/users            (get-user-from-link db)
-;:Link/votes            (get-vote-from-link db)
