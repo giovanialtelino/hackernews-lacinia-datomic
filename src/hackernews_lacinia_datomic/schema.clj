@@ -12,13 +12,19 @@
 (defn get-feed
   [db]
   (fn [context args value]
-    (let [result (datomic/get-feed db args)]
-      result)))
+    (let [{skip     :skip
+           first    :first
+           order-by :orderby} args
+          skip-c (if (nil? skip) 0 skip)
+          first-c (if (nil? first) 10 first)
+          order-by-c (utils/organize-order-by order-by)]
+      (datomic/get-feed db skip-c first-c order-by-c))))
 
 (defn get-link
   [db]
   (fn [context args value]
-    (datomic/get-link db args)))
+    (let [post-id (:id args)]
+      (datomic/get-link db post-id))))
 
 (defn delete-link
   [db]
@@ -74,7 +80,7 @@
 (defn return-string
   [db]
   (fn [context args value]
-    (str "hello pedestal graphiql - " db)))
+    (str "hello pedestal graphiql - ")))
 
 (defn login-user
   [db]
@@ -115,16 +121,14 @@
             (datomic/post-id-remove-vote db post-id user-email)
             (datomic/post-id-add-vote db post-id user-email)))))))
 
-;(datomic/count-post-votes db post-id) uses db-after to return the new count
-
 (defn resolver-map [db]
-  {:query/feed            (get-feed db)
-   :query/link            (get-link db)
-   :mutation/delete       (delete-link db)
-   :mutation/post         (post-link db)
-   :mutation/signup       (signup db)
-   :mutation/update       (update-link db)
-   :mutation/vote         (vote-link db)
-   :mutation/login        (login-user db)
-   :subscription/new-link (return-string "new link sub")
-   :subscription/new-vote (return-string "new vote sub")})
+  {:query/feed               (get-feed db)
+   :query/link               (get-link db)
+   :mutation/delete          (delete-link db)
+   :mutation/post            (post-link db)
+   :mutation/signup          (signup db)
+   :mutation/update          (update-link db)
+   :mutation/vote            (vote-link db)
+   :mutation/login           (login-user db)
+   :subscription/new-comment (return-string "new link sub")
+   :subscription/new-vote    (return-string "new vote sub")})

@@ -33,3 +33,10 @@
   (if (> (count description) 20)
     true
     false))
+
+(defn organize-order-by [order-by]
+  (case order-by
+    "date" :createdAt
+    "order" :order
+    "votes" :votes
+    :order))

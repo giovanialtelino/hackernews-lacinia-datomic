@@ -107,7 +107,4 @@
   (d/transact database {:tx-data hacker-schema})
   (transact-random-users database x)
   (transact-random-links database x)
-  (prn "QUERY BELLOW")
-  (prn (get-all-print database))
-  (prn "QUERY ABOVE")
   true)

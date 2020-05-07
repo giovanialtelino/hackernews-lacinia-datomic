@@ -34,23 +34,16 @@
    :fields
                 {:id   {:type (non-null String)}
                  :link {:type (non-null :Link)}
-                 :user {:type (non-null :User)}}}
-  :Feed
-  {:description "Feed to be shown"
-   :fields
-                {:links {:type Link}
-                 :count {:type Int}}}}
+                 :user {:type (non-null :User)}}}}
 
  :queries
  {:feed
-  {:type        (list :Feed)
+  {:type        (list :Link)
    :description "Feed query"
    :args
-                {:filter  {:type String}
-                 :skip    {:type Int}
+                {:skip    {:type Int}
                  :first   {:type Int}
-                 :orderby {:type String}
-                 }
+                 :orderby {:type String}}
    :resolve     :query/feed}
   :link
   {:type        :Link
