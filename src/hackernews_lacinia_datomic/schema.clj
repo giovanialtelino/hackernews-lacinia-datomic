@@ -27,8 +27,6 @@
           bearer-token (token-extractor context)
           post-data (datomic/get-post-user-info-by-id db post-id)
           user-email (:user (authentication/get-user-from-token bearer-token))]
-      (prn "ez" post-data)
-      (prn "ez" user-email)
       (if (authorization/authorized-delete-post? post-data user-email)
         (do
           (datomic/delete-link db post-id)
@@ -120,6 +118,20 @@
         {:user  nil
          :token "E-mail is already registered or is invalid."}))))
 
+(defn vote-link [db]
+  (fn [context args value]
+    (let [bearer-token (token-extractor context)
+          post-id (:id args)
+          user-email (:user (authentication/get-user-from-token bearer-token))]
+      (if (or (nil? post-id) (nil? user-email))
+        nil
+        (do
+          (if (datomic/post-id-user-already-voted db post-id user-email)
+            (datomic/post-id-remove-vote db post-id user-email)
+            (datomic/post-id-add-vote db post-id user-email)))))))
+
+;(datomic/count-post-votes db post-id) uses db-after to return the new count
+
 (defn resolver-map [db]
   {:query/simple-string   (return-string db)
    :query/feed            (get-feed db)
@@ -128,12 +140,13 @@
    :mutation/post         (post-link db)
    :mutation/signup       (signup db)
    :mutation/update-link  (update-link db)
-   :mutation/vote         (return-string "no vote")
+   :mutation/vote         (vote-link db)
    :mutation/login        (login-user db)
    :subscription/new-link (return-string "new link sub")
-   :subscription/new-vote (return-string "new vote sub")
-   :Link/users            (get-user-from-link db)
-   :Link/votes            (get-vote-from-link db)
-   :User/links            (get-link-from-user db)
-   :Vote/link             (get-link-from-vote db)
-   :Vote/user             (get-vote-from-link db)})
+   :subscription/new-vote (return-string "new vote sub")})
+
+;:Vote/link             (get-link-from-vote db)
+;:Vote/user             (get-vote-from-link db)
+;:User/links            (get-link-from-user db)
+;:Link/users            (get-user-from-link db)
+;:Link/votes            (get-vote-from-link db)

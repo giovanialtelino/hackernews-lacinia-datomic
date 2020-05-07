@@ -19,7 +19,7 @@
                  [buddy/buddy-hashers "1.4.0"]
                  [buddy/buddy-sign "3.1.0"]
                  [buddy/buddy-core "1.6.0"]
-                 [com.datomic/datomic-pro "0.9.6045"]]
+                 [com.datomic/client-pro "0.9.52"]]
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
   :profiles {:dev     {:aliases      {"run-dev" ["trampoline" "run" "-m" "hackernews-lacinia-datomic.server/run-dev"]}
@@ -31,3 +31,4 @@
                                     :password :env/datomic_password}]]
   :main hackernews-lacinia-datomic.server)
 
+;      [com.datomic/datomic-pro "0.9.6045"]

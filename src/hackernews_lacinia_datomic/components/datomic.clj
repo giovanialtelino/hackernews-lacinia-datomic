@@ -3,13 +3,6 @@
             [hackernews-lacinia-datomic.db-start :as db-start]
             [datomic.client.api :as dc]))
 
-;;starting datomic
-;bin/transactor dev-transactor-template.properties
-;(require '[datomic.api :as d])
-;(def db-uri "datomic:dev://localhost:4334/hello")
-;(d/create-database db-uri)
-;bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:dev://localhost:4334/hackernews
-
 ;;On prod could use Environ to get the config, password and so on.
 (def cfg {:server-type        :peer-server
           :access-key         "myaccesskey"

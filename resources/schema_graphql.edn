@@ -5,8 +5,7 @@
                 {:id    {:type String}
                  :name  {:type String}
                  :email {:type String}
-                 :links {:type    (list :Link)
-                         :resolve :User/links}}}
+                 :links {:type (list :Link)}}}
 
   :Link
   {:description "Link of an article"
@@ -16,13 +15,12 @@
                                :description "Description of an article"}
                  :url         {:type        String
                                :description "URL of an article"}
-                 :postedBy    {:type        :User
-                               :description "User who posted the artciel"}
+                 :postedBy    {:type        String
+                               :description "User who posted the article"}
                  :votes       {:type        Int
                                :description "Votes the article got"}
                  :order       {:type        Int
-                               :description "Order added"
-                               }
+                               :description "Order added"}
                  :createdAt   {:type        String
                                :description "Instant of the creation"}}}
   :AuthPayload
@@ -35,10 +33,8 @@
   {:description "Vote in the system"
    :fields
                 {:id   {:type (non-null String)}
-                 :link {:type    (non-null :Link)
-                        :resolve :Vote/link}
-                 :user {:type    (non-null :User)
-                        :resolve :Vote/user}}}
+                 :link {:type (non-null :Link)}
+                 :user {:type (non-null :User)}}}
   :Feed
   {:description "Feed to be shown"
    :fields
@@ -100,10 +96,10 @@
                  :password {:type (non-null String)}}
    :resolve     :mutation/login}
   :vote
-  {:type        :Vote
-   :description "Return valid vote"
+  {:type        :Int
+   :description "Return current votes"
    :args
-                {:linkid {:type String}}
+                {:id {:type (non-null String)}}
    :resolve     :mutation/vote}
   }
  }

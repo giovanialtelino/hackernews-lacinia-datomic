@@ -8,23 +8,46 @@
   (d/db con))
 ; contains? url filter
 (def get-links
-  '[:find ?e ?url ?description ?createdAt ?order ?postedby
-    :keys id url description createdAt order postedby
+  '[:find ?id ?url ?description ?createdAt ?order ?postedby
+    :keys id url description createdAt order postedBy
     :in $ ?filter ?skip ?skip-plus-first
     :where
+    [?e :link/id ?id]
     [?e :link/url ?url]
     [?e :link/description ?description]
     [?e :link/createdat ?createdAt]
     [?e :link/postedby ?e2]
+    [?e2 :user/name ?postedby]
     [?e :link/order ?order]
-    [?e2 :user/email ?postedby]
     [(> ?order ?skip)]
-    [(<= ?order ?skip-plus-first)]])
+    [(<= ?order ?skip-plus-first)]
+    ])
 
 (def get-each-link-vote-count
   '[:find (count ?votes)
     :in $ ?id
-    :where [?votes :vote/link ?id]])
+    :where
+    [?e :link/id ?id]
+    [?votes :vote/link ?e]])
+
+(def check-if-user-already-voted-post
+  '[:find (count ?votes)
+    :in $ ?post-id ?user-email
+    :where
+    [?e1 :user/email ?user-email]
+    [?e2 :link/id ?post-id]
+    [?votes :vote/user ?e1]
+    [?votes :vote/link ?e2]])
+
+(def get-vote-id-entity-retract
+  '[:find ?vote-id
+    :in $ ?post-id ?user-email
+    :where
+    [?e1 :user/email ?user-email]
+    [?e2 :link/id ?post-id]
+    [?votes :vote/user ?e1]
+    [?votes :vote/link ?e2]
+    [?votes :vote/id ?vote-id]])
 
 (def get-pwd-by-email
   '[:find ?pwd
@@ -57,7 +80,7 @@
 (def get-vote-from-link-id
   '[:find (count ?vote)
     :in $ ?link-id
-    :where [?link-id :vote/link ?vote]])
+    :where [?vote :vote/link [:link/id ?link-id]]])
 
 (def get-auth-from-user-id
   '[:find ?auth
@@ -84,6 +107,20 @@
       (recur (inc i) (conj linked {:count (inc i) :links (nth v i)}))
       linked)))
 
+(defn- get-votes [db post-id]
+  (let [votes (ffirst (d/q get-each-link-vote-count db post-id))
+        non-null (if (nil? votes)
+                   0
+                   votes)]
+    {:votes non-null}))
+
+(defn- add-votes-item [db result]
+  (loop [i 0
+         counted []]
+    (if (< i (count result))
+      (recur (inc i) (conj counted (conj (nth result i) (get-votes db (:id (nth result i))))))
+      counted)))
+
 (defn get-feed
   [con args]
   (let [db (create-db-con con)
@@ -95,7 +132,8 @@
         skip-c (if (nil? skip) 0 skip)
         first-c (if (nil? first) 10 first)
         result (d/q get-links db filter-c skip-c (+ first-c skip-c))
-        result-counted (link-vector result)]
+        result-with-votes (add-votes-item db result)
+        result-counted (link-vector result-with-votes)]
     result-counted))
 
 (defn get-link
@@ -111,7 +149,8 @@
 
 (defn delete-link
   [con post-id]
-  (d/transact con {:tx-data [[:db/retractEntity post-id]]}))
+  (let [uuid (UUID/fromString post-id)]
+    (d/transact con {:tx-data [[:db.fn/retractEntity [:link/id uuid]]]})))
 
 (defn update-link
   [con args]
@@ -138,7 +177,6 @@
 
 (defn post-link
   [con user-email url description]
-  (prn "xzz" user-email)
   (let [order (+ (ffirst (max-order con)) 1)
         now (jt/java-date)
         uuid (UUID/randomUUID)
@@ -153,7 +191,6 @@
         format (clj-set/rename-keys result {:link/id :id :link/description :description :link/url :url :link/order :order :link/postedby :postedBy :link/createdat :createdat})
         votes {:votes 0}
         posted-by {:postedBy (first (d/q get-user-info-by-user-email (:db-after request) user-email))}]
-    (prn "formated" posted-by)
     (conj format votes posted-by)))
 
 (defn user-id-by-email
@@ -240,9 +277,30 @@
       false)))
 
 (defn get-post-user-info-by-id [con post-id]
-  (prn "post-id" post-id)
-  (let [db (create-db-con con)
-        pull (d/q post-user-info-by-post-id db post-id)]
-    (prn "pullz" pull)
+  (let [db (create-db-con con)]
+    (ffirst (d/q post-user-info-by-post-id db (UUID/fromString post-id)))))
 
-    pull))
+(defn post-id-user-already-voted [con post-id user-email]
+  (let [db (create-db-con con)
+        votes (ffirst (d/q check-if-user-already-voted-post db (UUID/fromString post-id) user-email))]
+    (if (or (= 0 votes) (nil? votes))
+      false
+      true)))
+
+(defn- count-votes-post-after [db post-id]
+  (ffirst (d/q get-each-link-vote-count db post-id)))
+
+(defn post-id-remove-vote [con post-id user-email]
+  (let [db (create-db-con con)
+        uuid (UUID/fromString post-id)
+        vote-id (ffirst (d/q get-vote-id-entity-retract db uuid user-email))
+        {result :db-after} (d/transact con {:tx-data [[:db.fn/retractEntity [:vote/id vote-id]]]})]
+    (prn "votez" vote-id)
+    (count-votes-post-after result uuid)))
+
+(defn post-id-add-vote [con post-id user-email]
+  (let [uuid (UUID/fromString post-id)
+        {result :db-after} (d/transact con {:tx-data [{:vote/id   (UUID/randomUUID)
+                                                       :vote/user [:user/email user-email]
+                                                       :vote/link [:link/id uuid]}]})]
+    (count-votes-post-after result uuid)))

@@ -28,15 +28,14 @@
     <orderEntry type="library" name="Leiningen: clojurewerkz/scrypt:1.2.0" level="project" />
     <orderEntry type="library" name="Leiningen: com.cognitect/anomalies:0.1.12" level="project" />
     <orderEntry type="library" name="Leiningen: com.cognitect/hmac-authn:0.1.195" level="project" />
-    <orderEntry type="library" name="Leiningen: com.cognitect/http-client:0.1.99" level="project" />
+    <orderEntry type="library" name="Leiningen: com.cognitect/http-client:0.1.105" level="project" />
     <orderEntry type="library" name="Leiningen: com.cognitect/transit-clj:0.8.313" level="project" />
     <orderEntry type="library" name="Leiningen: com.cognitect/transit-java:0.8.337" level="project" />
-    <orderEntry type="library" name="Leiningen: com.datomic/client-api:0.8.35" level="project" />
-    <orderEntry type="library" name="Leiningen: com.datomic/client-impl-shared:0.8.67" level="project" />
-    <orderEntry type="library" name="Leiningen: com.datomic/client-pro:0.9.37" level="project" />
-    <orderEntry type="library" name="Leiningen: com.datomic/client:0.8.81" level="project" />
-    <orderEntry type="library" name="Leiningen: com.datomic/datomic-pro:0.9.6045" level="project" />
-    <orderEntry type="library" name="Leiningen: com.datomic/query-support:0.8.16" level="project" />
+    <orderEntry type="library" name="Leiningen: com.datomic/client-api:0.8.44" level="project" />
+    <orderEntry type="library" name="Leiningen: com.datomic/client-impl-shared:0.8.79" level="project" />
+    <orderEntry type="library" name="Leiningen: com.datomic/client-pro:0.9.52" level="project" />
+    <orderEntry type="library" name="Leiningen: com.datomic/client:0.8.97" level="project" />
+    <orderEntry type="library" name="Leiningen: com.datomic/query-support:0.8.27" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.core/jackson-core:2.9.9" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.dataformat/jackson-dataformat-cbor:2.9.9" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.dataformat/jackson-dataformat-smile:2.9.9" level="project" />

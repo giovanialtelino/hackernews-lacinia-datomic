@@ -1,13 +1,10 @@
-This should be run on Datomic root folder, will create a temp database in memory.
+bin/transactor config/dev-transactor.properties
 
-bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:mem://hackernews
+bin/repl
+(require '[datomic.api :as d])
+(def db-uri "datomic:dev://localhost:4334/hackernews")
+(d/create-database db-uri)
 
+bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:dev://localhost:4334/hackernews
 
-(def db-uri "datomic:sql://hackernews?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=datomic")
-
-bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:sql://hackernews?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=datomic
-
-(def db-uri "datomic:sql://hackernews?jdbc:postgresql://localhost:5432/datomic?user=covid&password=covidpwd")
-
-For extra info you should check datomic on-prem website.
-https://docs.datomic.com/on-prem/get-datomic.html
+bin/console -p 8888 hackernews datomic:dev://localhost:4334/
