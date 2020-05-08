@@ -84,10 +84,10 @@
    {:db/ident       :comment/text
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one}
-   {:db/ident       :comment/posted-by
+   {:db/ident       :comment/postedBy
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/one}
-   {:db/ident       :comment/created-at
+   {:db/ident       :comment/createdAt
     :db/valueType   :db.type/instant
     :db/cardinality :db.cardinality/one}
    {:db/ident       :comment/son

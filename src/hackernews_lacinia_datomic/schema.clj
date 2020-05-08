@@ -29,7 +29,8 @@
 (defn get-comment
   [db]
   (fn [context args value]
-    ))
+    (let [comment-id (:id args)]
+      (datomic/get-comment db comment-id))))
 
 (defn delete-link
   [db]
@@ -124,19 +125,65 @@
 
 (defn post-comment [db]
   (fn [context args value]
-    ))
+    (let [bearer-token (token-extractor context)
+          {comment     :comment
+           father-type :type
+           father-id   :id} args]
+      (if (and (nil? bearer-token))
+        {:error "You must logging to comment"}
+        (do
+          (let [user-email (:user (authentication/get-user-from-token bearer-token))
+                validate-comment (utils/validate-comment comment)
+                validated-father (utils/validate-father-type father-type)]
+            (if (and (validate-comment) (not (nil? validated-father)))
+              (if (authorization/authorized-user-comment? db user-email)
+                (datomic/post-comment db user-email comment father-id validated-father)
+                {:error "You are not authorized to comment"})
+              {:error "You must include at least two characters in each comment"})))))))
 
 (defn vote-comment [db]
   (fn [context args value]
-    ))
+    (let [bearer-token (token-extractor context)
+          comment-id (:id args)]
+      (if (or (nil? comment-id) (nil? bearer-token))
+        nil
+        (do
+          (let [user-email (:user (authentication/get-user-from-token bearer-token))]
+            (if (datomic/comment-id-user-already-voted db comment-id user-email)
+              (datomic/comment-id-remove-vote db comment-id user-email)
+              (datomic/comment-id-add-vote db comment-id user-email))))))))
 
 (defn delete-comment [db]
   (fn [context args value]
-    ))
+    (let [comment-id (:id args)
+          bearer-token (token-extractor context)]
+      (if (or (nil? comment-id) (nil? bearer-token))
+        "Invalid login or comment to delete."
+        (do
+          (let [post-data (datomic/get-comment-user-info-by-id db comment-id)
+                user-email (:user (authentication/get-user-from-token bearer-token))]
+            (if (authorization/authorized-delete-comment? post-data user-email)
+              (do
+                (datomic/delete-comment db comment-id)
+                "Post deleted")
+              "Unable to delete post. Not authorized or not logged in.")))))))
 
 (defn edit-comment [db]
   (fn [context args value]
-    ))
+    (let [bearer-token (token-extractor context)
+          {comment :comment
+           id      :id} args]
+      (if (or (nil? bearer-token) (nil? id))
+        {:error "You must logging to edit."}
+        (do
+          (let [comment-data (datomic/get-comment-user-info-by-id db id)
+                user-email (:user (authentication/get-user-from-token bearer-token))
+                validate-comment (utils/validate-comment comment)]
+            (if (and validate-comment)
+              (if (authorization/authorized-delete-comment? comment-data user-email)
+                (datomic/update-comment db id comment)
+                {:error "You are not authorized to edit this comment"})
+              {:error "You must include at least two characters in each comment"})))))))
 
 (defn resolver-map [db]
   {:query/feed              (get-feed db)

@@ -39,9 +39,20 @@
     true
     false))
 
+(defn validate-comment [comment]
+  (if (> (count comment) 2)
+    true
+    false))
+
 (defn organize-order-by [order-by]
   (case order-by
     "date" :createdAt
     "order" :order
     "votes" :votes
     :order))
+
+(defn validate-father-type [father]
+  (case father
+    "comment" :comment/id
+    "link" :link/id
+    nil))

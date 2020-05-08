@@ -29,11 +29,25 @@
     [?e :link/id ?id]
     [?votes :vote/link ?e]])
 
+(def get-each-comment-vote-count
+  '[:find (count ?votes)
+    :in $ ?id
+    :where
+    [?e :comment/id ?id]
+    [?votes :vote/comment ?e]])
+
 (defn get-each-link-vote-count-non-zero [db post-id]
   (let [post-votes (ffirst (d/q get-each-link-vote-count db post-id))
         non-null (if (nil? post-votes)
                    0
                    post-votes)]
+    non-null))
+
+(defn get-each-comment-vote-count-non-zero [db comment-id]
+  (let [comment-votes (ffirst (d/q get-each-comment-vote-count db comment-id))
+        non-null (if (nil? comment-votes)
+                   0
+                   comment-votes)]
     non-null))
 
 (def check-if-user-already-voted-post
@@ -45,7 +59,16 @@
     [?votes :vote/user ?e1]
     [?votes :vote/link ?e2]])
 
-(def get-vote-id-entity-retract
+(def check-if-user-already-voted-comment
+  '[:find (count ?votes)
+    :in $ ?comment-id ?user-email
+    :where
+    [?e1 :user/email ?user-email]
+    [?e2 :comment/id ?comment-id]
+    [?votes :vote/user ?e1]
+    [?votes :vote/comment ?e2]])
+
+(def get-post-vote-id-entity-retract
   '[:find ?vote-id
     :in $ ?post-id ?user-email
     :where
@@ -53,6 +76,16 @@
     [?e2 :link/id ?post-id]
     [?votes :vote/user ?e1]
     [?votes :vote/link ?e2]
+    [?votes :vote/id ?vote-id]])
+
+(def get-comment-vote-id-entity-retract
+  '[:find ?vote-id
+    :in $ ?comment-id ?user-email
+    :where
+    [?e1 :user/email ?user-email]
+    [?e2 :comment/id ?post-id]
+    [?votes :vote/user ?e1]
+    [?votes :vote/comment ?e2]
     [?votes :vote/id ?vote-id]])
 
 (def get-pwd-by-email
@@ -70,7 +103,7 @@
     [?e :user/pwd ?pwd]])
 
 (def get-link-by-id
-  '[:find ?e ?createdAt ?description ?postedBy ?url ?order ?postedby
+  '[:find ?id ?createdAt ?description ?postedBy ?url ?order ?postedby
     :keys id createdAt description postedBy url order postedby
     :in $ ?id
     :where
@@ -81,7 +114,21 @@
     [?e :link/postedby ?postedBy]
     [?e :link/url ?url]
     [?e :link/postedby ?e2]
-    [?e2 :user/email ?postedby]])
+    [?e2 :user/name ?postedby]])
+
+(def get-comment-by-id
+  '[:find ?id ?text ?father ?postedBy ?createdAt
+    :keys id text father postedBy createdAt
+    :in $ ?id
+    :where
+    [?e :comment/id ?id]
+    [?e :comment/text ?text]
+    [?e :comment/son ?e2]
+    [?e2 :comment/id ?father]
+    [?e2 :link/id ?father]
+    [?e :comment/postedBy ?e3]
+    [?e3 :user/name ?postedBy]
+    [?e :comment/createdAt ?createdAt]])
 
 (def get-user-info-by-user-email
   '[:find ?e ?name ?email
@@ -97,6 +144,14 @@
     :where
     [?e :link/id ?link-id]
     [?e :link/postedby ?e2]
+    [?e2 :user/email ?email]])
+
+(def post-user-info-by-comment-id
+  '[:find ?email
+    :in $ ?comment-id
+    :where
+    [?e :comment/id ?comment-id]
+    [?e :comment/postedBy ?e2]
     [?e2 :user/email ?email]])
 
 (defn- get-votes [db post-id]
@@ -125,10 +180,23 @@
         vote-count (get-each-link-vote-count-non-zero db uuid)]
     (conj link {:votes vote-count})))
 
+(defn get-comment
+  [con id]
+  (let [db (create-db-con con)
+        uuid (UUID/fromString id)
+        comment (first (d/q get-comment-by-id db uuid))
+        vote-count (get-each-comment-vote-count-non-zero db uuid)]
+    (conj comment {:votes vote-count})))
+
 (defn delete-link
   [con post-id]
   (let [uuid (UUID/fromString post-id)]
     (d/transact con {:tx-data [[:db.fn/retractEntity [:link/id uuid]]]})))
+
+(defn delete-comment
+  [con comment-id]
+  (let [uuid (UUID/fromString comment-id)]
+    (d/transact con {:tx-data [[:db.fn/retractEntity [:comment/id uuid]]]})))
 
 (defn update-link
   [con id description url]
@@ -136,6 +204,12 @@
         {result :db-after} (d/transact con {:tx-data [[:db/add [:link/id uuid] :link/url url]
                                                       [:db/add [:link/id uuid] :link/description description]]})]
     (first (d/q get-link-by-id result uuid))))
+
+(defn update-comment
+  [con id comment]
+  (let [uuid (UUID/fromString id)
+        {result :db-after} (d/transact con {:tx-data [[:db/add [:comment/id uuid] :comment/text comment]]})]
+    (first (d/q get-comment-by-id result uuid))))
 
 (defn max-order
   [con]
@@ -195,6 +269,10 @@
   (let [db (create-db-con con)]
     (ffirst (d/q post-user-info-by-post-id db (UUID/fromString post-id)))))
 
+(defn get-comment-user-info-by-id [con comment-id]
+  (let [db (create-db-con con)]
+    (ffirst (d/q post-user-info-by-comment-id db (UUID/fromString comment-id)))))
+
 (defn post-id-user-already-voted [con post-id user-email]
   (let [db (create-db-con con)
         votes (ffirst (d/q check-if-user-already-voted-post db (UUID/fromString post-id) user-email))]
@@ -202,12 +280,26 @@
       false
       true)))
 
+(defn comment-id-user-already-voted [con comment-id user-email]
+  (let [db (create-db-con con)
+        votes (ffirst (d/q check-if-user-already-voted-comment db (UUID/fromString comment-id) user-email))]
+    (if (or (= 0 votes) (nil? votes))
+      false
+      true)))
+
 (defn post-id-remove-vote [con post-id user-email]
   (let [db (create-db-con con)
         uuid (UUID/fromString post-id)
-        vote-id (ffirst (d/q get-vote-id-entity-retract db uuid user-email))
+        vote-id (ffirst (d/q get-post-vote-id-entity-retract db uuid user-email))
         {result :db-after} (d/transact con {:tx-data [[:db.fn/retractEntity [:vote/id vote-id]]]})]
     (get-each-link-vote-count-non-zero result uuid)))
+
+(defn comment-id-remove-vote [con comment-id user-email]
+  (let [db (create-db-con con)
+        uuid (UUID/fromString comment-id)
+        comment-id (ffirst (d/q get-comment-vote-id-entity-retract db uuid user-email))
+        {result :db-after} (d/transact con {:tx-data [[:db.fn/retractEntity [:vote/id comment-id]]]})]
+    (get-each-comment-vote-count-non-zero result uuid)))
 
 (defn post-id-add-vote [con post-id user-email]
   (let [uuid (UUID/fromString post-id)
@@ -215,3 +307,19 @@
                                                        :vote/user [:user/email user-email]
                                                        :vote/link [:link/id uuid]}]})]
     (get-each-link-vote-count-non-zero result uuid)))
+
+(defn comment-id-add-vote [con comment-id user-email]
+  (let [uuid (UUID/fromString comment-id)
+        {result :db-after} (d/transact con {:tx-data [{:vote/id      (UUID/randomUUID)
+                                                       :vote/user    [:user/email user-email]
+                                                       :vote/comment [:comment/id uuid]}]})]
+    (get-each-comment-vote-count-non-zero result uuid)))
+
+(defn post-comment [con user-email comment father-id father-type]
+  (let [uuid (UUID/fromString father-id)
+        {result :db-after} (d/transact con {:tx-data [{:comment/id        (UUID/randomUUID)
+                                                       :comment/createdAt (jt/java-date)
+                                                       :comment/postedBy  [:user/email user-email]
+                                                       :comment/son       [father-type uuid]
+                                                       :comment/text      comment}]})]
+    (first (d/q get-comment-by-id result uuid))))

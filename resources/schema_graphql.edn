@@ -138,8 +138,12 @@
   {:type        :Link
    :description "Post a new link"
    :args
-                {:id      {:type (non-null String)}
-                 :comment {:type (non-null String)}}
+                {:id      {:type        (non-null String)
+                           :description "Id of the item you are commenting"}
+                 :comment {:type        (non-null String)
+                           :description "Comment string"}
+                 :type    {:type        (non-null String)
+                           :description "Should be 'comment' or 'link', to identify what you are replying"}}
    :resolve     :mutation/post_comment}
 
   :comment_vote
