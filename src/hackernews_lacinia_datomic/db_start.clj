@@ -28,9 +28,18 @@
     :db/valueType   :db.type/long
     :db/cardinality :db.cardinality/one
     :db/unique      :db.unique/identity}
+   {:db/ident       :link/comments
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/many}
 
-   {:db/ident       :auth/token
+   {:db/ident       :auth/refresh_token
     :db/valueType   :db.type/string
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :auth/until
+    :db/valueType   :db.type/instant
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :auth/valid
+    :db/valueType   :db.type/keyword
     :db/cardinality :db.cardinality/one}
    {:db/ident       :auth/user
     :db/valueType   :db.type/ref
@@ -45,7 +54,8 @@
     :db/cardinality :db.cardinality/one}
    {:db/ident       :user/name
     :db/valueType   :db.type/string
-    :db/cardinality :db.cardinality/one}
+    :db/cardinality :db.cardinality/one
+    :db/unique      :db.unique/identity}
    {:db/ident       :user/email
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one
@@ -61,9 +71,31 @@
    {:db/ident       :vote/link
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/one}
+   {:db/ident       :vote/comment
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/one}
    {:db/ident       :vote/user
     :db/valueType   :db.type/ref
-    :db/cardinality :db.cardinality/one}])
+    :db/cardinality :db.cardinality/one}
+
+   {:db/ident       :comment/id
+    :db/valueType   :db.type/uuid
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :comment/text
+    :db/valueType   :db.type/string
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :comment/posted-by
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :comment/created-at
+    :db/valueType   :db.type/instant
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :comment/son
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :comment/vote
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/many}])
 
 (defn random-users
   [users]

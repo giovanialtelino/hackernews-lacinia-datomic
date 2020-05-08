@@ -62,6 +62,13 @@
     [?e :user/email ?email]
     [?e :user/pwd ?pwd]])
 
+(def get-pwd-by-name
+  '[:find ?pwd
+    :in $ ?name
+    :where
+    [?e :user/name ?name]
+    [?e :user/pwd ?pwd]])
+
 (def get-link-by-id
   '[:find ?e ?createdAt ?description ?postedBy ?url ?order ?postedby
     :keys id createdAt description postedBy url order postedby
@@ -168,11 +175,18 @@
 (defn get-user-info-auth [con value]
   (let [db (create-db-con con)
         pull (d/q get-user-info-by-user-email db value)]
-    {:user (first pull)}))
+    (first pull)))
 
 (defn non-registered-mail [con value]
   (let [db (create-db-con con)
         pull (ffirst (d/q get-pwd-by-email db value))]
+    (if (nil? pull)
+      true
+      false)))
+
+(defn non-registered-name [con value]
+  (let [db (create-db-con con)
+        pull (ffirst (d/q get-pwd-by-name db value))]
     (if (nil? pull)
       true
       false)))

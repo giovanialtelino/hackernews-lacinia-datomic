@@ -26,6 +26,11 @@
     (let [post-id (:id args)]
       (datomic/get-link db post-id))))
 
+(defn get-comment
+  [db]
+  (fn [context args value]
+    ))
+
 (defn delete-link
   [db]
   (fn [context args value]
@@ -46,7 +51,7 @@
           {description :description
            url         :url} args]
       (if (and (nil? bearer-token))
-        {:description "You must logging to post"}
+        {:error "You must logging to post"}
         (do
           (let [user-email (:user (authentication/get-user-from-token bearer-token))
                 validate-url (utils/validate-url url)
@@ -54,8 +59,8 @@
             (if (and validate-url validate-description)
               (if (authorization/authorized-user-post? db user-email)
                 (datomic/post-link db user-email url description)
-                {:description "You are not authorized to post"})
-              {:description "You must include only https:// links and at least 20 words in the description"})))))))
+                {:error "You are not authorized to post"})
+              {:error "You must include only https:// links and at least 20 words in the description"})))))))
 
 (defn update-link
   [db]
@@ -65,7 +70,7 @@
            url         :url
            id          :id} args]
       (if (and (nil? bearer-token))
-        {:description "You must logging to edit"}
+        {:error "You must logging to edit"}
         (do
           (let [post-data (datomic/get-post-user-info-by-id db id)
                 user-email (:user (authentication/get-user-from-token bearer-token))
@@ -74,13 +79,8 @@
             (if (and validate-url validate-description)
               (if (authorization/authorized-delete-post? post-data user-email)
                 (datomic/update-link db id description url)
-                {:description "You are not authorized to edit this post"})
-              {:description "You must include only https:// links and at least 20 words in the description"})))))))
-
-(defn return-string
-  [db]
-  (fn [context args value]
-    (str "hello pedestal graphiql - ")))
+                {:error "You are not authorized to edit this post"})
+              {:error "You must include only https:// links and at least 20 words in the description"})))))))
 
 (defn login-user
   [db]
@@ -89,9 +89,10 @@
            email :email} args
           clean-email (utils/low-text (utils/trim-text email))
           enc-pwd (datomic/get-user-pwd db clean-email)
-          auth (authentication/login-process clean-email pwd enc-pwd)
-          user (datomic/get-user-info-auth db (:user (authentication/get-user-from-token (:token auth))))]
-      (conj {} auth user))))
+          auth (authentication/login-process clean-email pwd enc-pwd)]
+      (if (not (nil? auth))
+        {:user (datomic/get-user-info-auth db clean-email) :token auth}
+        {:error "Login wasn't possible, password or email are invalid."}))))
 
 (defn signup
   [db]
@@ -102,12 +103,12 @@
           enc-pwd (authentication/generate-password-hash pwd)
           clean-name (utils/trim-text name)
           clean-email (utils/low-text (utils/trim-text email))]
-      (if (utils/valid-email clean-email db)
+      (if (and (utils/valid-email clean-email db) (utils/valid-name clean-name db))
         (do
           (datomic/signup db clean-email enc-pwd clean-name)
           ((login-user db) nil {:password pwd :email clean-email} nil))
         {:user  nil
-         :token "E-mail is already registered or is invalid."}))))
+         :error "E-mail or name are already registered or e-mail is invalid."}))))
 
 (defn vote-link [db]
   (fn [context args value]
@@ -121,14 +122,33 @@
             (datomic/post-id-remove-vote db post-id user-email)
             (datomic/post-id-add-vote db post-id user-email)))))))
 
+(defn post-comment [db]
+  (fn [context args value]
+    ))
+
+(defn vote-comment [db]
+  (fn [context args value]
+    ))
+
+(defn delete-comment [db]
+  (fn [context args value]
+    ))
+
+(defn edit-comment [db]
+  (fn [context args value]
+    ))
+
 (defn resolver-map [db]
-  {:query/feed               (get-feed db)
-   :query/link               (get-link db)
-   :mutation/delete          (delete-link db)
-   :mutation/post            (post-link db)
-   :mutation/signup          (signup db)
-   :mutation/update          (update-link db)
-   :mutation/vote            (vote-link db)
-   :mutation/login           (login-user db)
-   :subscription/new-comment (return-string "new link sub")
-   :subscription/new-vote    (return-string "new vote sub")})
+  {:query/feed              (get-feed db)
+   :query/link              (get-link db)
+   :query/comment           (get-comment db)
+   :mutation/delete         (delete-link db)
+   :mutation/post           (post-link db)
+   :mutation/signup         (signup db)
+   :mutation/update         (update-link db)
+   :mutation/vote           (vote-link db)
+   :mutation/login          (login-user db)
+   :mutation/post_comment   (post-comment db)
+   :mutation/vote_comment   (vote-comment db)
+   :mutation/delete_comment (delete-comment db)
+   :mutation/edit_comment   (edit-comment db)})

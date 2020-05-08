@@ -22,8 +22,8 @@
 
 (defn login-process [email pwd enc-pwd]
   (if (auth-user pwd enc-pwd)
-    {:token (sign-data email)}
-    {:token "Invalid credentials"}))
+    (sign-data email)
+    nil))
 
 (defn get-user-from-token [token]
   (jwt/unsign token system-secret))

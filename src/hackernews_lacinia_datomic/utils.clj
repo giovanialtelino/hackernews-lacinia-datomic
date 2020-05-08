@@ -12,6 +12,11 @@
     true
     false))
 
+(defn valid-name [name db]
+  (if (datomic/non-registered-name db name)
+    true
+    false))
+
 (defn trim-text [text]
   (str/trim text))
 

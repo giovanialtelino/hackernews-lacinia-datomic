@@ -5,6 +5,7 @@
                 {:id    {:type String}
                  :name  {:type String}
                  :email {:type String}
+                 :error {:type String}
                  :links {:type (list :Link)}}}
 
   :Link
@@ -19,22 +20,49 @@
                                :description "User who posted the article"}
                  :votes       {:type        Int
                                :description "Votes the article got"}
+                 :comments    {:type        Int
+                               :description "Comments numbers"}
+                 :commentList {:type        (list :Comment)
+                               :description "All the comment from the link. Only avaliable in the Link Page, not on the Feed"}
                  :order       {:type        Int
                                :description "Order added"}
+                 :error       {:type String}
                  :createdAt   {:type        String
                                :description "Instant of the creation"}}}
+
+  :Comment
+  {:description "Comments of an article"
+   :fields      {:id          {:type String}
+                 :text        {:type        String
+                               :description "Comment text"}
+                 :postedBy    {:type        String
+                               :description "User visualization name"}
+                 :postedSince {:type        String
+                               :description "Time since the comment were posted until now"}
+                 :votes       {:type        Int
+                               :description "Votes on the comment"}
+                 :father_name {:type        String
+                               :description "On comment page will name it's father to go back to the Link page"}
+                 :father_id   {:type        String
+                               :description "Father UUID to query to go back"}
+                 :child       {:type        String
+                               :description "Who is my father? Used to organize the comments since GraphQL can't query itself until null to load all comments levels"}}}
+
   :AuthPayload
   {:description "Auth payload for a user"
    :fields
-                {:token {:type String}
-                 :user  {:type :User}}}
+                {:token   {:type String}
+                 :refresh {:type String}
+                 :error   {:type String}
+                 :user    {:type :User}}}
 
   :Vote
   {:description "Vote in the system"
    :fields
-                {:id   {:type (non-null String)}
-                 :link {:type (non-null :Link)}
-                 :user {:type (non-null :User)}}}}
+                {:id    {:type (non-null String)}
+                 :link  {:type (non-null :Link)}
+                 :error {:type String}
+                 :user  {:type (non-null :User)}}}}
 
  :queries
  {:feed
@@ -50,7 +78,14 @@
    :description "Get the Link by Id"
    :args
                 {:id {:type String}}
-   :resolve     :query/link}}
+   :resolve     :query/link}
+
+  :comment
+  {:type        :Comment
+   :description "Get the Comment by Id"
+   :args
+                {:id {:type String}}
+   :resolve     :query/comment}}
 
  :mutations
  {:post
@@ -92,11 +127,40 @@
                 {:email    {:type (non-null String)}
                  :password {:type (non-null String)}}
    :resolve     :mutation/login}
+
   :vote
-  {:type        :Int
+  {:type        Int
    :description "Return current votes"
+   :args        {:id {:type (non-null String)}}
+   :resolve     :mutation/vote}
+
+  :comment_post
+  {:type        :Link
+   :description "Post a new link"
+   :args
+                {:id      {:type (non-null String)}
+                 :comment {:type (non-null String)}}
+   :resolve     :mutation/post_comment}
+
+  :comment_vote
+  {:type        Int
+   :description "Return current votes from comment"
+   :args        {:id {:type (non-null String)}}
+   :resolve     :mutation/vote_comment}
+
+  :comment_delete
+  {:type        String
+   :description "Delete a existing comment"
    :args
                 {:id {:type (non-null String)}}
-   :resolve     :mutation/vote}
+   :resolve     :mutation/delete_comment}
+
+  :comment_edit
+  {:type        String
+   :description "Delete a existing comment"
+   :args
+                {:id      {:type (non-null String)}
+                 :comment {:type (non-null String)}}
+   :resolve     :mutation/edit_comment}
   }
  }
