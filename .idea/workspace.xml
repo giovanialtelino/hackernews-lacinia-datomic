@@ -21,12 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/datomic-start.md" beforeDir="false" afterPath="$PROJECT_DIR$/resources/datomic-start.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/schema_graphql.edn" beforeDir="false" afterPath="$PROJECT_DIR$/resources/schema_graphql.edn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/authorization.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/authorization.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/components/service.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/utils.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/utils.clj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +67,7 @@
     <property name="cursive.last.file.extension./home/altrunox/Documents/clojure/hackernews-lacinia-datomic/resources" value="clj" />
     <property name="cursive.last.file.extension./home/altrunox/Documents/clojure/hackernews-lacinia-datomic/src" value="clj" />
     <property name="cursive.last.file.extension./home/altrunox/Documents/hackernews-lacinia-datomic/src" value="clj" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../coronavirus-scrapper-api" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hackernews-reframe" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -164,9 +164,10 @@
       <screen x="0" y="27" width="1920" height="987" />
     </state>
     <state x="643" y="257" width="624" height="533" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.27.1920.987@0.27.1920.987" timestamp="1588298936778" />
-    <state x="1155" y="311" width="424" height="491" key="FileChooserDialogImpl" timestamp="1584636871218">
-      <screen x="70" y="27" width="1850" height="1053" />
+    <state x="1126" y="293" width="424" height="491" key="FileChooserDialogImpl" timestamp="1590361665288">
+      <screen x="0" y="27" width="1920" height="987" />
     </state>
+    <state x="1126" y="293" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.987@0.27.1920.987" timestamp="1590361665288" />
     <state x="1155" y="311" width="424" height="491" key="FileChooserDialogImpl/70.27.1850.1053@70.27.1850.1053" timestamp="1584636871218" />
     <state x="430" y="178" width="1061" height="737" key="SettingsEditor" timestamp="1588795460323">
       <screen x="0" y="27" width="1920" height="987" />
@@ -181,10 +182,10 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="659" y="252" key="run.anything.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1584410628509" />
-    <state x="536" y="244" width="847" height="636" key="search.everywhere.popup" timestamp="1588917155117">
+    <state x="536" y="244" width="847" height="636" key="search.everywhere.popup" timestamp="1590112562623">
       <screen x="0" y="27" width="1920" height="987" />
     </state>
-    <state x="536" y="244" width="847" height="636" key="search.everywhere.popup/0.27.1920.987@0.27.1920.987" timestamp="1588917155117" />
+    <state x="536" y="244" width="847" height="636" key="search.everywhere.popup/0.27.1920.987@0.27.1920.987" timestamp="1590112562623" />
     <state x="586" y="259" width="816" height="678" key="search.everywhere.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1584551591194" />
   </component>
 </project>

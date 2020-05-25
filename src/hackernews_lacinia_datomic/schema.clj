@@ -32,6 +32,18 @@
     (let [comment-id (:id args)]
       (datomic/get-comment db comment-id))))
 
+(defn get-comments
+  [db]
+  (fn [context args value]
+    (let [comment-father-id(:father args)]
+      (datomic/get-comments db comment-father-id))))
+
+(defn get-user-description
+  [db]
+  (fn [context args value]
+    (let [user-name (:name args)]
+      (datomic/get-user-info-by-name db user-name))))
+
 (defn delete-link
   [db]
   (fn [context args value]
@@ -189,6 +201,8 @@
   {:query/feed              (get-feed db)
    :query/link              (get-link db)
    :query/comment           (get-comment db)
+   :query/comments          (get-comments db)
+   :query/user_description  (get-user-description db)
    :mutation/delete         (delete-link db)
    :mutation/post           (post-link db)
    :mutation/signup         (signup db)
@@ -199,3 +213,5 @@
    :mutation/vote_comment   (vote-comment db)
    :mutation/delete_comment (delete-comment db)
    :mutation/edit_comment   (edit-comment db)})
+
+;still need to implement the refresh token pattern, kinda of tired now, will work on the front end for now.

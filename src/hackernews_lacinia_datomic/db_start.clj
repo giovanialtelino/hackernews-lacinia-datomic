@@ -56,6 +56,9 @@
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one
     :db/unique      :db.unique/identity}
+   {:db/ident       :user/createdAt
+    :db/valueType   :db.type/instant
+    :db/cardinality :db.cardinality/one}
    {:db/ident       :user/email
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one
@@ -80,7 +83,8 @@
 
    {:db/ident       :comment/id
     :db/valueType   :db.type/uuid
-    :db/cardinality :db.cardinality/one}
+    :db/cardinality :db.cardinality/one
+    :db/unique      :db.unique/identity}
    {:db/ident       :comment/text
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one}
@@ -90,12 +94,17 @@
    {:db/ident       :comment/createdAt
     :db/valueType   :db.type/instant
     :db/cardinality :db.cardinality/one}
-   {:db/ident       :comment/son
+   {:db/ident       :comment/father
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/one}
+   {:db/ident       :comment/children
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/many}
    {:db/ident       :comment/vote
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/many}])
+
+
 
 (defn random-users
   [users]
@@ -103,10 +112,11 @@
          xyz []]
     (if (zero? qtd)
       xyz
-      (recur (dec qtd) (conj xyz {:user/id    (UUID/randomUUID)
-                                  :user/name  (str "name" qtd)
-                                  :user/pwd   (at/generate-password-hash (str "pwd" qtd))
-                                  :user/email (str qtd "@com.com")})))))
+      (recur (dec qtd) (conj xyz {:user/id        (UUID/randomUUID)
+                                  :user/name      (str "name" qtd)
+                                  :user/pwd       (at/generate-password-hash (str "pwd" qtd))
+                                  :user/email     (str qtd "@com.com")
+                                  :user/createdAt (jt/java-date)})))))
 
 (defn transact-random-users
   [conn qtd]
@@ -126,9 +136,46 @@
                                     :link/order       qtd
                                     :link/url         (str qtd "linkcom")}))))))
 
+(defn random-comments
+  [comments type father]
+  (let [today (jt/java-date)]
+    (loop [qtd comments
+           xyz []]
+      (if (zero? qtd)
+        xyz
+        (recur (dec qtd) (conj xyz {:comment/id        (UUID/randomUUID)
+                                    :comment/text      (str "comment is around " type "-" qtd)
+                                    :comment/createdAt today
+                                    :comment/postedBy  [:user/email (str qtd "@com.com")]
+                                    :comment/father    [type father]}))))))
+
+(def get-comments-uuid-list
+  '[:find ?uuids
+    :in $
+    :where
+    [_ :comment/id ?uuids]])
+
+(defn transact-random-comments
+  [conn qtd father-list type sub-level]
+  (if (< 0 sub-level)
+    (loop [i 0]
+      (if (< i (count father-list))
+        (do
+          (d/transact conn {:tx-data (random-comments qtd type (first (nth father-list i)))})
+          (recur (inc i)))
+        (transact-random-comments conn qtd (d/q get-comments-uuid-list (d/db conn)) :comment/id (dec sub-level))))))
+
+(def get-link-uuid-list
+  '[:find ?uuids
+    :in $
+    :where
+    [_ :link/id ?uuids]])
+
 (defn transact-random-links
   [conn qtd]
-  (d/transact conn {:tx-data (random-links qtd)}))
+  (let [{result :db-after} (d/transact conn {:tx-data (random-links qtd)})
+        uuid-list (d/q get-link-uuid-list result)]
+    (transact-random-comments conn qtd uuid-list :link/id 2)))
 
 (defn get-all-print [conn]
   (d/q '[:find (pull ?e [:link/url :link/id :link/postedby])
@@ -136,7 +183,7 @@
        (d/db conn)))
 
 (defn start-database [database x]
-  (d/transact database {:tx-data hacker-schema})
-  (transact-random-users database x)
-  (transact-random-links database x)
+  ;(d/transact database {:tx-data hacker-schema})
+  ;(transact-random-users database x)
+  ;(transact-random-links database x)
   true)

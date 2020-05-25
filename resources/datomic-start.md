@@ -3,6 +3,7 @@ bin/transactor config/dev-transactor.properties
 bin/repl
 (require '[datomic.api :as d])
 (def db-uri "datomic:dev://localhost:4334/hackernews")
+(d/delete-database db-uri)
 (d/create-database db-uri)
 
 bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:dev://localhost:4334/hackernews
