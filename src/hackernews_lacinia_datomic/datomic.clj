@@ -27,7 +27,7 @@
                   [(identity ?vote) ?data-point]
                   [(ground 1) ?votes]
                   [(ground 0) ?comments])
-             (and [?comment :comment/father ?e]
+             (and [?comment :comment/link ?e]
                   [(identity ?comment) ?data-point]
                   [(ground 1) ?comments]
                   [(ground 0) ?votes])
@@ -40,10 +40,12 @@
   '[:find ?id ?text ?postedBy ?createdAt ?father (sum ?votes)
     :with ?data-point
     :keys id text postedBy createdAt father votes
-    :in $ ?father
+    :in $ ?father-t
     :where
-    [?e :link/id ?father]
-    [?e2 :comment/father ?e]
+    [?e4 :link/id ?father-t]
+    [?e2 :comment/link ?e4]
+    [?e2 :comment/father ?father2]
+    [(get-some $ ?father2 :link/id :comment/id) [?father ?father]]
     [?e2 :comment/id ?id]
     [?e2 :comment/text ?text]
     [?e2 :comment/postedBy ?e3]
@@ -293,10 +295,8 @@
 (defn get-comments
   [con comment-father-id]
   (let [db (create-db-con con)
-        uuid (UUID/fromString comment-father-id)
-        first-level (d/q get-comments-link-father db uuid)]
-    first-level
-    ))
+        uuid (UUID/fromString comment-father-id)]
+    (d/q get-comments-link-father db uuid)))
 
 (defn delete-link
   [con post-id]
