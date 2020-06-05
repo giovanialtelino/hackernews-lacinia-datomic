@@ -9,6 +9,9 @@
 (defn- token-extractor [ctx]
   (:authorization (:headers (:request ctx))))
 
+(defn- refresh-extractor [ctx]
+  (:refresh (:headers (:request ctx))))
+
 (defn get-feed
   [db]
   (fn [context args value]
@@ -35,7 +38,7 @@
 (defn get-comments
   [db]
   (fn [context args value]
-    (let [comment-father-id(:father args)]
+    (let [comment-father-id (:father args)]
       (datomic/get-comments db comment-father-id))))
 
 (defn get-user-description
@@ -102,10 +105,18 @@
            email :email} args
           clean-email (utils/low-text (utils/trim-text email))
           enc-pwd (datomic/get-user-pwd db clean-email)
-          auth (authentication/login-process clean-email pwd enc-pwd)]
+          auth (authentication/login-process clean-email pwd enc-pwd)
+          refresh-token (authentication/generate-refresh-token db clean-email pwd enc-pwd)]
       (if (not (nil? auth))
-        {:user (datomic/get-user-info-auth db clean-email) :token auth}
+        {:user (datomic/get-user-info-auth db clean-email) :token auth :refresh refresh-token}
         {:error "Login wasn't possible, password or email are invalid."}))))
+
+(defn refresh
+  [db]
+  (fn [ctx args value]
+    (let [refresh (refresh-extractor ctx)
+          result (authentication/refresh-process db refresh)]
+      result)))
 
 (defn signup
   [db]
@@ -209,6 +220,7 @@
    :mutation/update         (update-link db)
    :mutation/vote           (vote-link db)
    :mutation/login          (login-user db)
+   :mutation/refresh        (refresh db)
    :mutation/post_comment   (post-comment db)
    :mutation/vote_comment   (vote-comment db)
    :mutation/delete_comment (delete-comment db)

@@ -140,6 +140,17 @@
                [(identity ?e) ?data-point]
                [(ground 0) ?karma]))])
 
+(def refresh-token-info
+  '[:find ?uuid ?until ?valid ?email
+    :keys uuid until valid email
+    :in $ ?uuid
+    :where
+    [?e :auth/refresh_token ?uuid]
+    [?e :auth/until ?until]
+    [?e :auth/valid ?valid]
+    [?e :auth/user ?e2]
+    [?e2 :user/email ?email]])
+
 (def get-each-link-vote-count
   '[:find (count ?votes)
     :in $ ?id
@@ -295,8 +306,9 @@
 (defn get-comments
   [con comment-father-id]
   (let [db (create-db-con con)
-        uuid (UUID/fromString comment-father-id)]
-    (d/q get-comments-link-father db uuid)))
+        uuid (UUID/fromString comment-father-id)
+        comments (d/q get-comments-link-father db uuid)]
+    comments))
 
 (defn delete-link
   [con post-id]
@@ -438,3 +450,18 @@
 (defn get-user-info-by-name [con user-name]
   (let [db (create-db-con con)]
     (first (d/q get-user-info-by-name-without-email db user-name))))
+
+(defn register-refresh-token [con email]
+  (let [until (jt/java-date (jt/plus (jt/instant) (jt/days 30)))
+        uuid (UUID/randomUUID)]
+    (do
+      (d/transact con {:tx-data [{:auth/refresh_token uuid
+                                  :auth/until         until
+                                  :auth/valid         :true
+                                  :auth/user          [:user/email email]}]})
+      uuid)))
+
+(defn get-refresh-token-data [con token-uuid]
+  (let [db (create-db-con con)
+        uuid (UUID/fromString token-uuid)]
+    (first (d/q refresh-token-info db uuid))))

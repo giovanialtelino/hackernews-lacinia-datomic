@@ -33,7 +33,7 @@
     :db/cardinality :db.cardinality/many}
 
    {:db/ident       :auth/refresh_token
-    :db/valueType   :db.type/string
+    :db/valueType   :db.type/uuid
     :db/cardinality :db.cardinality/one}
    {:db/ident       :auth/until
     :db/valueType   :db.type/instant

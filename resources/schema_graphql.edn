@@ -48,6 +48,10 @@
                              :description "Time since the comment were posted until now"}
                  :votes     {:type        Int
                              :description "Votes on the comment"}
+                 :position  {:type        Int
+                             :description "Position to print the comment on the screen"}
+                 :depth     {:type        Int
+                             :description "Depth of the comment"}
                  :father    {:type        String
                              :description "Who is my father? Used to organize the comments since GraphQL can't query itself until null to load all comments levels"}}}
 
@@ -142,6 +146,11 @@
                 {:email    {:type (non-null String)}
                  :password {:type (non-null String)}}
    :resolve     :mutation/login}
+
+  :refresh
+  {:type        :AuthPayload
+   :description "Return the authorization for the user, if if valid"
+   :resolve     :mutation/refresh}
 
   :vote
   {:type        Int
