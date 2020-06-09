@@ -40,9 +40,9 @@
   '[:find ?id ?url ?description ?order ?postedby ?createdAt (sum ?votes) (sum ?comments)
     :with ?data-point
     :keys id url description order postedBy createdAt votes comments
-    :in $ ?user-id
+    :in $ ?user-name
     :where
-    [?e0 :user/id ?user-id]
+    [?e0 :user/name ?user-name]
     [?e :link/postedby ?e0]
     [?e :link/id ?id]
     [?e :link/url ?url]
@@ -92,9 +92,9 @@
   '[:find ?id ?text ?postedBy ?createdAt ?father (sum ?votes)
     :with ?data-point
     :keys id text postedBy createdAt father votes
-    :in $ ?user-id
+    :in $ ?user-name
     :where
-    [?e0 :user/id ?user-id]
+    [?e0 :user/name ?user-name]
     [?e2 :comment/postedBy ?e0]
     [?e2 :comment/link ?e4]
     [?e2 :comment/father ?father2]
@@ -519,15 +519,10 @@
         uuid (UUID/fromString token-uuid)]
     (first (d/q refresh-token-info db uuid))))
 
-(defn get-user-comments-by-user-id [con user-id]
-  (let [db (create-db-con con)
-        uuid (UUID/fromString user-id)]
-    (d/q get-user-comments db uuid)))
+(defn get-user-comments-by-user-id [con user-name]
+  (let [db (create-db-con con)]
+    (d/q get-user-comments db user-name)))
 
-(defn get-user-posts-by-user-id [con user-id]
-  (let [db (create-db-con con)
-        uuid (UUID/fromString user-id)
-        resp (d/q get-user-posts db uuid)]
-    (println "respz" resp)
-    resp
-    ))
+(defn get-user-posts-by-user-id [con user-name]
+  (let [db (create-db-con con)]
+    (d/q get-user-posts db user-name)))
