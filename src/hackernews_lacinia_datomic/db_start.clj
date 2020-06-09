@@ -66,6 +66,9 @@
    {:db/ident       :user/links
     :db/valueType   :db.type/ref
     :db/cardinality :db.cardinality/many}
+   {:db/ident       :user/comments
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/many}
 
    {:db/ident       :vote/id
     :db/valueType   :db.type/uuid

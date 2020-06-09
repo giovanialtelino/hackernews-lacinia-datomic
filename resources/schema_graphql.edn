@@ -39,21 +39,23 @@
 
   :Comment
   {:description "Comments of an article"
-   :fields      {:id        {:type String}
-                 :text      {:type        String
-                             :description "Comment text"}
-                 :postedBy  {:type        String
-                             :description "User visualization name"}
-                 :createdAt {:type        String
-                             :description "Time since the comment were posted until now"}
-                 :votes     {:type        Int
-                             :description "Votes on the comment"}
-                 :position  {:type        Int
-                             :description "Position to print the comment on the screen"}
-                 :depth     {:type        Int
-                             :description "Depth of the comment"}
-                 :father    {:type        String
-                             :description "Who is my father? Used to organize the comments since GraphQL can't query itself until null to load all comments levels"}}}
+   :fields      {:id         {:type String}
+                 :text       {:type        String
+                              :description "Comment text"}
+                 :postedBy   {:type        String
+                              :description "User visualization name"}
+                 :createdAt  {:type        String
+                              :description "Time since the comment were posted until now"}
+                 :votes      {:type        Int
+                              :description "Votes on the comment"}
+                 :position   {:type        Int
+                              :description "Position to print the comment on the screen"}
+                 :depth      {:type        Int
+                              :description "Depth of the comment"}
+                 :fatherName {:type        String
+                              :description "Used in the user comments page"}
+                 :father     {:type        String
+                              :description "Who is my father? Used to organize the comments since GraphQL can't query itself until null to load all comments levels"}}}
 
   :AuthPayload
   {:description "Auth payload for a user"
@@ -80,11 +82,24 @@
                  :first   {:type Int}
                  :orderby {:type String}}
    :resolve     :query/feed}
+
   :comments
   {:type        (list :Comment)
    :description "Get the comment list"
    :args        {:father {:type (non-null String)}}
    :resolve     :query/comments}
+
+  :user_comments
+  {:type        (list :Comment)
+   :description "Get the user comment list"
+   :args        {:user {:type (non-null String)}}
+   :resolve     :query/user_comments}
+
+  :user_posts
+  {:type        (list :Link)
+   :description "Get the user posts list"
+   :args        {:user {:type (non-null String)}}
+   :resolve     :query/user_posts}
 
   :link
   {:type        :Link

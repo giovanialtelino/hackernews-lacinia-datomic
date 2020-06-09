@@ -36,6 +36,35 @@
                [(ground 0) ?comments]
                [(ground 0) ?votes]))])
 
+(def get-user-posts
+  '[:find ?id ?url ?description ?order ?postedby ?createdAt (sum ?votes) (sum ?comments)
+    :with ?data-point
+    :keys id url description order postedBy createdAt votes comments
+    :in $ ?user-id
+    :where
+    [?e0 :user/id ?user-id]
+    [?e :link/postedby ?e0]
+    [?e :link/id ?id]
+    [?e :link/url ?url]
+    [?e :link/description ?description]
+    [?e :link/createdat ?createdAt]
+    [?e :link/postedby ?e2]
+    [?e0 :user/name ?postedby]
+    [?e :link/order ?order]
+    (or-join [?e ?id ?url ?description ?order ?postedby ?createdAt ?votes ?comments ?data-point]
+             (and [?vote :vote/link ?e]
+                  [(identity ?vote) ?data-point]
+                  [(ground 1) ?votes]
+                  [(ground 0) ?comments])
+             (and [?comment :comment/link ?e]
+                  [(identity ?comment) ?data-point]
+                  [(ground 1) ?comments]
+                  [(ground 0) ?votes])
+             (and
+               [(identity ?e) ?data-point]
+               [(ground 0) ?comments]
+               [(ground 0) ?votes]))])
+
 (def get-comments-link-father
   '[:find ?id ?text ?postedBy ?createdAt ?father (sum ?votes)
     :with ?data-point
@@ -51,6 +80,29 @@
     [?e2 :comment/postedBy ?e3]
     [?e2 :comment/createdAt ?createdAt]
     [?e3 :user/name ?postedBy]
+    (or-join [?e2 ?id ?text ?postedBy ?createdAt ?father ?votes ?data-point]
+             (and [?vote :vote/comment ?e2]
+                  [(identity ?vote) ?data-point]
+                  [(ground 1) ?votes])
+             (and
+               [(identity ?e2) ?data-point]
+               [(ground 0) ?votes]))])
+
+(def get-user-comments
+  '[:find ?id ?text ?postedBy ?createdAt ?father (sum ?votes)
+    :with ?data-point
+    :keys id text postedBy createdAt father votes
+    :in $ ?user-id
+    :where
+    [?e0 :user/id ?user-id]
+    [?e2 :comment/postedBy ?e0]
+    [?e2 :comment/link ?e4]
+    [?e2 :comment/father ?father2]
+    [(get-some $ ?father2 :link/id :comment/id) [?father ?father]]
+    [?e2 :comment/id ?id]
+    [?e2 :comment/text ?text]
+    [?e2 :comment/createdAt ?createdAt]
+    [?e0 :user/name ?postedBy]
     (or-join [?e2 ?id ?text ?postedBy ?createdAt ?father ?votes ?data-point]
              (and [?vote :vote/comment ?e2]
                   [(identity ?vote) ?data-point]
@@ -124,13 +176,14 @@
                [(ground 0) ?karma]))])
 
 (def get-user-info-by-email
-  '[:find ?user ?created (sum ?karma) ?email
+  '[:find ?id ?user ?created (sum ?karma) ?email
     :with ?data-point
-    :keys name createdat karma email
+    :keys id name createdat karma email
     :in $ ?email
     :where
     [?e :user/email ?email]
     [?e :user/name ?user]
+    [?e :user/id ?id]
     [?e :user/createdAt ?created]
     (or-join [?e ?user ?created ?karma ?data-point ?email]
              (and [?vote :vote/user ?e]
@@ -465,3 +518,16 @@
   (let [db (create-db-con con)
         uuid (UUID/fromString token-uuid)]
     (first (d/q refresh-token-info db uuid))))
+
+(defn get-user-comments-by-user-id [con user-id]
+  (let [db (create-db-con con)
+        uuid (UUID/fromString user-id)]
+    (d/q get-user-comments db uuid)))
+
+(defn get-user-posts-by-user-id [con user-id]
+  (let [db (create-db-con con)
+        uuid (UUID/fromString user-id)
+        resp (d/q get-user-posts db uuid)]
+    (println "respz" resp)
+    resp
+    ))

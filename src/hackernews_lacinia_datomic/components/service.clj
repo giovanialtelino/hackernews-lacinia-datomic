@@ -25,7 +25,7 @@
   (let [options (conj config {:interceptors (interceptors schema)})]
     (-> schema
         (lacinia/service-map options)
-        (merge {::bootstrap/allowed-origins ["http://localhost:8080" "http://localhost:8281"]})
+        (merge {::bootstrap/allowed-origins (constantly true)})
         bootstrap/create-server
         bootstrap/start)))
 
