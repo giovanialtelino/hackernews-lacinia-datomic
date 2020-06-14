@@ -54,6 +54,8 @@
                               :description "Depth of the comment"}
                  :fatherName {:type        String
                               :description "Used in the user comments page"}
+                 :error      {:type        String
+                              :description "Used if there's a error"}
                  :father     {:type        String
                               :description "Who is my father? Used to organize the comments since GraphQL can't query itself until null to load all comments levels"}}}
 
@@ -174,7 +176,7 @@
    :resolve     :mutation/vote}
 
   :comment_post
-  {:type        :Link
+  {:type        :Comment
    :description "Post a new link"
    :args
                 {:id      {:type        (non-null String)

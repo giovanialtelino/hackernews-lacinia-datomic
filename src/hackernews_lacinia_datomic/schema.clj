@@ -170,7 +170,7 @@
           (let [user-email (:user (authentication/get-user-from-token bearer-token))
                 validate-comment (utils/validate-comment comment)
                 validated-father (utils/validate-father-type father-type)]
-            (if (and (validate-comment) (not (nil? validated-father)))
+            (if (and validate-comment (not (nil? validated-father)))
               (if (authorization/authorized-user-comment? db user-email)
                 (datomic/post-comment db user-email comment father-id validated-father)
                 {:error "You are not authorized to comment"})

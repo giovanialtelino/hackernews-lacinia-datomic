@@ -285,18 +285,32 @@
     [?e :user/pwd ?pwd]])
 
 (def get-link-by-id
-  '[:find ?id ?createdAt ?description ?postedBy ?url ?order ?postedby
-    :keys id createdAt description postedBy url order postedby
+  '[:find ?id ?url ?description ?order ?postedby ?createdAt (sum ?votes) (sum ?comments)
+    :with ?data-point
+    :keys id url description order postedBy createdAt votes comments
     :in $ ?id
     :where
     [?e :link/id ?id]
-    [?e :link/order ?order]
-    [?e :link/createdat ?createdAt]
-    [?e :link/description ?description]
-    [?e :link/postedby ?postedBy]
     [?e :link/url ?url]
+    [?e :link/description ?description]
+    [?e :link/createdat ?createdAt]
     [?e :link/postedby ?e2]
-    [?e2 :user/name ?postedby]])
+    [?e2 :user/name ?postedby]
+    [?e :link/order ?order]
+    (or-join [?e ?id ?url ?description ?order ?postedby ?createdAt ?votes ?comments ?data-point]
+             (and [?vote :vote/link ?e]
+                  [(identity ?vote) ?data-point]
+                  [(ground 1) ?votes]
+                  [(ground 0) ?comments])
+             (and [?comment :comment/link ?e]
+                  [(identity ?comment) ?data-point]
+                  [(ground 1) ?comments]
+                  [(ground 0) ?votes])
+             (and
+               [(identity ?e) ?data-point]
+               [(ground 0) ?comments]
+               [(ground 0) ?votes]))])
+
 
 
 (def get-user-name-by-user-email
@@ -343,10 +357,8 @@
 (defn get-link
   [con id]
   (let [db (create-db-con con)
-        uuid (UUID/fromString id)
-        link (first (d/q get-link-by-id db uuid))
-        vote-count (get-each-link-vote-count-non-zero db uuid)]
-    (conj link {:votes vote-count})))
+        uuid (UUID/fromString id)]
+    (first (d/q get-link-by-id db uuid))))
 
 (defn get-comment
   [con id]
@@ -493,12 +505,17 @@
 
 (defn post-comment [con user-email comment father-id father-type]
   (let [uuid (UUID/fromString father-id)
-        {result :db-after} (d/transact con {:tx-data [{:comment/id        (UUID/randomUUID)
-                                                       :comment/createdAt (jt/java-date)
-                                                       :comment/postedBy  [:user/email user-email]
-                                                       :comment/father    [father-type uuid]
-                                                       :comment/text      comment}]})]
-    (first (d/q get-comment-by-id result uuid))))
+        comment-uuid (UUID/randomUUID)
+        comment-map {:comment/id        comment-uuid
+                     :comment/createdAt (jt/java-date)
+                     :comment/postedBy  [:user/email user-email]
+                     :comment/father    [father-type uuid]
+                     :comment/text      comment}
+        comment-map (if (= father-type :link/id)
+                      (merge comment-map {:comment/link [:link/id uuid]})
+                      comment-map)
+        {result :db-after} (d/transact con {:tx-data [comment-map]})]
+    (first (d/q get-comment-by-id result comment-uuid))))
 
 (defn get-user-info-by-name [con user-name]
   (let [db (create-db-con con)]
