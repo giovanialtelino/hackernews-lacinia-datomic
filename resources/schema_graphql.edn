@@ -56,6 +56,10 @@
                               :description "Used in the user comments page"}
                  :error      {:type        String
                               :description "Used if there's a error"}
+                 :link       {:type        String
+                              :description "Main link for return purposes"}
+                 :linkText   {:type String}
+                 :linkId     {:type String}
                  :father     {:type        String
                               :description "Who is my father? Used to organize the comments since GraphQL can't query itself until null to load all comments levels"}}}
 

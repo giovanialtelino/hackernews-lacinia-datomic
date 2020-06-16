@@ -131,6 +131,17 @@
                [(identity ?e2) ?data-point]
                [(ground 0) ?votes]))])
 
+(def get-link-by-comment-id
+  '[:find ?link ?linkText ?linkId
+    :keys link linkText linkId
+    :in $ ?comment-id
+    :where
+    [?e :comment/id ?comment-id]
+    [?e :comment/link ?e2]
+    [?e2 :link/url ?link]
+    [?e2 :link/id ?linkId]
+    [?e2 :link/description ?linkText]])
+
 (def get-comment-by-id
   '[:find ?id ?text ?postedBy ?createdAt (sum ?votes) ?father
     :with ?data-point
@@ -139,7 +150,8 @@
     :where
     [?e :comment/id ?id]
     [?e :comment/text ?text]
-    [?e :comment/father ?father]
+    [?e :comment/father ?e4]
+    [(get-some $ ?e4 :link/id :comment/id) [?father ?father]]
     [?e :comment/postedBy ?e3]
     [?e :comment/createdAt ?createdAt]
     [?e3 :user/name ?postedBy]
@@ -365,8 +377,8 @@
   (let [db (create-db-con con)
         uuid (UUID/fromString id)
         comment (first (d/q get-comment-by-id db uuid))
-        father (get-father-comment-by-uuid con comment)]
-    (assoc comment :father father)))
+        father (first (d/q get-link-by-comment-id db uuid))]
+    (merge comment father)))
 
 (defn get-comments
   [con comment-father-id]
