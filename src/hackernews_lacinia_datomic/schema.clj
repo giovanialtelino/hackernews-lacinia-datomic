@@ -163,7 +163,8 @@
     (let [bearer-token (token-extractor context)
           {comment     :comment
            father-type :type
-           father-id   :id} args]
+           link-id   :link
+           father-id :father} args]
       (if (and (nil? bearer-token))
         {:error "You must logging to comment"}
         (do
@@ -172,7 +173,7 @@
                 validated-father (utils/validate-father-type father-type)]
             (if (and validate-comment (not (nil? validated-father)))
               (if (authorization/authorized-user-comment? db user-email)
-                (datomic/post-comment db user-email comment father-id validated-father)
+                (datomic/post-comment db user-email comment link-id father-id validated-father)
                 {:error "You are not authorized to comment"})
               {:error "You must include at least two characters in each comment"})))))))
 

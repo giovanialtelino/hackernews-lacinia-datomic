@@ -183,8 +183,10 @@
   {:type        :Comment
    :description "Post a new link"
    :args
-                {:id      {:type        (non-null String)
+                {:father  {:type        (non-null String)
                            :description "Id of the item you are commenting"}
+                 :link    {:type        (non-null String)
+                           :description "Id of the main link you are commenting"}
                  :comment {:type        (non-null String)
                            :description "Comment string"}
                  :type    {:type        (non-null String)
