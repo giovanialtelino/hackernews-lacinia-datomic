@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Leiningen: com.datomic/client:0.8.81">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.m2/repository/com/datomic/client/0.8.81/client-0.8.81.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Leiningen: buddy/buddy-core:1.6.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.m2/repository/buddy/buddy-core/1.6.0/buddy-core-1.6.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/buddy/buddy-core/1.6.0/buddy-core-1.6.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

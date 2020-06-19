@@ -1,7 +1,0 @@
-:subscriptions
-{:new-link {:type        :Link
-            :description "Subscribe to get new links"
-            :resolve     :subscription/new-link}
- :new-vote {:type        :Vote
-            :description "Subscribe to get new votes"
-            :resolve     :subscription/new-vote}}

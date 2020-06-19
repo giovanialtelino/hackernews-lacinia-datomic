@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e4fa1207-9f6d-4f5a-afc4-1447bc1d8037" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" beforeDir="false" afterPath="$PROJECT_DIR$/hackernews-lacinia-datomic.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/schema_graphql.edn" beforeDir="false" afterPath="$PROJECT_DIR$/resources/schema_graphql.edn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/to-implement" beforeDir="false" afterPath="$PROJECT_DIR$/resources/to-implement" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic.clj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/schema.clj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" beforeDir="false" afterPath="$PROJECT_DIR$/src/hackernews_lacinia_datomic/db_start.clj" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -23,39 +40,46 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1RbV1QgOqy7uJhIQkZPuNPwZlCs" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="GoToKeyword.includeLibraries" value="false" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="cursive.last.file.extension./home/altrunox/Documents/clojure/hackernews-lacinia-datomic/resources" value="clj" />
     <property name="cursive.last.file.extension./home/altrunox/Documents/clojure/hackernews-lacinia-datomic/src" value="clj" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="cursive.last.file.extension./home/altrunox/Documents/hackernews-lacinia-datomic/src" value="clj" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hackernews-reframe" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.repository.indices" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/hackernews_lacinia_datomic" />
       <recent name="$PROJECT_DIR$/resources" />
       <recent name="$PROJECT_DIR$/src/hackernews_lacinia_datomic/datomic" />
     </key>
   </component>
-  <component name="ReplState" timestamp="1570082058092">{:repl-history {:ide [], :local [{:command &quot;(defn foo\n  \&quot;I don't do a whole lot.\&quot;\n  [x]\n  (println x \&quot;Hello, World!\&quot;))&quot;, :offset 74, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(HashMap)&quot;, :offset 9, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(:require :reload-all)&quot;, :offset 22, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;odd?&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;client&quot;, :offset 6, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;user&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(client)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(foo)&quot;, :offset 5, :ns &quot;hackernews-lacinia-datomic.core&quot;}], :remote []}}</component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
+  <component name="ReplState" timestamp="1588478053896">{:repl-history {:ide [], :local [{:command &quot;(defn foo\n  \&quot;I don't do a whole lot.\&quot;\n  [x]\n  (println x \&quot;Hello, World!\&quot;))&quot;, :offset 74, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(HashMap)&quot;, :offset 9, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(:require :reload-all)&quot;, :offset 22, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;odd?&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;client&quot;, :offset 6, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;user&quot;, :offset 4, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(client)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(foo)&quot;, :offset 5, :ns &quot;hackernews-lacinia-datomic.core&quot;} {:command &quot;(prn @dev-atom)&quot;, :offset 15, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(run-dev\n  )&quot;, :offset 11, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(prn @dev-atom\n     )&quot;, :offset 20, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(use 'hackernews-lacinia-datomic.server :reload-all)&quot;, :offset 51, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(kill-components)&quot;, :offset 16, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(require 'hackernews-lacinia-datomic.server :reload-all)&quot;, :offset 55, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(require 'hackernews-lacinia-datomic.server :reload-all\n         )&quot;, :offset 65, :ns &quot;hackernews-lacinia-datomic.server&quot;} {:command &quot;(run-dev)&quot;, :offset 8, :ns &quot;hackernews-lacinia-datomic.server&quot;}], :remote []}}</component>
   <component name="RunManager">
     <configuration name="REPL for hackernews-lacinia-datomic" type="ClojureREPL" factoryName="Local" activateToolWindowBeforeRun="false" temporary="true">
       <module name="hackernews-lacinia-datomic" />
@@ -66,24 +90,26 @@
       <setting name="workingDir" value="$PROJECT_DIR$" />
       <setting name="profiles" value="" />
       <setting name="aliases" value="" />
+      <setting name="fixLineNumbers" value="false" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="ClojureREPL" factoryName="Local" activateToolWindowBeforeRun="false">
       <setting name="replType" value="NREPL" />
       <setting name="execution" value="LEININGEN" />
-      <module name="" />
       <setting name="jvmArgs" value="" />
       <setting name="parameters" value="" />
       <setting name="workingDir" value="" />
       <setting name="profiles" value="" />
       <setting name="aliases" value="" />
+      <setting name="fixLineNumbers" value="false" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
       <setting name="host" value="" />
       <setting name="port" value="0" />
-      <setting name="replType" value="0" />
-      <module name="" />
+      <setting name="replType" value="NREPL" />
+      <setting name="configType" value="SPECIFY" />
+      <setting name="fixLineNumbers" value="false" />
       <method v="2" />
     </configuration>
     <recent_temporary>
@@ -91,6 +117,9 @@
         <item itemvalue="Clojure REPL.REPL for hackernews-lacinia-datomic" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -107,12 +136,52 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="418" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588464052130">
+      <screen x="0" y="27" width="1920" height="987" />
+    </state>
+    <state x="418" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.987@0.27.1920.987" timestamp="1588464052130" />
+    <state x="1114" y="358" width="676" height="397" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1584155010753">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="1114" y="358" width="676" height="397" key="#com.intellij.fileTypes.FileTypeChooser/70.27.1850.1053@70.27.1850.1053" timestamp="1584155010753" />
+    <state x="836" y="445" width="308" height="223" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1584154422805">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="836" y="445" width="308" height="223" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1584154422805" />
+    <state x="643" y="257" width="624" height="533" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1591190700372">
+      <screen x="0" y="27" width="1920" height="987" />
+    </state>
+    <state x="643" y="257" width="624" height="533" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.27.1920.987@0.27.1920.987" timestamp="1591190700372" />
+    <state x="1126" y="293" width="424" height="491" key="FileChooserDialogImpl" timestamp="1590361665288">
+      <screen x="0" y="27" width="1920" height="987" />
+    </state>
+    <state x="1126" y="293" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.987@0.27.1920.987" timestamp="1590361665288" />
+    <state x="1155" y="311" width="424" height="491" key="FileChooserDialogImpl/70.27.1850.1053@70.27.1850.1053" timestamp="1584636871218" />
+    <state x="430" y="178" width="1061" height="737" key="SettingsEditor" timestamp="1588795460323">
+      <screen x="0" y="27" width="1920" height="987" />
+    </state>
+    <state x="430" y="178" width="1061" height="737" key="SettingsEditor/0.27.1920.987@0.27.1920.987" timestamp="1588795460323" />
+    <state x="484" y="188" width="1022" height="737" key="SettingsEditor/70.27.1850.1053@70.27.1850.1053" timestamp="1584410595171" />
+    <state x="304" y="119" width="1372" height="876" key="new project wizard" timestamp="1584636720629">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="304" y="119" width="1372" height="876" key="new project wizard/70.27.1850.1053@70.27.1850.1053" timestamp="1584636720629" />
+    <state x="659" y="252" key="run.anything.popup" timestamp="1584410628509">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="659" y="252" key="run.anything.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1584410628509" />
+    <state x="536" y="244" width="847" height="636" key="search.everywhere.popup" timestamp="1591674318336">
+      <screen x="0" y="27" width="1920" height="987" />
+    </state>
+    <state x="536" y="244" width="847" height="636" key="search.everywhere.popup/0.27.1920.987@0.27.1920.987" timestamp="1591674318336" />
+    <state x="586" y="259" width="816" height="678" key="search.everywhere.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1584551591194" />
   </component>
 </project>

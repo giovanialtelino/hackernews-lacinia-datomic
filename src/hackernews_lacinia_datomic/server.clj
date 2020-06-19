@@ -1,12 +1,19 @@
 (ns hackernews-lacinia-datomic.server
-  (:require
-            [hackernews-lacinia-datomic.datomic :as datomic]
-            [hackernews-lacinia-datomic.schema :as schema]
-            [hackernews-lacinia-datomic.pedestal :as pedestal]
-))
+  (:gen-class)                                              ; for -main method in uberjar
+  (:require [hackernews-lacinia-datomic.component :as cp]))
 
-(defn -main []
-  (pedestal/service)
-  )
+(def dev-atom (atom nil))
 
+(defn run-dev
+  "Local dev entry point"
+  [& args]
+  (println "\n Creating Dev")
+  (reset! dev-atom (cp/create-and-start-dev-system!)))
 
+(defn -main
+  [& args]
+  (println "\n Creating Prod")
+  (cp/create-and-start-prod-system!))
+
+(defn kill-components []
+  (cp/kill-every-component @dev-atom))

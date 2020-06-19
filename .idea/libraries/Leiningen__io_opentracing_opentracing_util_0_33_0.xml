@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Leiningen: io.opentracing/opentracing-util:0.33.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.m2/repository/io/opentracing/opentracing-util/0.33.0/opentracing-util-0.33.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/opentracing/opentracing-util/0.33.0/opentracing-util-0.33.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
