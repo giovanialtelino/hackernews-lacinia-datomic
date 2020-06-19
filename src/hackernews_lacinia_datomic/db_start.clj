@@ -178,7 +178,8 @@
   [conn qtd]
   (let [{result :db-after} (d/transact conn {:tx-data (random-links qtd)})
         uuid-list (d/q get-link-uuid-list result)]
-    (transact-random-comments conn qtd uuid-list :link/id 2 uuid-list)))
+    ))
+;(transact-random-comments conn qtd uuid-list :link/id 2 uuid-list)
 
 (defn get-all-print [conn]
   (d/q '[:find (pull ?e [:link/url :link/id :link/postedby])
@@ -186,7 +187,7 @@
        (d/db conn)))
 
 (defn start-database [database x]
-  ;(d/transact database {:tx-data hacker-schema})
-  ;(transact-random-users database x)
-  ;(transact-random-links database x)
+  (d/transact database {:tx-data hacker-schema})
+  (transact-random-users database x)
+  (transact-random-links database x)
   true)

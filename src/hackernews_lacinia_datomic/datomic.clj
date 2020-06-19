@@ -380,6 +380,19 @@
         father (first (d/q get-link-by-comment-id db uuid))]
     (merge comment father)))
 
+(defn- give-comments-depth-order [comments main-link]
+  (let [counter (count comments)]
+    (loop [i 0
+           order 0
+           depth 0
+           ordered []
+           father main-link]
+      (if (< i counter)
+        (if (= father (:father (nth comments i)))
+          (recur (inc i) (inc order) depth (conj ordered (merge {:order order :depth depth} (nth comments i))) father)
+          (recur (inc i) order depth ordered father))
+        ordered))))
+
 (defn get-comments
   [con comment-father-id]
   (let [db (create-db-con con)
