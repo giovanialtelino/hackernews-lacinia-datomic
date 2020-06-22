@@ -20,7 +20,18 @@ bin/repl
 
 bin/run -m datomic.peer-server -h localhost -p 8998 -a myaccesskey,mysecret -d hackernews,datomic:dev://localhost:4334/hackernews
 
-You must configure the last command as you wish, you may have different ports and so on.
+You must configure the last command as you wish, as you may have different ports and so on.
+If you run everything without any error, you should be fine to run this project. 
+It depends on Leiningen, run it with "lein run" or "lein run-dev", the distinction here is pretty much allowing or not the graphiql interface, but if you need to deploy something similar you probably should change database and CORS settings, using the Components.
+The standard port is 8080.
+
+## Observations
+
+This project lacks some of the HackerNews features, and also testing is poor.  
+Feel free to push some changes or clone it to your own repo and do what you want, I won't be hosting it like some other projects I made.
+Check my [blog](https://www.giovanialtelino.com/project/hacker-news-graphql) post for more information about some decisions I made about it.
+
+
 
 
 

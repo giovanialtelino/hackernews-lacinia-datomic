@@ -181,6 +181,7 @@
     ))
 ;(transact-random-comments conn qtd uuid-list :link/id 2 uuid-list)
 
+
 (defn get-all-print [conn]
   (d/q '[:find (pull ?e [:link/url :link/id :link/postedby])
          :where [?e :link/id]]

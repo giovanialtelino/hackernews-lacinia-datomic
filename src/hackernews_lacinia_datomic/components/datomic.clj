@@ -3,7 +3,7 @@
             [hackernews-lacinia-datomic.db-start :as db-start]
             [datomic.client.api :as dc]))
 
-;;On prod could use Environ to get the config, password and so on.
+;;On prod should use Environ (or similar) to get the config, password and so on.
 (def cfg {:server-type        :peer-server
           :access-key         "myaccesskey"
           :secret             "mysecret"

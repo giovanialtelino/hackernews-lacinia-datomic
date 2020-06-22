@@ -8,11 +8,11 @@
 
 (def prod-config-map {:env      :prod
                       :port     8080
-                      :graphiql "false"})
+                      :graphiql false})
 
 (def dev-config-map {:env      :dev
                      :port     8080
-                     :graphiql "true"})
+                     :graphiql true})
 
 (def prod-deps
   [:config :schema])
