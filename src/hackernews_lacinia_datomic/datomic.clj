@@ -111,26 +111,6 @@
                [(identity ?e2) ?data-point]
                [(ground 0) ?votes]))])
 
-(def get-comments-comment-father
-  '[:find ?e ?text ?postedBy ?createdAt ?father (sum ?votes)
-    :with ?data-point
-    :keys id text postedBy createdAt father votes
-    :in $ ?father
-    :where
-    [?e :comment/id ?father]
-    [?e2 :comment/father ?e]
-    [?e2 :comment/text ?text]
-    [?e2 :comment/postedBy ?e3]
-    [?e2 :comment/createdAt ?createdAt]
-    [?e3 :user/name ?postedBy]
-    (or-join [?e2 ?id ?text ?postedBy ?createdAt ?father ?votes ?data-point]
-             (and [?vote :vote/comment ?e2]
-                  [(identity ?vote) ?data-point]
-                  [(ground 1) ?votes])
-             (and
-               [(identity ?e2) ?data-point]
-               [(ground 0) ?votes]))])
-
 (def get-link-by-comment-id
   '[:find ?link ?linkText ?linkId
     :keys link linkText linkId
@@ -162,14 +142,6 @@
              (and
                [(identity ?e) ?data-point]
                [(ground 0) ?votes]))])
-
-(defn- get-father-comment-by-uuid [con item]
-  (let [father (:father item)
-        db (create-db-con con)
-        comment? (first (d/pull db '[:comment/id] father))]
-    (if (nil? comment?)
-      (second (first (d/pull db '[:link/id] father)))
-      (second comment?))))
 
 (def get-user-info-by-name-without-email
   '[:find ?user ?created (sum ?karma)
@@ -323,8 +295,6 @@
                [(ground 0) ?comments]
                [(ground 0) ?votes]))])
 
-
-
 (def get-user-name-by-user-email
   '[:find ?name
     :keys name
@@ -353,13 +323,6 @@
   (let [votes (get-each-link-vote-count-non-zero db post-id)]
     {:votes votes}))
 
-(defn- add-votes-item [db result]
-  (loop [i 0
-         counted []]
-    (if (< i (count result))
-      (recur (inc i) (conj counted (conj (nth result i) (get-votes db (:id (nth result i))))))
-      counted)))
-
 (defn get-feed
   [con skip first order-by]
   (let [db (create-db-con con)
@@ -379,19 +342,6 @@
         comment (first (d/q get-comment-by-id db uuid))
         father (first (d/q get-link-by-comment-id db uuid))]
     (merge comment father)))
-
-(defn- give-comments-depth-order [comments main-link]
-  (let [counter (count comments)]
-    (loop [i 0
-           order 0
-           depth 0
-           ordered []
-           father main-link]
-      (if (< i counter)
-        (if (= father (:father (nth comments i)))
-          (recur (inc i) (inc order) depth (conj ordered (merge {:order order :depth depth} (nth comments i))) father)
-          (recur (inc i) order depth ordered father))
-        ordered))))
 
 (defn get-comments
   [con comment-father-id]
