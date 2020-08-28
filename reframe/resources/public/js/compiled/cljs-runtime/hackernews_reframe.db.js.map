@@ -1,0 +1,1 @@
+{"version":3,"sources":["hackernews_reframe/db.cljs"],"mappings":";;AAEA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAA,AAAKA","names":["hackernews-reframe.db/default-db"],"sourcesContent":["(ns hackernews-reframe.db)\n\n(def default-db\n  {:name \"re-frame\"\n   :active-panel :news-panel\n   :email \"\"\n   :pwd \"\"\n   :news-page 0})\n"]}
