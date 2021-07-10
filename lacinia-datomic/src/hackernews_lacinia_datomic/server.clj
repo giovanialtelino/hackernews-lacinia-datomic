@@ -1,5 +1,5 @@
 (ns hackernews-lacinia-datomic.server
-  (:gen-class)                                              ; for -main method in uberjar
+  (:gen-class)
   (:require [hackernews-lacinia-datomic.component :as cp]))
 
 (def dev-atom (atom nil))

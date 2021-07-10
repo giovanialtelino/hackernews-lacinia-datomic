@@ -1,5 +1,7 @@
 .idea/
-/lacinia-datomic/config/
 /reframe/.shadow-cljs/
 /reframe/node_modules/
 /reframe/target/
+
+/lacinia-datomic/target/
+/lacinia-datomic/config/

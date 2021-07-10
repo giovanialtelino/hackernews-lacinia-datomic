@@ -12,7 +12,7 @@ And watch out for the version you choose, right now the "Solo" is the cheapest o
 ## Observations
 
 This project lacks a lot of the HackerNews features, we also don't have pagination, it was much more of a proof of concept than a real idea to be deployed.  
-Check my [blog](https://www.giovanialtelino.com/project/hacker-news-graphql) post for more information about some decisions I made about it.
+Check my [blog](https://www.giovanialtelino.com/project/hacker-news-graphql-v2) post for more information about some decisions I made about it.
 
 
 

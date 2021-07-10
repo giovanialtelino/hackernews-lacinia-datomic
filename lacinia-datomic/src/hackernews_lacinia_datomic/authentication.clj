@@ -1,11 +1,10 @@
 (ns hackernews-lacinia-datomic.authentication
   (:require [buddy.hashers :as hs]
             [buddy.sign.jwt :as jwt]
-            [buddy.core.hash :as hash]
             [hackernews-lacinia-datomic.datomic :as datomic]
             [java-time :as jt]))
 
-(def system-secret (System/getenv "BUDDY_SIMPLE"))
+(def system-secret (System/getenv "BUDDY_SIMPLE_AND_NOT_SAFE_STRING"))
 
 (defn generate-password-hash [pwd]
   (hs/derive pwd))
@@ -16,7 +15,7 @@
     false))
 
 (defn- claims-user [user]
-  {:user user :exp (jt/plus (jt/instant) (jt/hours 4))})
+  {:user user :exp (jt/plus (jt/instant) (jt/hours 1))})
 
 (defn- claims-refresh [uuid]
   {:id uuid :exp (jt/plus (jt/instant) (jt/days 30))})
@@ -29,7 +28,6 @@
     (sign-data email)
     nil))
 
-;resulz  :until #inst "2020-07-05T01:48:36.528-00:00", :valid :true, :email 1@com.com}
 (defn refresh-process [db token]
   (let [unsigned (jwt/unsign token system-secret)
         datomic-result (datomic/get-refresh-token-data db (:id unsigned))
