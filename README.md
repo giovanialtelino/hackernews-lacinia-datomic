@@ -2,9 +2,8 @@
 
 A Clojure webserver designed to serve Hackernews like GraphQL functions.
 
-## Migration
 
-I'm changing the old manual deployment to use docker compose, the code is still pretty much the same.
+
 
 ## Usage
 
