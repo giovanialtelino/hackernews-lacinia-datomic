@@ -127,12 +127,12 @@
     (if (< 0 i)
       (if (= (:father (nth missing i)) (:id (nth added f)))
         (recur (dec i) f depth (insert-index added (inc f) {:id  (:id (nth missing i))
-                                                                  :row (comment-row (:id (nth missing i))
-                                                                                    (:postedBy (nth missing i))
-                                                                                    (:text (nth missing i))
-                                                                                    (:createdAt (nth missing i))
-                                                                                    (:votes (nth missing i))
-                                                                                    (* depth 3))}) (remove-by-index missing i))
+                                                            :row (comment-row (:id (nth missing i))
+                                                                              (:postedBy (nth missing i))
+                                                                              (:text (nth missing i))
+                                                                              (:createdAt (nth missing i))
+                                                                              (:votes (nth missing i))
+                                                                              (* depth 3))}) (remove-by-index missing i))
         (recur (dec i) f depth added missing))
       (if (> (dec (count added)) f)
         (recur (dec (count missing)) (inc f) (inc depth) added missing)
@@ -472,4 +472,3 @@
     [:div.content.has-text-centered
      [:p "This is a Hacker News homage with Lacinia Pedestal and Re-Frame."]
      [:p "For info check the Github Project, " [:a {:target "_blank" :href "https://github.com/giovanialtelino/hackernews-reframe"} "front-end"] " and " [:a {:target "_blank" :href "https://github.com/giovanialtelino/hackernews-lacinia-datomic"} "back-end"] "."]]]])
-
