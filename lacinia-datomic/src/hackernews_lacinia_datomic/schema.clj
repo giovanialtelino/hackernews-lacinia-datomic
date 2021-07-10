@@ -6,15 +6,19 @@
             [hackernews-lacinia-datomic.authorization :as authorization]
             [hackernews-lacinia-datomic.utils :as utils]))
 
-(defn- token-extractor [ctx]
+(defn- token-extractor
+  "Get the jwt from headers"
+  [ctx]
   (:authorization (:headers (:request ctx))))
 
-(defn- refresh-extractor [ctx]
+(defn- refresh-extractor
+  "Get the refresh token from headers"
+  [ctx]
   (:refresh (:headers (:request ctx))))
 
 (defn get-feed
   [db]
-  (fn [context args value]
+  (fn [_ args _]
     (let [{skip     :skip
            first    :first
            order-by :orderby} args
@@ -25,43 +29,43 @@
 
 (defn get-link
   [db]
-  (fn [context args value]
+  (fn [_ args _]
     (let [post-id (:id args)]
       (datomic/get-link db post-id))))
 
 (defn get-comment
   [db]
-  (fn [context args value]
+  (fn [_ args _]
     (let [comment-id (:id args)]
       (datomic/get-comment db comment-id))))
 
 (defn get-comments
   [db]
-  (fn [context args value]
+  (fn [_ args _]
     (let [comment-father-id (:father args)]
       (datomic/get-comments db comment-father-id))))
 
 (defn get-user-comments
   [db]
-  (fn [ctx args value]
+  (fn [_ args _]
     (let [user-id (:user args)]
       (datomic/get-user-comments-by-user-id db user-id))))
 
 (defn get-user-posts
   [db]
-  (fn [ctx args value]
+  (fn [_ args _]
     (let [user-id (:user args)]
       (datomic/get-user-posts-by-user-id db user-id))))
 
 (defn get-user-description
   [db]
-  (fn [context args value]
+  (fn [_ args _]
     (let [user-name (:name args)]
       (datomic/get-user-info-by-name db user-name))))
 
 (defn delete-link
   [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [post-id (:id args)
           bearer-token (token-extractor context)
           post-data (datomic/get-post-user-info-by-id db post-id)
@@ -74,7 +78,7 @@
 
 (defn post-link
   [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [bearer-token (token-extractor context)
           {description :description
            url         :url} args]
@@ -92,7 +96,7 @@
 
 (defn update-link
   [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [bearer-token (token-extractor context)
           {description :description
            url         :url
@@ -112,7 +116,7 @@
 
 (defn login-user
   [db]
-  (fn [ctx args value]
+  (fn [_ args _]
     (let [{pwd   :password
            email :email} args
           clean-email (utils/low-text (utils/trim-text email))
@@ -125,14 +129,14 @@
 
 (defn refresh
   [db]
-  (fn [ctx args value]
+  (fn [ctx _ _]
     (let [refresh (refresh-extractor ctx)
           result (authentication/refresh-process db refresh)]
       result)))
 
 (defn signup
   [db]
-  (fn [context args value]
+  (fn [_ args _]
     (let [{email :email
            pwd   :password
            name  :name} args
@@ -147,7 +151,7 @@
          :error "E-mail or name are already registered or e-mail is invalid."}))))
 
 (defn vote-link [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [bearer-token (token-extractor context)
           post-id (:id args)
           user-email (:user (authentication/get-user-from-token bearer-token))]
@@ -159,12 +163,12 @@
             (datomic/post-id-add-vote db post-id user-email)))))))
 
 (defn post-comment [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [bearer-token (token-extractor context)
           {comment     :comment
            father-type :type
-           link-id   :link
-           father-id :father} args]
+           link-id     :link
+           father-id   :father} args]
       (if (and (nil? bearer-token))
         {:error "You must logging to comment"}
         (do
@@ -178,7 +182,7 @@
               {:error "You must include at least two characters in each comment"})))))))
 
 (defn vote-comment [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [bearer-token (token-extractor context)
           comment-id (:id args)]
       (if (or (nil? comment-id) (nil? bearer-token))
@@ -190,7 +194,7 @@
               (datomic/comment-id-add-vote db comment-id user-email))))))))
 
 (defn delete-comment [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [comment-id (:id args)
           bearer-token (token-extractor context)]
       (if (or (nil? comment-id) (nil? bearer-token))
@@ -205,7 +209,7 @@
               "Unable to delete post. Not authorized or not logged in.")))))))
 
 (defn edit-comment [db]
-  (fn [context args value]
+  (fn [context args _]
     (let [bearer-token (token-extractor context)
           {comment :comment
            id      :id} args]
