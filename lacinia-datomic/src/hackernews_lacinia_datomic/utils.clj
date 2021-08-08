@@ -2,7 +2,7 @@
   (:require [hackernews-lacinia-datomic.datomic :as datomic]
             [clojure.string :as str]))
 
-(defn- contains-fullstop
+(defn contains-fullstop
   "Naive implementation to check if it's a valid email"
   [email]
   (if (str/includes? email "@")
